@@ -1,0 +1,176 @@
+
+$blue1:#112e50;
+$red: #dc3545;
+$glay: #f3f3f3;
+$dark: #263238;
+$dark1: #999;
+$dark2: #ccc;
+
+$chartBlue1: #3299bb;
+$chartBlue2: #15e5f8;
+
+.all {
+    position: relative;
+    min-height: 100vh;
+    background-color: $glay !important;
+}
+
+.main_analytic {
+    margin: 30px 0;
+    .main_right {
+        width: calc( 100% - 215px );
+        margin-left: 30px;
+        h2 {
+            font-size: 24px;
+            font-weight: normal;
+        }
+        h3 {
+            font-size: 20px;
+            font-weight: normal;
+                padding: 5px 0 13px 0 ;
+                border-bottom: 1px solid $dark2;            
+        }
+        .box {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fff;
+            h3 {
+                font-weight: bold;
+                span{
+                    font-weight: normal;
+                    font-size: 15px;
+                }
+            }
+            .list {
+                margin: 0 auto;
+                text-align: center;
+                ul {
+                    overflow: auto;
+                    display: inline-block;
+                    margin: 0;
+                    padding: 0;
+                }
+                li {
+                    float: left;
+                    list-style: none;
+                    padding: 0 15px;
+                    overflow: auto;
+                    font-size: 18px;
+                    border-right: 2px solid #ccc;
+                    cursor: pointer;
+                    &.act {
+                        font-weight: bold;
+                    }
+                }
+            }
+            .chart_box {
+                text-align: center;
+                .chart {
+                    display: inline-block;
+                    margin: 0 auto;
+                    .chart_ids {
+                        text-align: right;
+                        padding-bottom: 30px;
+                        select {
+                            float: left;
+                            margin-left: 30px;
+                        }
+                        li {
+                            position: relative;
+                            list-style: none;
+                            padding: 0 15px;
+                            .dot {
+                                width: 10px;
+                                height: 10px;
+                                border-radius: 10px;
+                                background-color: #112e50;
+                                position: absolute;
+                                left: 0px;
+                                top: 7px;
+                            }
+                        }
+                        .type_col {
+                            display: inline-block;
+                            li {
+                                display: inline-block;
+                            }
+                        }
+                        .type_raw {
+                            li {
+                                display: block;
+                            }
+                        }
+                        
+                    }
+                    
+                }
+            }
+        }
+    }
+}
+
+.layout_left {
+    width: 185px;
+    background-color: #fff;
+    h2 {
+        font-size: 16px;
+        font-weight: normal;
+        margin: 0 10px;
+        text-align: center;
+        border-bottom: 1px solid $dark2;
+        padding-bottom: 10px;
+    }
+    .box_logo {
+        padding: 20px 0;
+        .logo {
+            width: 75px;
+            height: 75px;
+            background-color: $red;
+            border-radius: 75px;
+            margin: 0 auto;
+        }
+    }
+    .nav_left {
+        margin: 0 10px;
+        padding: 0;
+        li {
+            float: none;
+            display: block;
+            padding:  20px 0 15px 10px;
+            border-bottom: 1px solid $glay;
+            a {
+                color: $dark;
+            }
+        }
+    }
+}
+
+//RWD
+$media_lg: 1170px;
+$media_md: 768px;
+@mixin width_md() {
+    @media all and (max-width: $media_md) {
+        @content;
+    }
+}
+.layout_main {
+    padding-bottom: 80px;
+}
+
+.main_header {
+    background-color: $blue1;
+    color: #fff;
+    .nav-link {
+        color: #fff;
+    }
+}
+
+.main_footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: $dark;
+    color: #fff;
+    text-align: center;
+    padding: 25px;
+}
