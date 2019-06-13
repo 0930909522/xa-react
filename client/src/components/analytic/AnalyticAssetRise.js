@@ -5,7 +5,7 @@ import { FaBell } from 'react-icons/fa';
 import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
-import { LineChart, Line, Tooltip, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
+import { PieChart, Pie, Cell, LineChart, Line, Tooltip, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
 
 class AnalyticSource extends Component {
 
@@ -33,7 +33,7 @@ class AnalyticSource extends Component {
 
 
   getDataFromDb = () => {
-    axios.get('http://r.xnet.world/demo/flow_source.json')
+    axios.get('/datas/analyticAssetRise.json')
       .then( response => {
         this.setState({
           basic: response.data,
@@ -44,15 +44,11 @@ class AnalyticSource extends Component {
     .catch(function (error) {
       console.log(error);
     });
-
-    // fetch('https://r.xnet.world/demo/flow_source.json')
-    //   .then((data) => data.json())
-    //   .then((res) => this.setState({ 
-    //       basic: res.data,
-    //       newData: res.data.type[0]
-    //   }));
-
   };
+
+  
+
+  
 
 
   listClick(i) {
@@ -63,35 +59,69 @@ class AnalyticSource extends Component {
 
   }
   render() {
+
+    const dataNew = [{name: 'Group A', value: 400}, {name: 'Group B', value: 300},
+    {name: 'Group C', value: 300}, {name: 'Group D', value: 200}];
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+const RADIAN = Math.PI / 180;                    
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+const x  = cx + radius * Math.cos(-midAngle * RADIAN);
+const y = cy  + radius * Math.sin(-midAngle * RADIAN);
+
+return (
+<text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} 	dominantBaseline="central">
+{`${(percent * 100).toFixed(0)}%`}
+</text>
+);
+};
+
+
+
+
+
     // this.setState({newData: "dd"})
     const data = this.state.newData.value;
     const { user } = this.state.basic;
     const renderLineChart = (
       <>
         <div className="chart_ids">
-          <ul className="type_col">
-            {/* <li><span className="dot" style={{ backgroundColor: user[0].color }}></span> 舊客戶</li> */}
-            <li><span className="dot" style={{ backgroundColor: "#3299bb" }}></span> 舊客戶</li>
-            {/* <li><span className="dot" style={{ backgroundColor: user[1].color }}></span> 新客戶</li> */}
-            <li><span className="dot" style={{ backgroundColor: "#3299bb" }}></span> 新客戶</li>
-          </ul>
+        { user ? <ul className="type_col">
+            <li><span className="dot" style={{ backgroundColor: user[0].color }}></span> 舊客戶</li>
+            <li><span className="dot" style={{ backgroundColor: user[1].color }}></span> 新客戶</li>
+          </ul> : "" }
+          
           <select >
             {this.state.basic ? this.state.basic.interval.map(
               (item, index) => <option key={index} value={index}>{item.name}</option>) : ""}
           </select>
         </div>
         {
-          this.state.basic ? <BarChart width={650} height={300} data={data}>
-          <CartesianGrid stroke="#eee" />
-          <Tooltip labelFormatter={(name) => '' + name} />
-          <Bar type="monotone" dataKey="old" name={user[0].name} fill={user[0].color} />
-          <Bar type="monotone" dataKey="new" name={user[1].name} fill={user[1].color} />
-          <XAxis dataKey="name" stroke="#999" />
-          <YAxis stroke="#999" />
-        </BarChart> : <span />
+          this.state.basic ? <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
+          <Pie
+            data={dataNew} 
+            cx={300} 
+            cy={200} 
+            labelLine={false}
+            label={renderCustomizedLabel}
+            outerRadius={80} 
+            fill="#8884d8"
+          >
+            {
+              data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]}/>)
+            }
+          </Pie>
+        </PieChart> : <span />
         }
       </>
     );
+
+
+
+    
+
+
     return (
       <>
         <Header />
@@ -113,13 +143,23 @@ class AnalyticSource extends Component {
                   </div>
                 </div>
                 <div className="box">
-                  <h3>{this.state.newData.name} <span>新舊客戶流量比</span></h3>
+                  <h3>分類占比</h3>
                   <div className="chart_box">
                     <div className="chart">
                       {renderLineChart}
                     </div>
                   </div>
                 </div>
+
+                <div className="box">
+                  <h3>{this.state.newData.name} 流量統計</h3>
+                  <div className="chart_box">
+                    <div className="chart">
+                      {renderLineChart}
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </Row>
           </Container>
