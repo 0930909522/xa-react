@@ -42,6 +42,49 @@ $chartBlue2: #15e5f8;
                     font-size: 15px;
                 }
             }
+            .icon_box{
+                width: 100px;
+                margin: 15px;
+                text-align: center;
+                .icon {
+                    width: 100px;
+                    height: 100px;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: 65%;
+                    border-radius: 50px;
+                    margin-bottom: 5px;
+                    &.g1 {
+                        background-color: #f19ec2;
+                        background-image: url(./images/group1.png);
+                    }
+                    &.g2 {
+                        background-color: #f6b37f;
+                        background-image: url(./images/group2.png);
+                    }
+                    &.g3 {
+                        background-color: #f6e206;
+                        background-image: url(./images/group3.png);
+                    }
+                    &.g4 {
+                        background-color: #8f82bc;
+                        background-image: url(./images/group4.png);
+                    }
+                    &.g5 {
+                        background-color: #b3d465;
+                        background-image: url(./images/group5.png);
+                    }
+                    &.g6 {
+                        background-color: #a09f9f;
+                        background-image: url(./images/group6.png);
+                    }
+                    &.g7 {
+                        background-color: #3e95de;
+                        background-image: url(./images/group7.png);
+                    }
+                }
+            }
+            
             .list {
                 margin: 0 auto;
                 text-align: center;
