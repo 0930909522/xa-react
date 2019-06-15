@@ -3,8 +3,14 @@ import React, { Component } from 'react';
 import './App.scss';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Home from './components/Main';
+import AnalyticGeneral from './components/analytic/AnalyticGeneral';
 import AnalyticSource from './components/analytic/AnalyticSource';
-import AnalyticAssetRise from './components/analytic/AnalyticAssetRise';
+import AnalyticHot from './components/analytic/AnalyticHot';
+import AnalyticInteraction from './components/analytic/AnalyticInteraction';
+import AnalyticAsset from './components/analytic/AnalyticAsset';
+import AnalyticPortrait from './components/analytic/AnalyticPortrait';
+import AnalyticGroup from './components/analytic/AnalyticGroup';
 import DBTest from './components/DBTest'
 
 class App extends Component {
@@ -13,64 +19,24 @@ class App extends Component {
     return (
       <div className="all">
         <Router>
+        <Route exact path="/" component={Home} /> 
+          {/* 訪客總覽 */}
+          <Route path="/general" component={AnalyticGeneral} /> 
           {/* 流料來源 */}
           <Route path="/source" component={AnalyticSource} /> 
-          {/* 資產價值-上升 */}
-          <Route path="/asset_rise" component={AnalyticAssetRise} />
-          {/* 資產價值-主力 */}
-          {/* <Route path="/asset_main" component={assetMain} /> */}
+          {/* 熱門頁面 */}
+          <Route path="/hot" component={AnalyticHot} /> 
+          {/* 互動指標 */}
+          <Route path="/interaction" component={AnalyticInteraction} /> 
+          {/* 資產價值 */}
+          <Route path="/asset_rise" component={AnalyticAsset} />
+          {/* 用戶畫像 */}
+          <Route path="/portrait" component={AnalyticPortrait} />
+          {/* 用戶分群 */}
+          <Route path="/group" component={AnalyticGroup} />
         </Router>
       </div>
     );
   }
 }
 export default App;
-
-
-//架構
-//Header
-//Main
-//  analytic
-//    NavLeft
-//    MainAnalytic
-//Footer
-
-
-// import React, { Component, useEffect, useState } from 'react';
-// import NavTop from './components/NavTop';
-
-// function Box(props) {
-//   return (
-//     <div>
-//       <h1>{props.text} bbbbbb</h1>
-//       <div>{props.subtitle}</div>
-//     </div>
-//   );
-// }
-// // = function App
-// const App = () => {
-//   const [count, setCount] = useState(10);
-//   useEffect(() => {
-//     document.title = `${count} times.`
-//   })
-//   return (
-//     <div className="xnet">
-//       <NavTop
-//         text='test'
-//       />
-//       <Box
-//         text="Hi, Buzz"
-//         subtitle="React Nice!"
-//       />
-//       <br />
-//       <br />
-//       <p>You clicked {count} times</p>
-//       <br />
-//       <br />
-//       <button onClick={() => setCount(count + 1)}>Click Me</button>
-//     </div>
-
-//   );
-// }
-
-// export default App;

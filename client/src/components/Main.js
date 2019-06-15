@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import NavLeft from './analytic/NavLeft'
+import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 
-import MainAnalytic from './analytic/AnalyticSource'
 
 class Main extends Component {
     state = {}
@@ -10,9 +11,17 @@ class Main extends Component {
         return (
             <>
                 <Header />
-                <div className="xs">
+                {/* <div className="xs">
                     <MainAnalytic />
-                </div>
+                </div> */}
+
+                    <Container className="main_analytic">
+                        <Row>
+                            <NavLeft />
+                            {/* <h2>主畫面</h2> */}
+                        </Row>
+                    </Container>
+
                 <Footer />
             </>
         );

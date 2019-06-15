@@ -69,12 +69,9 @@ class AnalyticSource extends Component {
     const renderLineChart = (
       <>
         <div className="chart_ids">
-          <ul className="type_col">
-            {/* <li><span className="dot" style={{ backgroundColor: user[0].color }}></span> 舊客戶</li> */}
-            <li><span className="dot" style={{ backgroundColor: "#3299bb" }}></span> 舊客戶</li>
-            {/* <li><span className="dot" style={{ backgroundColor: user[1].color }}></span> 新客戶</li> */}
-            <li><span className="dot" style={{ backgroundColor: "#3299bb" }}></span> 新客戶</li>
-          </ul>
+          {user ? <ul className="type_col">
+            {user.map( item => <li><span className="dot" style={{ backgroundColor: user[0].color }}></span> {item.name}</li>)}
+          </ul> : <span/>}
           <select >
             {this.state.basic ? this.state.basic.interval.map(
               (item, index) => <option key={index} value={index}>{item.name}</option>) : ""}

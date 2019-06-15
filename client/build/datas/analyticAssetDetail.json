@@ -1,0 +1,65 @@
+{
+    "type": "rise",
+    "id": "c1",
+    "title": "財經時事",
+    "content": [
+        {
+            "title": "aaaa",
+            "link": "www.google.com",
+            "source": {
+                "id": "device",
+                "name": "裝置",
+                "pieChart": [
+                    { "id": "c1", "name": "手機", "value": 400, "color": "#033492" },
+                    { "id": "c2", "name": "平板", "value": 114, "color": "#b5be02" },
+                    { "id": "c3", "name": "電腦", "value": 250, "color": "#ffd439" }
+                ],
+                "lineChart": [
+                    { "name": "第一週", "c1": 4000, "c2": 2400, "c3": 4500 },
+                    { "name": "第二週", "c1": 2000, "c2": 1400, "c3": 3500 },
+                    { "name": "第三週", "c1": 1000, "c2": 1880, "c3": 7500 },
+                    { "name": "第四週", "c1": 4600, "c2": 2700, "c3": 1500 }
+                ]
+            }
+        },
+        {
+            "title": "bbb",
+            "link": "www.yahoo.com",
+            "source": {
+                "id": "device",
+                "name": "裝置",
+                "pieChart": [
+                    { "id": "c1", "name": "手機", "value": 200, "color": "#033492" },
+                    { "id": "c2", "name": "平板", "value": 114, "color": "#b5be02" },
+                    { "id": "c3", "name": "電腦", "value": 250, "color": "#ffd439" }
+                ],
+                "lineChart": [
+                    { "name": "第一週", "c1": 4000, "c2": 2400, "c3": 4500 },
+                    { "name": "第二週", "c1": 568, "c2": 1400, "c3": 3500 },
+                    { "name": "第三週", "c1": 1000, "c2": 195, "c3": 7500 },
+                    { "name": "第四週", "c1": 4600, "c2": 2700, "c3": 1500 }
+                ]
+            }
+        },
+        {
+            "title": "ccc",
+            "link": "www.fb.com",
+            "source": {
+                "id": "device",
+                "name": "裝置",
+                "pieChart": [
+                    { "id": "c1", "name": "手機", "value": 800, "color": "#033492" },
+                    { "id": "c2", "name": "平板", "value": 114, "color": "#b5be02" },
+                    { "id": "c3", "name": "電腦", "value": 250, "color": "#ffd439" }
+                ],
+                "lineChart": [
+                    { "name": "第一週", "c1": 127, "c2": 2400, "c3": 4500 },
+                    { "name": "第二週", "c1": 2000, "c2": 1600, "c3": 3500 },
+                    { "name": "第三週", "c1": 1000, "c2": 1880, "c3": 7500 },
+                    { "name": "第四週", "c1": 4600, "c2": 2700, "c3": 1500 }
+                ]
+            }
+        }
+
+    ]
+}
