@@ -1,32 +1,89 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
 import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
-import { CircularProgressbar } from 'react-circular-progressbar';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { PieChart, Pie, Cell, LineChart, Line, Tooltip, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
+
 import 'react-circular-progressbar/dist/styles.css';
 
 class AnalyticPortrait extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fishNow: 6,
             fish: [
-                { "id": "g1", "name": "海豚" },
-                { "id": "g2", "name": "烏龜" },
-                { "id": "g3", "name": "蝦子" },
-                { "id": "g4", "name": "鮟鱇魚" },
-                { "id": "g5", "name": "鮪魚" },
-                { "id": "g6", "name": "鯊魚" },
-                { "id": "g7", "name": "鯨魚" }
+                { "id": "g1", "name": "海豚", "info": "友善、可馴化" },
+                { "id": "g2", "name": "烏龜", "info": "動作緩慢慢" },
+                { "id": "g3", "name": "蝦子", "info": "雜食、消費種類廣泛" },
+                { "id": "g4", "name": "鮟鱇魚", "info": "潛在消費者" },
+                { "id": "g5", "name": "鮪魚", "info": "經濟價值高" },
+                { "id": "g6", "name": "鯊魚", "info": "消費兇猛、追求速度" },
+                { "id": "g7", "name": "鯨魚", "info": "消費量大" }
             ],
-            newData: "",
             basic: "",
         }
     }
+    componentDidMount() {
+        this.getDataFromDb();
+    }
+
+    getDataFromDb = () => {
+        axios.get('/datas/analyticPortrait.json')
+            .then(response => {
+                this.setState({
+                    basic: response.data
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
 
     render() {
-        const percentage = 66;
+        const { fishType, articles, proportion, detail, barInfo } = this.state.basic;
+
+        const RADIAN = Math.PI / 180;
+        const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+            const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+            return (
+                <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+                    {`${(percent * 100).toFixed(0)}%`}
+                </text>
+            );
+        };
+
+        const renderProportion = (
+            <>
+                <div className="chart_ids">
+                    {proportion ? <ul className="type_raw">
+                        {proportion.map((item, i) => <li key={i}><span className="dot" style={{ backgroundColor: item.color }}></span> {item.name}</li>)}
+                    </ul> : <span />}
+                </div>
+                {
+                    this.state.basic ? <PieChart width={430} height={250} onMouseEnter={this.onPieEnter}>
+                        <Pie
+                            data={proportion}
+                            cx={130}
+                            cy={110}
+                            labelLine={false}
+                            label={renderCustomizedLabel}
+                            outerRadius={110}
+                            fill="#8884d8"
+                            dataKey="value"
+                        >
+                            {
+                                proportion.map((item, i) => <Cell onClick={() => this.setState({ categoryId: item.id })} key={i} fill={item.color} />)
+                            }
+                        </Pie>
+                    </PieChart> : <span />
+                }
+            </>
+        );
+
         return (<>
             <Header />
             <div className="layout_main">
@@ -37,23 +94,90 @@ class AnalyticPortrait extends Component {
                             <h2>用戶畫像</h2>
                             <div className="box">
                                 <div className="icon_box">
-                                    <div className={this.state.fish[this.state.fishNow].id + " icon"}  ></div>
-                                    {this.state.fish[this.state.fishNow].name}
+                                    <div className={fishType + " icon"}  ></div>
+
+                                </div>
+                                <div className="info">
+                                    <div className="small">
+                                        網站核心用戶
+                                    </div>
+                                    { fishType ? <div className="title">
+                                        {this.state.fish.find((item) => item.id === fishType).name}
+                                        <span> {this.state.fish.find((item) => item.id === fishType).info}</span>
+                                    </div> : <span />}
+                                    
+                                    <div className="detail">
+                                        <div className="small">
+                                            詳細指標
+                                        </div>
+
+                                        <ul>
+                                            {detail ? detail.map((item, i) =>
+                                                <li key={i}>
+                                                    <div className="head">
+                                                        {item.name}
+                                                    </div>
+                                                    <div className="cont">
+                                                        {item.score}
+                                                        <span> {item.info ? `(${item.info})` : ""}</span>
+                                                    </div>
+                                                </li>
+                                            ): <li />}
+
+                                        </ul>
+                                    </div>
+
                                 </div>
                                 <div className="progress_round">
                                     <ul>
-                                        <li>
-                                            <CircularProgressbar value={percentage} text={`${percentage}%`} />
-                                        </li>
-                                        <li>
-                                            <CircularProgressbar value={percentage} text={`${percentage}%`} />
-                                        </li>
-                                        <li>
-                                            <CircularProgressbar value={percentage} text={`${percentage}%`} />
-                                        </li>
+                                        {barInfo ? barInfo.map((item, i) =>
+                                            <li key={i}>
+                                                <CircularProgressbar value={item.percent} text={`${item.percent}%`} strokeWidth='11'
+                                                    styles={buildStyles({
+                                                        pathColor: `${item.bgColor}`,
+                                                        textColor: '#333',
+                                                        trailColor: '#dedede'
+                                                    })}
+                                                />
+                                                <div className="title">{item.name}</div>
+                                            </li>
+                                        ): <li />}
                                     </ul>
                                 </div>
+                            </div>
 
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="box">
+                                        <h3 className="no_border">觀看文章排行</h3>
+                                        <ul className="article_list">
+                                            <li className="title">
+                                                <div className="left">
+                                                    文章名稱
+                                                </div>
+                                                <div className="right">
+                                                    觀看次數
+                                                </div>
+                                            </li>
+                                            {articles ? articles.map((item, i) =>
+                                                <li key={i}>
+                                                    <div className="left">{item.name}</div>
+                                                    <div className="right">{item.count}</div>
+                                                </li>
+                                            ) : <li />}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="box">
+                                        <h3 className="no_border">閱讀偏好</h3>
+                                        <div className="chart_box" style={{ marginTop: "40px" }}>
+                                            <div className="chart">
+                                                {renderProportion}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </Row>
