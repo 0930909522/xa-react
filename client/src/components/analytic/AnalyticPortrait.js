@@ -4,7 +4,7 @@ import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
 import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { CircularProgressbar, buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import { PieChart, Pie, Cell, LineChart, Line, Tooltip, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
 
 import 'react-circular-progressbar/dist/styles.css';
@@ -14,13 +14,13 @@ class AnalyticPortrait extends Component {
         super(props);
         this.state = {
             fish: [
-                { "id": "g1", "name": "海豚", "info": "友善、可馴化" },
-                { "id": "g2", "name": "烏龜", "info": "動作緩慢慢" },
-                { "id": "g3", "name": "蝦子", "info": "雜食、消費種類廣泛" },
-                { "id": "g4", "name": "鮟鱇魚", "info": "潛在消費者" },
-                { "id": "g5", "name": "鮪魚", "info": "經濟價值高" },
-                { "id": "g6", "name": "鯊魚", "info": "消費兇猛、追求速度" },
-                { "id": "g7", "name": "鯨魚", "info": "消費量大" }
+                { "id": "g1", "name": "海豚", "info": "友善、可馴化", "percent": "10", "bgColor": "#f19ec2" },
+                { "id": "g2", "name": "烏龜", "info": "動作緩慢慢", "percent": "20", "bgColor": "#f6b37f" },
+                { "id": "g3", "name": "蝦子", "info": "雜食、消費種類廣泛", "percent": "22", "bgColor": "#f6e206" },
+                { "id": "g4", "name": "鮟鱇魚", "info": "潛在消費者", "percent": "55", "bgColor": "#8f82bc" },
+                { "id": "g5", "name": "鮪魚", "info": "經濟價值高", "percent": "40", "bgColor": "#b3d465" },
+                { "id": "g6", "name": "鯊魚", "info": "消費兇猛、追求速度", "percent": "31", "bgColor": "#a09f9f" },
+                { "id": "g7", "name": "鯨魚", "info": "消費量大", "percent": "3", "bgColor": "#3e95de" }
             ],
             basic: "",
         }
@@ -101,11 +101,11 @@ class AnalyticPortrait extends Component {
                                     <div className="small">
                                         網站核心用戶
                                     </div>
-                                    { fishType ? <div className="title">
+                                    {fishType ? <div className="title">
                                         {this.state.fish.find((item) => item.id === fishType).name}
                                         <span> {this.state.fish.find((item) => item.id === fishType).info}</span>
                                     </div> : <span />}
-                                    
+
                                     <div className="detail">
                                         <div className="small">
                                             詳細指標
@@ -122,7 +122,7 @@ class AnalyticPortrait extends Component {
                                                         <span> {item.info ? `(${item.info})` : ""}</span>
                                                     </div>
                                                 </li>
-                                            ): <li />}
+                                            ) : <li />}
 
                                         </ul>
                                     </div>
@@ -141,9 +141,35 @@ class AnalyticPortrait extends Component {
                                                 />
                                                 <div className="title">{item.name}</div>
                                             </li>
-                                        ): <li />}
+                                        ) : <li />}
                                     </ul>
                                 </div>
+                            </div>
+                            <div className="box">
+                            
+                                <div style={{display: "flex", alignItem: "center", justifyContent:"center"}}>
+                                <h3 className="no_border inline">用戶分佈</h3>
+                                <ul className="icons">
+                                    {this.state.fish.map((item, i) =>
+                                        <li key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss"  : null}>     
+                                            <CircularProgressbarWithChildren value={item.percent} strokeWidth='8'
+                                                    styles={buildStyles({
+                                                        pathColor: `${item.bgColor}`,
+                                                        textColor: '#333',
+                                                        trailColor: '#dedede'
+                                                    })}
+                                                >                              
+                                            <div className={item.id + " icon"}></div>
+                                            </CircularProgressbarWithChildren>
+                                            <div style={{marginTop: "3px"}}>{item.percent}%</div>
+                                        
+                                        </li>
+                                    )}
+
+                                </ul>
+                                </div>
+                                
+
                             </div>
 
                             <div className="row">

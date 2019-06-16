@@ -16,7 +16,7 @@ $chartBlue2: #15e5f8;
     min-height: 100vh;
     background-color: $glay !important;
 }
-ul {padding: 0}
+ul {padding: 0;}
 li {list-style: none;}
 .main_analytic {
     margin-top: 30px;
@@ -35,7 +35,10 @@ li {list-style: none;}
             border-bottom: 1px solid $dark2; 
             &.no_border {
                 border: 0;
-            }           
+            }  
+            &.inline{
+                display: inline-block;
+            }         
         }
         .box {
             margin: 20px 0 0;
@@ -49,19 +52,52 @@ li {list-style: none;}
                     font-size: 15px;
                 }
             }
+            .icons {
+                margin: 0;
+                width: calc( 100% - 80px);
+                display: flex;
+                justify-content: center;
+                align-items:center;
+            }
             .icon_box{
                 width: 125px;
+                height: 125px;
                 margin: 15px 35px 10px 20px;
                 text-align: center;
                 float: left;
+                
+                &.ss {
+                    width: 60px;
+                    height: 60px;
+                    margin: 0 10px 20px;
+                    font-size: 13px;
+                    transition: .3s all;
+                    cursor: pointer;
+                    &.now {
+                        width: 90px;
+                        height: 90px;
+                        &:hover {
+                            width: 90px;
+                            height: 90px;;
+                        }
+                    }
+                    &:hover {
+                        width: 70px;
+                        height: 70px;;
+                    }
+                    
+                    .icon {
+                        background-color: rgba(0,0,0,0) !important;
+                        background-size: 50%;
+                    }
+                }
                 .icon {
-                    width: 125px;
-                    height: 125px;
+                    width: 100%;
+                    height: 100%;
                     background-repeat: no-repeat;
                     background-position: center center;
                     background-size: 65%;
                     border-radius: 100px;
-                    margin-bottom: 5px;
                     &.g1 {
                         background-color: #f19ec2;
                         background-image: url(./images/group1.png);
@@ -175,6 +211,38 @@ li {list-style: none;}
                         float: right;
                         width: 20%;
                         text-align: right;
+                    }
+                }
+            }
+
+            .circles {
+                li {
+                    background-color: $blue2;
+                    display: inline-flex;
+                    border-radius: 150px;
+                    width: 80px;
+                    height: 80px;
+                    justify-content:center;
+                    align-items: center;
+                    margin: 15px;
+                    flex-wrap:wrap;
+                    &.size5 {
+                        width: 200px;
+                        height: 200px;
+                    }
+                    &.size4 {
+                        width: 170px;
+                        height: 170px;
+                    }
+                    &.size3 {
+                        width: 150px;
+                        height: 150px;
+                    }
+                    &.size2 {
+                        width: 120px;
+                        height: 120px;
+                    }
+                    &.size1 {
                     }
                 }
             }
