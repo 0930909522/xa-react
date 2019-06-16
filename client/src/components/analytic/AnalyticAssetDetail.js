@@ -21,8 +21,8 @@ class AnalyticAssetDetail extends Component {
     getDataFromDb = () => {
         var assetId = this.props.assetId;
         var categoryId = this.props.categoryId;
-        console.log("assetId", assetId);
-        console.log("categoryId", categoryId);
+        //console.log("assetId", assetId);
+        //console.log("categoryId", categoryId);
 
         // axios.get('/datas/analyticAssetDetail.json')
         axios.get('http://r.xnet.world/demo/analyticAssetDetail/'+ assetId +'/'+ categoryId +'.json')
@@ -68,7 +68,7 @@ class AnalyticAssetDetail extends Component {
                 {pieChart.map((item, i) => <li key={i}><span className="dot" style={{ backgroundColor: item.color }}></span> {item.name}</li>)}
               </ul> : <span />} 
 
-              {console.log("gg", lineChart)}            
+              {/* {console.log("gg", lineChart)}             */}
             </div>
             {
               this.state.basic ? <PieChart width={300} height={200} onMouseEnter={this.onPieEnter}>

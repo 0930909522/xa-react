@@ -9,16 +9,16 @@ class NavLeft extends Component {
     return (
       <div className="layout_left">
         <div className="box_logo">
-          <div className="logo"></div>
+          <div className="logo" style={{backgroundImage: "url('./logo.png')"}}></div>
         </div>
-        <h2><span style={{fontSize:"20px"}}>今周刊</span> 數據分析 </h2>
+        <h2><span style={{fontSize:"20px"}}>食力</span> 數據分析 </h2>
         <ul className="nav_left">
-          <li> <IoIosDocument /> <Link to="/general">訪客總覽</Link></li>
+          {/* <li> <IoIosDocument /> <Link to="/general">訪客總覽</Link></li> */}
+          <li> <IoIosPeople /> <Link to="/portrait">用戶畫像</Link></li>
+          <li> <IoIosPeople /> <Link to="/asset_rise">資產價值</Link></li>
           <li> <IoIosArchive /> <Link to="/source">流量來源</Link></li>
           <li> <IoIosPeople /> <Link to="/hot">熱門頁面</Link></li>
           <li> <IoIosPeople /> <Link to="/interaction">互動指標</Link></li>
-          <li> <IoIosPeople /> <Link to="/asset_rise">資產價值</Link></li>
-          <li> <IoIosPeople /> <Link to="/portrait">用戶畫像</Link></li>
           <li> <IoIosPeople /> <Link to="/group">用戶分群</Link></li>
         </ul>
       </div>

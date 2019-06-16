@@ -3,9 +3,9 @@ import axios from 'axios';
 import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
-import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
+import { Container, Row, Nav, Navbar, Form, FormControl, Button, OverlayTrigger, Tooltip, Popover } from 'react-bootstrap';
 import { CircularProgressbar, buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import { PieChart, Pie, Cell, LineChart, Line, Tooltip, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
+import { PieChart, Pie, Cell, LineChart, Line, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
 
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -84,6 +84,11 @@ class AnalyticPortrait extends Component {
             </>
         );
 
+        const popover = (
+            <Popover id="popover-basic" title="Popover right">
+                And here's some <strong>amazing</strong> content. It's very engaging. right?
+            </Popover>
+        );
         return (<>
             <Header />
             <div className="layout_main">
@@ -95,7 +100,6 @@ class AnalyticPortrait extends Component {
                             <div className="box">
                                 <div className="icon_box">
                                     <div className={fishType + " icon"}  ></div>
-
                                 </div>
                                 <div className="info">
                                     <div className="small">
@@ -105,12 +109,10 @@ class AnalyticPortrait extends Component {
                                         {this.state.fish.find((item) => item.id === fishType).name}
                                         <span> {this.state.fish.find((item) => item.id === fishType).info}</span>
                                     </div> : <span />}
-
                                     <div className="detail">
                                         <div className="small">
                                             詳細指標
                                         </div>
-
                                         <ul>
                                             {detail ? detail.map((item, i) =>
                                                 <li key={i}>
@@ -146,29 +148,39 @@ class AnalyticPortrait extends Component {
                                 </div>
                             </div>
                             <div className="box">
-                            
-                                <div style={{display: "flex", alignItem: "center", justifyContent:"center"}}>
-                                <h3 className="no_border inline">用戶分佈</h3>
-                                <ul className="icons">
-                                    {this.state.fish.map((item, i) =>
-                                        <li key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss"  : null}>     
-                                            <CircularProgressbarWithChildren value={item.percent} strokeWidth='8'
+
+                                <div style={{ display: "flex", alignItem: "center", justifyContent: "center" }}>
+                                    <h3 className="no_border inline">用戶分佈</h3>
+                                    <ul className="icons">
+                                        {this.state.fish.map((item, i) =>
+
+
+
+    
+  
+                                            <li key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss" : null}>
+                                                
+                                                <CircularProgressbarWithChildren value={item.percent} strokeWidth='8'
                                                     styles={buildStyles({
                                                         pathColor: `${item.bgColor}`,
                                                         textColor: '#333',
                                                         trailColor: '#dedede'
                                                     })}
-                                                >                              
-                                            <div className={item.id + " icon"}></div>
-                                            </CircularProgressbarWithChildren>
-                                            <div style={{marginTop: "3px"}}>{item.percent}%</div>
-                                        
-                                        </li>
-                                    )}
+                                                >
+                                                    <OverlayTrigger trigger="hover" placement="right" overlay={<Popover title={item.name}> {item.info} </Popover>}>
+                                                    <div className={item.id + " icon"}></div>
+                                                    </OverlayTrigger>
+                                                </CircularProgressbarWithChildren>
+                                                
+                                                <div style={{ marginTop: "3px" }}>{item.percent}%</div>
+                                                
+                                            </li>
 
-                                </ul>
+                                        )}
+
+                                    </ul>
                                 </div>
-                                
+
 
                             </div>
 

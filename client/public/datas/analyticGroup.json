@@ -1,0 +1,334 @@
+{
+    "circles": [
+        {
+            "label": "財經",
+            "value": "52",
+            "count": "6400",
+            "color": "#0dbaca",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "222",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "體育",
+            "value": "45",
+            "count": "6400",
+            "color": "#788c8b",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "222",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "料理",
+            "value": "36",
+            "count": "6400",
+            "color": "#d7d5c9",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "222",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "餐廳",
+            "value": "35",
+            "count": "6400",
+            "color": "#abc8c6",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "222",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "教育",
+            "value": "23",
+            "count": "6400",
+            "color": "#0dbaca",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "222",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "財經",
+            "value": "19",
+            "count": "6400",
+            "color": "#067795",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "財經",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "政治",
+            "value": "15",
+            "count": "6400",
+            "color": "#fe7841",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "政治",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "八卦",
+            "value": "10",
+            "count": "6400",
+            "color": "#fe7841",
+            "aticles": [
+                {
+                    "title": "1全民退休投資專案7月底啟動，這兩種人最適合11",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "222",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "園藝",
+            "value": "10",
+            "count": "6400",
+            "color": "#788c8b",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "222",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        },
+        {
+            "label": "漫畫",
+            "value": "5",
+            "count": "6400",
+            "color": "#067795",
+            "aticles": [
+                {
+                    "title": "全民退休投資專案7月底啟動，這兩種人最適合",
+                    "count": "5555",
+                    "link": ""
+                },
+                {
+                    "title": "222",
+                    "count": "4444",
+                    "link": ""
+                },
+                {
+                    "title": "333",
+                    "count": "3333",
+                    "link": ""
+                },
+                {
+                    "title": "444",
+                    "count": "2222",
+                    "link": ""
+                },
+                {
+                    "title": "555",
+                    "count": "1111",
+                    "link": ""
+                }
+            ]
+        }
+    ]
+}

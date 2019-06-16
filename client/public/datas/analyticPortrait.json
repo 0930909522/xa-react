@@ -23,9 +23,9 @@
         }
     ],
     "barInfo": [
-        { "id": "", "name": "訊息A", "percent": "30", "bgColor": "#fe5660" },
-        { "id": "", "name": "訊息B", "percent": "50", "bgColor": "#24ccb8" },
-        { "id": "", "name": "訊息C", "percent": "60", "bgColor": "#2e6eff" }
+        { "id": "", "name": "停留時間", "percent": "30", "bgColor": "#fe5660" },
+        { "id": "", "name": "造訪頻率", "percent": "50", "bgColor": "#24ccb8" },
+        { "id": "", "name": "完整閱讀", "percent": "60", "bgColor": "#2e6eff" }
     ],
     "articles": [
         { "name": "全民退休投資專案7月底啟動，這兩種人最適合", "count": 52 },

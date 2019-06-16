@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <div className="all">
         <Router>
-        <Route exact path="/" component={Home} /> 
+          <Route exact path="/" component={AnalyticPortrait} /> 
           {/* 訪客總覽 */}
           <Route path="/general" component={AnalyticGeneral} /> 
           {/* 流料來源 */}

@@ -46,6 +46,11 @@ class AnalyticAsset extends Component {
       listIndex: i
     });
   }
+  goDetail = (id) => {
+    console.log("id", id);
+    this.setState({ categoryId: id });
+    this.openPopup()
+  }
 
   openPopup = () => {
     this.setState(prev => ({ isDetail: !prev.isDetail }));
@@ -90,7 +95,7 @@ class AnalyticAsset extends Component {
               dataKey="value"
             >
               {
-                proportion.map((item, i) => <Cell onClick={() => this.setState({ categoryId: item.id })} key={i} fill={item.color} />)
+                proportion.map((item, i) => <Cell onClick={() => this.goDetail(item.id) } key={i} fill={item.color} />)
               }
             </Pie>
           </PieChart> : <span />
@@ -144,7 +149,7 @@ class AnalyticAsset extends Component {
                 <div className="box">
                   <h3>分類占比</h3>
                   <div className="chart_box">
-                    <div className="chart" onClick={() => this.openPopup()}>
+                    <div className="chart">
                       {renderProportion}
                     </div>
                   </div>
