@@ -134,10 +134,12 @@ class AnalyticPortrait extends Component {
                                     <ul>
                                         {barInfo ? barInfo.map((item, i) =>
                                             <li key={i}>
-                                                <CircularProgressbar value={item.percent} text={`${item.percent}%`} strokeWidth='11'
+                                                {/* <CircularProgressbar value={item.percent} text={`${item.percent}%`} strokeWidth='11' */}
+                                                <CircularProgressbar value={item.percent} text={item.show} strokeWidth='11'
                                                     styles={buildStyles({
                                                         pathColor: `${item.bgColor}`,
-                                                        textColor: '#333',
+                                                        textColor: '#aaa',
+                                                        textSize: '30px',
                                                         trailColor: '#dedede'
                                                     })}
                                                 />
