@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { IoIosPeople , IoIosDocument, IoIosArchive} from 'react-icons/io';
+import { IoIosPeople , IoMdContact, IoMdContacts} from 'react-icons/io';
+import { GoRuby , GoDesktopDownload, GoBookmark} from 'react-icons/go';
+import { FaHandshake } from 'react-icons/fa';
 
 class NavLeft extends Component {
   state = {}
@@ -13,13 +15,13 @@ class NavLeft extends Component {
         </div>
         <h2><span style={{fontSize:"20px"}}>食力</span> 數據分析 </h2>
         <ul className="nav_left">
-          {/* <li> <IoIosDocument /> <Link to="/general">訪客總覽</Link></li> */}
-          <li> <IoIosPeople /> <Link to="/portrait">用戶畫像</Link></li>
-          <li> <IoIosPeople /> <Link to="/asset_rise">資產價值</Link></li>
-          <li> <IoIosArchive /> <Link to="/source">流量來源</Link></li>
-          <li> <IoIosPeople /> <Link to="/hot">熱門頁面</Link></li>
-          <li> <IoIosPeople /> <Link to="/interaction">互動指標</Link></li>
-          <li> <IoIosPeople /> <Link to="/group">用戶分群</Link></li>
+          {/* <li> <FaFileAlt /> <Link to="/general">訪客總覽</Link></li> */}
+          <li> <IoMdContact /> <Link to="/portrait">用戶畫像</Link></li>
+          <li> <GoRuby /> <Link to="/asset_rise">資產價值</Link></li>
+          <li> <GoDesktopDownload /> <Link to="/source">流量來源</Link></li>
+          <li> <GoBookmark /> <Link to="/hot">熱門頁面</Link></li>
+          <li> <IoMdContacts /> <Link to="/group">用戶分群</Link></li>
+          <li> <FaHandshake /> <Link to="/interaction">互動指標</Link></li>
         </ul>
       </div>
     );

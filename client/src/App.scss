@@ -338,6 +338,7 @@ li {list-style: none;}
                     width: calc( 100% - 420px);
                     .cont { 
                         padding: 5px 20px;
+                        justify-content: flex-start
                     }
                 }
                 .head {
@@ -352,6 +353,10 @@ li {list-style: none;}
                     background-color: $dark3;
                     color: $dark;
                     border-bottom: 1px solid #fff;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 55px;
                     span {
                         font-size: 12px;
                     }

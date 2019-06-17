@@ -112,7 +112,7 @@ class AnalyticGroup extends Component {
                                                 offsetY: -0.01,
                                             }}
                                             width={900}
-                                            height={900}
+                                            height={800}
                                             padding={8} // optional value, number that set the padding between bubbles
                                             showLegend={true} // optional value, pass false to disable the legend.
                                             legendPercentage={20} // number that represent the % of with that legend going to use.

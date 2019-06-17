@@ -19,8 +19,8 @@ class AnalyticGroup extends Component {
     }
 
     getDataFromDb = () => {
-        // axios.get('/datas/analyticAsset.json')
-        axios.get('/datas/analyticHot.json')
+        // axios.get('/datas/analyticHot.json')
+        axios.get('http://r.xnet.world/demo/hotPages.json')
             .then(response => {
                 this.setState({
                     basic: response.data,
