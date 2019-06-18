@@ -4,6 +4,7 @@ import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
 import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
+import BubbleChart from '@weknow/react-bubble-chart-d3';
 
 class AnalyticGroup extends Component {
     constructor(props) {
@@ -12,6 +13,45 @@ class AnalyticGroup extends Component {
             now: "",
             isDetail: false,
             basic: "",
+            keywords: [
+                { label: "健康", value: "6" },
+                { label: "健康", value: "5" },
+                { label: "健康", value: "3" },
+                { label: "健康", value: "3" },
+                { label: "健康", value: "2" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+                { label: "健康", value: "1" },
+            ]
         }
     }
     componentDidMount() {
@@ -44,10 +84,52 @@ class AnalyticGroup extends Component {
 
                                 <div className="detail">
 
-                                    <select style={{marginBottom: "5px"}}>
-                                        {this.state.basic ? this.state.basic.interval.map(
-                                            (item, index) => <option key={index} value={index}>{item.name}</option>) : ""}
-                                    </select>
+
+
+                                    <h3>熱門頁面關鍵字</h3>
+                                    {this.state.keywords ?
+                                        <div className="chart_box">
+                                            <BubbleChart
+                                                graph={{
+                                                    zoom: 1.1,
+                                                    offsetX: -0.05,
+                                                    offsetY: -0.01,
+                                                }}
+                                                width={600}
+                                                height={630}
+                                                padding={8} // optional value, number that set the padding between bubbles
+                                                showLegend={false} // optional value, pass false to disable the legend.
+                                                legendPercentage={20} // number that represent the % of with that legend going to use.
+                                                legendFont={{
+                                                    family: 'Arial',
+                                                    size: 15,
+                                                    color: '#000',
+                                                    weight: 'normal',
+                                                }}
+                                                valueFont={{
+                                                    family: 'Arial',
+                                                    size: 0,
+                                                    color: '#fff',
+                                                    weight: 'normal',
+                                                }}
+                                                labelFont={{
+                                                    family: 'Arial',
+                                                    size: 15,
+                                                    color: '#fff',
+                                                    weight: 'normal',
+                                                    padding: '10px'
+                                                }}
+                                                //Custom bubble/legend click functions such as searching using the label, redirecting to other page
+                                                bubbleClickFun={this.bubbleClick}
+                                                legendClickFun={this.legendClick}
+                                                data={this.state.keywords}
+                                            />
+                                        </div>
+                                        : <span />}
+
+
+                                    <h3>熱門頁面排行 </h3>
+
 
                                     <ul>
                                         {this.state.basic ? this.state.basic.detail.map((item, i) =>

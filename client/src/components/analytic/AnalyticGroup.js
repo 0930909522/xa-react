@@ -14,6 +14,7 @@ class AnalyticGroup extends Component {
             now: "",
             isDetail: false,
             circles: "",
+            newCircles: ""
         }
     }
 
@@ -22,10 +23,15 @@ class AnalyticGroup extends Component {
     }
 
     getDataFromDb = () => {
-        axios.get('/datas/analyticGroup.json')
+        axios.get('http://r.xnet.world/demo/analyticGroup.json')
             .then(response => {
+                let circles = response.data.circles;
+                let newCircles = JSON.stringify(circles);
+                newCircles = JSON.parse(newCircles);
+                newCircles.map((item, i) => item.value = item.value < 3 ? 3: item.value  );
                 this.setState({
-                    circles: response.data.circles
+                    circles: circles,
+                    newCircles: newCircles,
                 });
             })
             .catch(function (error) {
@@ -83,7 +89,7 @@ class AnalyticGroup extends Component {
                                                         觀看次數
                                                 </div>
                                                 </li>
-                                                {this.state.circles[this.state.now].aticles.map((item, i) =>
+                                                {this.state.circles[this.state.now].articles.map((item, i) =>
                                                     <li key={i}>
                                                         <div className="left">
                                                             {item.title}
@@ -130,7 +136,7 @@ class AnalyticGroup extends Component {
                                             }}
                                             labelFont={{
                                                 family: 'Arial',
-                                                size: 20,
+                                                size: 18,
                                                 color: '#fff',
                                                 weight: 'normal',
                                                 padding: '10px'
@@ -138,7 +144,7 @@ class AnalyticGroup extends Component {
                                             //Custom bubble/legend click functions such as searching using the label, redirecting to other page
                                             bubbleClickFun={this.bubbleClick}
                                             legendClickFun={this.legendClick}
-                                            data={this.state.circles}
+                                            data={this.state.newCircles}
                                         />
 
                                     </div>

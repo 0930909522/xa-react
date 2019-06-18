@@ -42,7 +42,6 @@ class AnalyticGroup extends Component {
                         <div className="main_right">
                             <h2>互動指標</h2>
                             <div className="box">
-
                                 {this.state.circles ?
                                     <div className="chart_box">
                                         <BubbleChart
@@ -80,13 +79,8 @@ class AnalyticGroup extends Component {
                                             legendClickFun={this.legendClick}
                                             data={this.state.circles}
                                         />
-
                                     </div>
                                     : <span />}
-
-
-
-
                             </div>
                         </div>
                     </Row>

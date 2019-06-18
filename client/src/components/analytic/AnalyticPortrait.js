@@ -29,8 +29,9 @@ class AnalyticPortrait extends Component {
         this.getDataFromDb();
     }
 
-    getDataFromDb = () => {
-        axios.get('/datas/analyticPortrait.json')
+    getDataFromDb = (id) => {
+        const url = id ? "http://r.xnet.world/demo/analyticProtrait/" + id + ".json" : "datas/analyticPortrait.json"
+        axios.get(url)
             .then(response => {
                 this.setState({
                     basic: response.data
@@ -40,6 +41,11 @@ class AnalyticPortrait extends Component {
                 console.log(error);
             });
     };
+
+    changeFish = (id) => {
+        this.getDataFromDb(id);
+        //console.log(id)
+    }
 
     render() {
         const { fishType, articles, proportion, detail, barInfo } = this.state.basic;
@@ -156,11 +162,7 @@ class AnalyticPortrait extends Component {
                                     <ul className="icons">
                                         {this.state.fish.map((item, i) =>
 
-
-
-    
-  
-                                            <li key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss" : null}>
+                                            <li onClick={()=>this.changeFish(item.id)} key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss" : null}>
                                                 
                                                 <CircularProgressbarWithChildren value={item.percent} strokeWidth='8'
                                                     styles={buildStyles({
