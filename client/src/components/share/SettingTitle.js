@@ -2,7 +2,7 @@ import React from 'react';
 
 const SettingTitle = props => {
     return (
-        <div className="box">
+        <div className="box radius10 px-5 d-flex justify-content-around">
             <span className={props.one && 'selected_text'}>設定追蹤碼</span>
             <span>&nbsp;｜&nbsp;</span>
             <span className={props.two && 'selected_text'}>修改設定</span>

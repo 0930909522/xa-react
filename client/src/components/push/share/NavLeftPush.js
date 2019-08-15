@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { IoIosPeople , IoMdContact, IoMdContacts} from 'react-icons/io';
-import { GoRuby , GoBookmark} from 'react-icons/go';
+import { BrowserRouter as Link } from 'react-router-dom';
+// import { IoIosPeople , IoMdContact, IoMdContacts} from 'react-icons/io';
+// import { GoRuby , GoBookmark} from 'react-icons/go';
 import { FaCode, FaTools } from 'react-icons/fa';
 import {IoIosSettings} from 'react-icons/io';
 

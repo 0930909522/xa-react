@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './App.scss'; 
 import './style.scss';
 // import axios from 'axios';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route} from 'react-router-dom';
 // import Home from './components/Main';
 import AnalyticGeneral from './components/analytic/AnalyticGeneral';
 import AnalyticSource from './components/analytic/AnalyticSource';
@@ -71,33 +71,33 @@ class App extends Component {
           {/* 推播 */}
           <Route exact path="/push" component={Push} />
           {/* 推播 主題活動-新增 */}
-          <Route path="/push/add" component={ActivityNew} />
+          {/* <Route path="/push/add" component={ActivityNew} /> */}
           {/* 推播 主題活動-修改廣告 */}
-          <Route path="/push/modify" component={ActivityModify} />
+          {/* <Route path="/push/modify" component={ActivityModify} /> */}
           {/* 推播 主題活動-已建立 */}
           <Route path="/push/built" component={ActivityBuilt} />
           {/* 推播 專題報導-新增 */}
-          <Route path="/push/reportAdd" component={SegmentReportNew} />
+          {/* <Route path="/push/reportAdd" component={SegmentReportNew} /> */}
           {/* 推播 專題報導-已建立 */}
-          <Route path="/push/reportBuilt" component={SegmentReportBuilt} />
+          {/* <Route path="/push/reportBuilt" component={SegmentReportBuilt} /> */}
           {/* 推播 推薦商品 */}
           <Route path="/push/recoProduct" component={RecoProduct} />
           {/* 推播 推薦商品-已建立 */}
-          <Route path="/push/recoProductBuilt" component={RecoProductBuilt} />
+          {/* <Route path="/push/recoProductBuilt" component={RecoProductBuilt} /> */}
           {/* 推播 熱門商品 */}
           <Route path="/push/hotItem" component={HotItems} />
           {/* 推播 熱門商品-已建立 */}
-          <Route path="/push/hotItemBuilt" component={HotItemsBuilt} />
+          {/* <Route path="/push/hotItemBuilt" component={HotItemsBuilt} /> */}
           {/* 推播 選擇電商平台 */}
           <Route path="/push/businessPlaform" component={BusinessPlaform} />
           {/* 推播 推薦文章 */}
           <Route path="/push/recoArticle" component={RecoArticle} />
           {/* 推播 推薦文章-已建立 */}
-          <Route path="/push/recoArticleBuilt" component={RecoArticleBuilt} />
+          {/* <Route path="/push/recoArticleBuilt" component={RecoArticleBuilt} /> */}
           {/* 推播 熱門文章 */}
           <Route path="/push/popularArticle" component={PopularArticle} />
           {/* 推播 熱門文章-已建立 */}
-          <Route path="/push/popularArticleBuilt" component={PopularArticleBuilt} />
+          {/* <Route path="/push/popularArticleBuilt" component={PopularArticleBuilt} /> */}
           {/* 推播 選擇媒體平台 */}
           <Route path="/push/mediaPlaform" component={MediaPlaform} />
           {/* 推播 黑名單 */}

@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from "react-bootstrap";
 import Header from "../Header";
+import Footer from '../Footer';
 import MemberCentreTitle from '../share/MemberCentreTitle';
 import NavLeftMember from '../share/NavLeftMember';
 import MemberCard from '../share/MemberCard';
-import { FaRegCreditCard, FaAngleDown, FaArrowCircleDown, FaAngleUp, FaArrowCircleUp } from "react-icons/fa";
+import { FaRegCreditCard, FaAngleDown, FaCheck, FaAngleUp } from "react-icons/fa";
 
 
 class Billing extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            showPayData: true,
             payState: 0,
-            showMoreCard: false,
-            sent: false
+            // showMoreCard: false,
+            sent: false,
+
         }
     }
     choosePayState = (num) => {
@@ -23,50 +26,58 @@ class Billing extends Component {
         }
         this.setState({ payState: newNum });
     }
+    togglePayData = () => {
+        this.setState({ showPayData: !this.state.showPayData });
+    }
     render() {
         return (
-            <div>
+            <>
                 <Header />
-                <div className="w-100 bg_gray">
-                    <div className="box w-75 mx-auto bg-white my-5">
-                        <h5 className="bg-secondary p-2 text-white">
-                            {(this.state.sent === false)?"付款":"OK" }
-                            <button className="float-right mr-2 btn_noborder_r text-white">X</button>
-                        </h5>
-                        <div className={(this.state.sent === false)?"p-5 scrollY h-65v m-1": "d-none"}>
-                            <h5 className="my-3 btn_like" onClick={() => this.choosePayState(1)}>匯款{this.state.payState === 1 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}</h5>
+                <div className={(!this.state.showPayData && 'd-none ') + 'w-100 bg_gray'}>
+                    <div className="box w-75 mx-auto bg-white my-5 radius10">
+                        <h4 className="bg-warning py-3 pl-4 pr-2 text-white d-flex justify-content-between">
+                            {(this.state.sent === false) ? <span>付款</span> : <span>OK</span>}
+                            <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.togglePayData}>&#10006;</button>
+                        </h4>
+                        <div className={(this.state.sent === false) ? "p-5 scrollY h-50v m-1" : "d-none"}>
+                            <h4 className="mb-5 p-4 btn_like bg-light radius10" onClick={() => this.choosePayState(1)}>
+                                <span className="text-primary">匯款</span>
+                                {this.state.payState === 1 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}
+                            </h4>
                             <div className={this.state.payState === 1 ? 'd-block' : 'd-none'}>
-                                <hr className="dash_line" />
+                                <hr />
                                 <p>
-                                    匯款帳號
+                                    <strong className="font_20 d-block">匯款帳號</strong>
                                     <br />戶名：智媒科技股份有限公司
                                     <br />第一銀行 安和分行
-                                    <br />銀行代碼：007、分行代碼：9804
+                                    <br />銀行代碼：007
+                                    <br />分行代碼：9804
                                     <br />帳號：09410129811
                                 </p>
-                                <label className="w-100">匯款日期<input className="d-block w-100 my-2 pl-1" /></label>
-                                <label className="w-100">匯款戶名<input className="d-block w-100 my-2 pl-1" /></label>
-                                <label className="w-100">匯款銀行代號<input className="d-block w-100 my-2 pl-1" /></label>
-                                <label className="w-100">匯款資訊(匯款金額+匯款帳號末五碼)<input className="d-block w-100 my-2" /></label>
-                                <button className="d-block mx-auto mt-3 btn btn-info">通知已付款</button>
-                                <hr className="dash_line" />
+                                <label className="w-100 font_20">匯款日期<input className="d-block my-2 input_1" /></label>
+                                <label className="w-100 font_20">匯款戶名<input className="d-block my-2 input_1" /></label>
+                                <label className="w-100 font_20">匯款銀行代號<input className="d-block my-2 input_1" /></label>
+                                <label className="w-100 font_20">匯款資訊(匯款金額+匯款帳號末五碼)<input className="d-block my-2 input_1" /></label>
+                                <button className="d-block mx-auto mt-3 btn btn-outline-primary w-75 radius20 font_20">通知已付款</button>
                             </div>
-                            <h5 className="my-3 btn_like" onClick={() => this.choosePayState(2)}>開立即期支票{this.state.payState === 2 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}</h5>
+                            <h4 className="my-5 p-4 btn_like bg-light radius10" onClick={() => this.choosePayState(2)}>
+                                <span className="text-primary">開立即期支票</span>
+                                {this.state.payState === 2 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}
+                            </h4>
                             <div className={this.state.payState === 2 ? 'd-block' : 'd-none'}>
-                                <hr className="dash_line" />
+                                <hr />
                                 <p>
-                                    開立即期支票掛號寄送至：
+                                    <strong className="font_20 d-block">開立即期支票掛號寄送至：</strong>
                                     <br />台北市中正區忠孝東路一段85號5樓
                                     <br />收 件 人：王大明先生
                                 </p>
-                                <label className="w-100">支票帳號<input className="d-block w-100 my-2 pl-1" /></label>
-                                <label className="w-100">支票號碼<input className="d-block w-100 my-2 pl-1" /></label>
-                                <label className="w-100">支票金額<input className="d-block w-100 my-2 pl-1" /></label>
-                                <label className="w-100">郵寄單號<input className="d-block w-100 my-2" /></label>
-                                <button className="d-block mx-auto mt-3 btn btn-info">通知已付款</button>
-                                <hr className="dash_line" />
+                                <label className="w-100 font_20">支票帳號<input className="d-block my-2 input_1" /></label>
+                                <label className="w-100 font_20">支票號碼<input className="d-block my-2 input_1" /></label>
+                                <label className="w-100 font_20">支票金額<input className="d-block my-2 input_1" /></label>
+                                <label className="w-100 font_20">郵寄單號<input className="d-block my-2 input_1" /></label>
+                                <button className="d-block mx-auto mt-3 btn btn-outline-primary w-75 radius20 font_20">通知已付款</button>
                             </div>
-                            <h5 className="my-3 btn_like" onClick={() => this.choosePayState(3)}>線上轉帳付款{this.state.payState === 3 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}</h5>
+                            {/* <h5 className="my-3 btn_like" onClick={() => this.choosePayState(3)}>線上轉帳付款{this.state.payState === 3 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}</h5>
                             <div className={this.state.payState === 3 ? 'd-block' : 'd-none'}>
                                 <hr className="dash_line" />
                                 <div className="w-90 mx-auto">
@@ -96,13 +107,16 @@ class Billing extends Component {
                                 </p>
                                 <button className="d-block mx-auto mt-3 btn btn-info">我要付款</button>
                                 <hr className="dash_line" />
-                            </div>
+                            </div> */}
                         </div>
-                        <div className={(this.state.sent === false)?"d-none": "p-5 m-1"}>
-                            <h5>
-                            感謝您 ~
-                            <br/>已經收到您通知已付款的訊息，資料核對無誤後會儘速為您儲值，謝謝。  
-                            </h5>
+                        <div className={(this.state.sent === false) ? "d-none" : "p-5 m-1 text-center"}>
+                        <div className="circle_sign my-4">
+                                    <FaCheck style={{ 'color': '#16C60C' }} />
+                                </div>
+                            <h4 className="text-primary">
+                                感謝您 ~
+                            <br />已經收到您通知已付款的訊息，<br />資料核對無誤後會儘速為您儲值，<br />謝謝！
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -112,12 +126,12 @@ class Billing extends Component {
                             <NavLeftMember three />
                             <div className="main_right">
                                 <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/ 帳單與儲值</span></h2>
-                                <MemberCentreTitle />
+                                <MemberCentreTitle two />
                                 <div className="cards">
                                     <MemberCard title="您的餘額" buttonName="儲值已付款">
                                         <h1>$7,640.00</h1>
                                     </MemberCard>
-                                    <MemberCard title="付款方式" buttonName="管理付款方式">
+                                    <MemberCard title="付款方式" buttonName="管理付款方式" handleClick={this.togglePayData}>
                                         <Row>
                                             <Col sm="4">
                                                 <FaRegCreditCard className="img_fluid1 pl-2" />
@@ -151,7 +165,8 @@ class Billing extends Component {
                         </Row>
                     </Container>
                 </div>
-            </div>
+                <Footer />
+            </>
         )
     }
 }

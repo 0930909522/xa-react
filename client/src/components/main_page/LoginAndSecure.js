@@ -5,6 +5,56 @@ import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
 
 class LoginAndSecure extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            editData: [true, true],
+            data: {
+                "nickname": "小明",
+                "email": "a123@gmail.com",
+                "company": "智媒",
+                "serviceType": "新媒體",
+                "job": "PM",
+                "data": [{
+                    "id": 1,
+                    "name": "美環",
+                    "email": "beautiful@gmail.com",
+                    "permission": "分析員"
+                }, {
+                    "id": 2,
+                    "name": "美環",
+                    "email": "beautiful@gmail.com",
+                    "permission": "分析員"
+                }]
+            },
+            temporaryData: null
+
+        };
+    }
+
+    componentDidMount() {
+        const addPsd = this.state.data;
+        addPsd.password = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+        this.setState({ data: addPsd });
+    }
+
+    changeBtn = (i, e) => {
+        const newEditData = this.state.editData;
+        if (newEditData[i] === false) {
+            this.setState({ data: this.state.temporaryData, temporaryData: null });
+        }
+        newEditData[i] = !newEditData[i];
+        this.setState({ editData: newEditData });
+    }
+    typeData = e => {
+        let newData = this.state.temporaryData;
+        if (newData === null) {
+            newData = this.state.data;
+        }
+        newData[e.target.id] = e.target.value;
+        this.setState({ temporaryData: newData });
+    }
+
     render() {
         return (
             <>
@@ -15,7 +65,20 @@ class LoginAndSecure extends Component {
                             <NavLeftMember two />
                             <div className="main_right">
                                 <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/登入與帳號安全</span></h2>
-                                <div className=" mt-20 bg-white">
+                                <div className=" mt-20">
+                                    <h4 className="text-primary">變更密碼</h4>
+                                    <hr />
+                                    <label htmlFor="password">密碼</label>
+                                    <input name="password" id="password" type="password" className="input_1 mb-3" defaultValue={this.state.data.password} readOnly={this.state.editData[0]} onChange={this.typeData} />
+                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={(e) => this.changeBtn(0, e)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button>
+
+                                    <h4 className="text-primary mt-5">邀請帳戶存取權</h4>
+                                    <hr />
+                                    <label htmlFor="email">電子郵件信箱</label>
+                                    <input name="email" id="email" type="email" className="input_1 mb-3" defaultValue={this.state.data.email} readOnly={this.state.editData[1]} onChange={this.typeData} />
+                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={(e) => this.changeBtn(1, e)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button>
+                                </div>
+                                {/* <div className=" mt-20 bg-white">
                                     <table className="w-100 dash_table">
                                         <tbody>
                                             <tr className="d-table-row bg-light">
@@ -86,8 +149,7 @@ class LoginAndSecure extends Component {
                                             </tr>
                                         </tbody>
                                     </table>
-
-                                </div>
+                                </div> */}
                             </div>
 
                         </Row>

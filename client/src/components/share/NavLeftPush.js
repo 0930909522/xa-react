@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {Link } from 'react-router-dom';
 import { FaCode, FaTools } from 'react-icons/fa';
 import {IoIosSettings} from 'react-icons/io';
 
@@ -13,9 +13,9 @@ class NavLeft extends Component {
         </div>
         <h2><span style={{fontSize:"20px"}}>今周刊</span> 數據分析 </h2>
         <ul className="nav_left">
-          <li> <FaCode /> <Link to="/portrait">安裝追蹤碼</Link></li>
-          <li> <IoIosSettings /> <Link to="/asset_rise">推播設定</Link></li>
-          <li> <FaTools /> <Link to="/asset_rise">推播安裝</Link></li>
+          <li className={this.props.one && 'selected_text'}> <FaCode /> <Link to="/trackingCode/setting" className="dec_none btn_like">安裝追蹤碼</Link></li>
+          <li className={this.props.two && 'selected_text'}> <IoIosSettings /> <Link to="/asset_rise" className="dec_none btn_like">推播設定</Link></li>
+          <li className={this.props.three && 'selected_text'}> <FaTools /> <Link to="/asset_rise" className="dec_none btn_like">推播安裝</Link></li>
         </ul>
       </div>
     );

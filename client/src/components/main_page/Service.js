@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from "react-bootstrap";
 import Header from "../Header";
+import Footer from '../Footer';
 import MemberCentreTitle from '../share/MemberCentreTitle';
 import NavLeftMember from '../share/NavLeftMember';
 
@@ -8,47 +9,49 @@ class Service extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            payState: 0,
-            showMoreCard: false,
-            sent: 1
+            showData: false
         }
     }
-    choosePayState = (num) => {
-        let newNum = num;
-        if (num === this.state.payState) {
-            newNum = 0;
-        }
-        this.setState({ payState: newNum });
+    toggleShowData = () => {
+        this.setState({ showData: !this.state.showData });
     }
     render() {
         return (
-            <div>
+            <>
                 <Header />
-                <div className="w-100 bg_gray">
-                    <div className="box w-75 mx-auto bg-white my-5">
-                        <h5 className="bg-secondary p-2 text-white">
+                <div className={(!this.state.showData && 'd-none ') + 'w-100 bg_gray'}>
+                    <div className="box w-75 mx-auto bg-white my-5 radius10">
+                        <h4 className="bg-warning py-3 pl-4 pr-2 text-white d-flex justify-content-between">
                             更改你的會員方案
-                            <button className="float-right mr-2 btn_noborder_r text-white">X</button>
-                        </h5>
-                        <div className="p-3 mx-auto w-75">
+                            <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.toggleShowData}>&#10006;</button>
+                        </h4>
+                        <div className="p-3 mx-auto w-100 scrollY h-50v ">
                             <Row>
                                 <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">付費會員</h2></Col>
                                 <Col sm={6}>
-                                    <div className="my-3"><button className="btn btn-outline-dark px-5 py-2" disabled>月繳</button><span className="ml-3 text-secondary">8000 ~ 1.5萬 / 月</span></div>
-                                    <div className="my-3"><button className="btn btn-outline-dark px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div>
-                                    <div className="my-3"><button className="btn btn-outline-dark px-5 py-2">年繳</button><span className="ml-3">25 ~ 30萬 / 年</span></div>
+                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">月繳</button><span className="ml-3">8000 ~ 1.5萬 / 月</span></div>
+                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div>
+                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">年繳</button><span className="ml-3">25 ~ 30萬 / 年</span></div>
                                 </Col>
+
                             </Row>
+                            <div className="mt-2 text-secondary text-center">
+                                <h5>廣告推播付費功能：曝光數：30元/百次點擊數：25元/次</h5>
+                                <h5>廣告曝光收益：曝光數：6元/百次點擊數：5元/次</h5>
+                            </div>
                             <hr className="dash_line" />
                             <Row>
                                 <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">VIP會員</h2></Col>
                                 <Col sm={6}>
-                                    <div className="my-3"><button className="btn btn-outline-dark px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div>
-                                    <div className="my-3"><button className="btn btn-outline-dark px-5 py-2">年繳</button><span className="ml-3">25 ~ 30萬 / 年</span></div>
+                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div>
+                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">年繳</button><span className="ml-3">25 ~ 30萬 / 年</span></div>
                                 </Col>
                             </Row>
+                            <div className="mt-2 text-secondary text-center">
+                            <h5>廣告推播付費功能：<br/><span>1.無限智能配對推播曝光次數<br/>2.保證點擊1000次/月</span></h5><h5>廣告曝光收益：曝光數：6元/百次點擊數：5元/次</h5>
+                            </div>
                             <div className="text-center my-4">
-                                <button className="btn btn-info p-3">我要更改方案，請聯絡我</button>
+                                <button className="btn btn-outline-primary w-75 p-2 font_20 radius20">我要更改方案，請聯絡我</button>
                             </div>
                         </div>
                     </div>
@@ -67,7 +70,7 @@ class Service extends Component {
                                             <h5>會員方案期限：<span>2019年3月3日 ~ 2019年4月3日</span></h5>
                                         </Col>
                                         <Col sm={5} className="d-flex justify-content-end align-items-end">
-                                            <button className="btn btn-info p-2 mr-3">更改方案</button>
+                                            <button className="btn btn-info p-2 mr-3" onClick={this.toggleShowData}>更改方案</button>
                                         </Col>
                                     </Row>
                                 </Container>
@@ -134,7 +137,8 @@ class Service extends Component {
                         </Row>
                     </Container>
                 </div>
-            </div>
+                <Footer />
+            </>
         )
     }
 }

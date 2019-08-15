@@ -1,6 +1,9 @@
 $black: #000000;
 $gray: #bebebe;
+$placeholder: #757575;
 $blue: #4E82F7;
+$blue2: #0071bc;
+$orange: #f8b551;
 @mixin user-select() {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -11,8 +14,35 @@ html {
     background: #f3f3f3;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+button,
+label,
+li,
+th,
+td {
+    font-family: '微軟正黑體' !important;
+}
+
+.font_20 {
+    font-size: 20px;
+}
+
+button.font_20 {
+    font-size: 20px;
+}
+
 .selected_text {
     color: $blue;
+    a {
+        color: $blue;
+    }
 }
 
 .header_svg {
@@ -28,20 +58,14 @@ html {
     text-decoration: none;
 }
 
-.w-10{
-    width: 10%;
-}
-.w-90 {
-    width: 90%;
-}
-
-.h-65v{
-    height: 65vh;
+.radius10 {
+    border-radius: 10px;
 }
 
 .radius20 {
     border-radius: 20px;
 }
+
 button.radius20 {
     border-radius: 20px;
 }
@@ -56,8 +80,6 @@ button.radius20 {
     align-items: center;
     justify-content: center;
     background: rgba(110, 110, 110, 0.5);
-    // display: inline-block;
-    // min-height: 100%;
     z-index: 2;
     top: 0;
     bottom: 0;
@@ -65,11 +87,10 @@ button.radius20 {
     right: 0;
 }
 
-.bg_gray>.box{
+.bg_gray>.box {
     max-height: 75vh;
-
+    overflow: hidden;
 }
-
 
 .vertical_middle {
     vertical-align: middle;
@@ -77,6 +98,22 @@ button.radius20 {
 
 .vertical_top {
     vertical-align: top;
+}
+
+.weight600 {
+    font-weight: 600;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.w-90 {
+    width: 90%;
+}
+
+.h-50v {
+    height: 50vh;
 }
 
 .min_h_12em {
@@ -87,7 +124,8 @@ button.radius20 {
     height: 24rem;
     ;
 }
-.h-15em{
+
+.h-15em {
     height: 15rem;
 }
 
@@ -112,19 +150,17 @@ button.radius20 {
     overflow-y: auto;
 }
 
-.border_left {
-    border-left: 3px solid $gray;
-}
-
-.dash_line{
+.dash_line {
     border: none;
     border-bottom: 1px dashed;
 }
-.solid_line{
+
+.solid_line {
     border: none;
     border-bottom: 1px solid;
     outline: none;
 }
+
 
 /* The switch - the box around the slider */
 
@@ -284,11 +320,18 @@ button.radius20 {
     }
 }
 
-.dash_table{
-    .d-table-cell{
+.table_spec {
+    th {
+        border-top: $gray solid 1px;
+        border-bottom: $gray solid 1px;
+    }
+}
+
+.dash_table {
+    .d-table-cell {
         padding: 10px 0;
     }
-    .dash{
+    .dash {
         border-bottom: 0.5px $gray dashed;
     }
 }
@@ -308,7 +351,7 @@ button.radius20 {
     }
 }
 
-.card-item.card-transpareny{
+.card-item.card-transpareny {
     background: transparent;
     display: flex;
     align-items: center;
@@ -337,12 +380,6 @@ button.radius20 {
     }
 }
 
-.push_activity {
-    input {
-        border: solid 1px $gray;
-    }
-}
-
 .box_border {
     margin: 20px 0 0;
     padding: 15px;
@@ -360,18 +397,18 @@ button.radius20 {
     font-weight: 600;
 }
 
-.btn_like:hover{
- cursor: pointer;
- opacity: 0.8;
+.btn_like:hover {
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 .activity_btn {
     height: 3em;
     width: 7em;
     margin: 1em;
-    &:last-child {
-        border: solid 1px $gray;
-    }
+    // &:last-child {
+    //     border: solid 1px $gray;
+    // }
 }
 
 .srollX {
@@ -386,10 +423,13 @@ button.radius20 {
             display: flex;
             align-items: center;
             min-height: 5em;
-            width: 15em;
+            width: 200px;
             margin: 0.5em 1em;
-            border: solid 1px $black;
+            padding: 20px;
+            border: solid 1.5px $gray;
+            border-radius: 10px;
             white-space: initial;
+            text-align: center;
         }
     }
 }
@@ -418,11 +458,14 @@ button.radius20 {
 
 .btn_outline {
     @extend %btn-style;
-    border: 1px solid $black;
+    border: 2px solid $gray;
     padding: 0.5rem;
     box-sizing: border-box;
+    border-radius: 20px;
     &:hover {
         opacity: 0.8;
+        color: $blue2;
+        border: 2px solid $blue2;
     }
 }
 
@@ -430,6 +473,12 @@ button.radius20 {
     font-size: 20px;
     padding: 10px 70px;
     border: none;
+}
+
+.cancel_btn {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .avg_center {
@@ -450,14 +499,69 @@ button.radius20 {
 
 .circle_sign {
     display: inline-block;
-    line-height: 40px;
-    width: 50px;
-    height: 50px;
-    border: 2px solid;
+    line-height: 80px;
+    width: 90px;
+    height: 90px;
+    border: 2px solid #7d7d7d;
     border-radius: 100%;
+    svg {
+        font-size: 60px;
+    }
 }
 
-.img_fluid1{
+.img_fluid1 {
     height: 100%;
     width: auto;
+}
+
+%input_reg {
+    border-radius: 10px;
+    width: 100%;
+    padding: 7px;
+    font-size: 18px;
+    box-sizing: border-box;
+}
+
+.input_r {
+    @extend %input_reg;
+    border: 1px solid $gray;
+}
+
+.input_r:focus {
+    outline: 0;
+    border: 1px solid $orange;
+}
+
+.input_1 {
+    @extend %input_reg;
+    border: 2px solid $gray;
+}
+
+.input_1:focus {
+    outline: 0;
+    border: 2px solid $orange;
+}
+
+#start-time::before {
+    content: '開始：  ';
+    color: $placeholder;
+}
+
+#end-time::before {
+    content: '結束：  ';
+    color: $placeholder;
+}
+
+.add_li_content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+        width: 50px;
+        height: 50px;
+        border: $blue2 2px solid;
+        border-radius: 100%;
+        line-height: 100%;
+        color: $blue2;
+    }
 }

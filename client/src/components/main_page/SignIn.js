@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import Footer from '../Footer';
 import Navpt from '../share/Navpt';
-// import { FaCheck } from 'react-icons/fa';
 
 class SignIn extends Component {
     render() {
@@ -12,20 +11,15 @@ class SignIn extends Component {
                 <Navpt />
                 <div className="layout_main">
                     <Container className="main_analytic">
-                        <h1 className="text-center">智媒推推</h1>
-                        <div className="box p-5 w-75 mx-auto">
-                            <input placeholder="請輸入電子郵箱" type="email" name="email" className="w-100 my-2 p-1" />
-                            <input placeholder=" 請輸入密碼" type="password" name="psd" className="w-100 my-2 p-1" />
-                            <Row className="my-4">
-                                <Col sm={6}>
-                                    <a href="XXX" className="text-dark">忘記密碼？</a>
-                                </Col>
-                                <Col sm={6} className="text-right">
-                                    <button className="btn btn-secondary radius20 px-5 py-2">登入</button>
-                                </Col>
-                            </Row>
-                            <div className="text-center mt-5">
-                                <p className="d-block mt-5 mb-2 text-dark">還沒有帳號？</p>
+                        <div className="box p-5 w-75 mx-auto" style={{'position':'relative'}}>
+                            <button className="btn_noborder_r btn_like dec_none cancel_btn m-2 bg-secondary round text-white">&#10006;</button>
+                            <h3 className="mb-3">智媒推推</h3>
+                            <input placeholder="請輸入電子郵箱" type="email" name="email" className="input_1 my-3" />
+                            <input placeholder=" 請輸入密碼" type="password" name="psd" className="input_1" />
+                            <a href="javascript:void(0)" className="my-1 d-block">忘記密碼？</a>
+                            <button className="btn btn-outline-primary radius20 font_20 my-4 p-2 w-100">登入</button>
+                            <div className="text-center">
+                                <p className="d-block mb-2 text-dark">還沒有帳號？</p>
                                 <button className="btn btn-info radius20 px-5 py-2">我要註冊</button>
                             </div>
                         </div>
