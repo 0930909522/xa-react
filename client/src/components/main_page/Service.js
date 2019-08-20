@@ -25,7 +25,7 @@ class Service extends Component {
                             更改你的會員方案
                             <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.toggleShowData}>&#10006;</button>
                         </h4>
-                        <div className="p-3 mx-auto w-100 scrollY h-50v ">
+                        <div className="p-3 mx-auto w-100 scrollY h-65v ">
                             <Row>
                                 <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">付費會員</h2></Col>
                                 <Col sm={6}>

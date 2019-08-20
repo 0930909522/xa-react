@@ -1,15 +1,16 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const MemberCentreTitle = props => {
     return (
         <div className="box radius10 px-5 d-flex justify-content-around">
-            <span className={props.one && 'selected_text'}>服務與用量</span>
+            <span><Link to="/memberCentre/service" className={(props.one ? 'selected_text': 'text-dark') + " btn_like dec_none"}>服務與用量</Link></span>
             <span>&nbsp;｜&nbsp;</span>
-            <span className={props.two && 'selected_text'}>交易明細</span>
+            <span><Link to="/memberCentre/billing/two" className={(props.num === 'two' ? 'selected_text': 'text-dark') + " btn_like dec_none"}>交易明細</Link></span>
             <span>&nbsp;｜&nbsp;</span>
-            <span className={props.three && 'selected_text'}>付款方式</span>
+            <span><Link to="/memberCentre/billing/three" className={(props.num === 'three' ? 'selected_text': 'text-dark') + " btn_like dec_none"}>付款方式</Link></span>
             <span>&nbsp;｜&nbsp;</span>
-            <span className={props.four && 'selected_text'}>帳號設定</span>
+            <span><Link to="/memberCentre/billing/four" className={(props.num === 'four' ? 'selected_text': 'text-dark') + " btn_like dec_none"}>帳號設定</Link></span>
         </div>
     )
 }

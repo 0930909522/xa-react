@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
+import { Container , Nav, Navbar } from 'react-bootstrap';
 import { FaBell, FaUser } from 'react-icons/fa';
 
 class Header extends Component {
@@ -9,7 +9,7 @@ class Header extends Component {
         <Navbar variant="dark"  className="main_header">
           <Container>
             <Navbar.Brand href="#home">
-              <img src="/logo.jpg" /> Xnet Analytics <span>     </span>
+              <img src="/logo.jpg" alt="pt" /> Xnet Analytics <span>     </span>
             </Navbar.Brand>
             <Nav className="mr-auto">
               <Nav.Link href="#home">回首頁</Nav.Link>

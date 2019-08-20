@@ -12,11 +12,28 @@ class Billing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showPayData: true,
+            showPayData: false,
             payState: 0,
             // showMoreCard: false,
             sent: false,
+            type: null
 
+        }
+    }
+    componentDidMount() {
+        let newShowPayData = this.state.showPayData;
+        if(this.props.match.params.type === 'three'){
+            newShowPayData = true;
+        }
+        this.setState({ type: this.props.match.params.type, showPayData: newShowPayData})
+    }
+    componentDidUpdate(preProp) {
+        if (preProp.match.params.type !== this.props.match.params.type) {
+            let newShowPayData = this.state.showPayData;
+            if(this.props.match.params.type === 'three' && this.state.showPayData !== true){
+                newShowPayData = true;
+            }
+            this.setState({ type: this.props.match.params.type, showPayData: newShowPayData })
         }
     }
     choosePayState = (num) => {
@@ -39,7 +56,7 @@ class Billing extends Component {
                             {(this.state.sent === false) ? <span>付款</span> : <span>OK</span>}
                             <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.togglePayData}>&#10006;</button>
                         </h4>
-                        <div className={(this.state.sent === false) ? "p-5 scrollY h-50v m-1" : "d-none"}>
+                        <div className={(this.state.sent === false) ? "p-5 scrollY h-65v m-1" : "d-none"}>
                             <h4 className="mb-5 p-4 btn_like bg-light radius10" onClick={() => this.choosePayState(1)}>
                                 <span className="text-primary">匯款</span>
                                 {this.state.payState === 1 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}
@@ -110,9 +127,9 @@ class Billing extends Component {
                             </div> */}
                         </div>
                         <div className={(this.state.sent === false) ? "d-none" : "p-5 m-1 text-center"}>
-                        <div className="circle_sign my-4">
-                                    <FaCheck style={{ 'color': '#16C60C' }} />
-                                </div>
+                            <div className="circle_sign my-4">
+                                <FaCheck style={{ 'color': '#16C60C' }} />
+                            </div>
                             <h4 className="text-primary">
                                 感謝您 ~
                             <br />已經收到您通知已付款的訊息，<br />資料核對無誤後會儘速為您儲值，<br />謝謝！
@@ -126,7 +143,7 @@ class Billing extends Component {
                             <NavLeftMember three />
                             <div className="main_right">
                                 <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/ 帳單與儲值</span></h2>
-                                <MemberCentreTitle two />
+                                <MemberCentreTitle num={this.state.type} />
                                 <div className="cards">
                                     <MemberCard title="您的餘額" buttonName="儲值已付款">
                                         <h1>$7,640.00</h1>

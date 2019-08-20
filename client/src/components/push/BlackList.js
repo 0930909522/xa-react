@@ -102,7 +102,7 @@ class BlackList extends Component {
                             <NavLeftPush />
                             <div className="main_right">
                                 <h2>推播設定<span style={{ fontSize: '20px' }}>&nbsp;/ 特定頁面推播 / 熱門商品</span></h2>
-                                <PushTitle />
+                                <PushTitle two />
                                 <div className="box">
                                     <div className="my-3 d-flex justify-content-between">
                                         <button className="btn_noborder" onClick={() => this.setState({ show: true })}><FaPlusCircle /></button>

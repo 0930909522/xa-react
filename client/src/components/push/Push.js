@@ -5,7 +5,7 @@ import Footer from '../Footer';
 import NavLeftPush from "../share/NavLeftPush";
 import PushTitle from "./share/PushTitle";
 import Switch from './share/Switch';
-import ActivityBuilt from './ActivityBuilt';
+import PushList from './PushList';
 import { FaRegCalendar, FaRegNewspaper, FaHandPointUp, FaFireAlt, FaRegThumbsUp } from "react-icons/fa";
 
 class Push extends Component {
@@ -24,9 +24,9 @@ class Push extends Component {
     newTitle += '<strong className="font_20 btn_like"> / ' + type + '</strong>';
     this.setState({ title: newTitle, openList: true });
   }
-  
+
   closeList = () => {
-    this.setState({ openList: false });
+    this.setState({ openList: false, title: '' });
   }
   render() {
     return (
@@ -78,7 +78,7 @@ class Push extends Component {
                     </table>
                   </div>
                 </div>
-                <ActivityBuilt toOpenList={this.state.openList} />
+                {this.state.openList && <PushList />}
               </div>
             </Row>
           </Container>

@@ -25,7 +25,7 @@ class InstallTrackingCode extends Component {
                             以電子郵件寄送程式碼
                             <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.toggleShowData}>&#10006;</button>
                         </h4>
-                        <div className="p-3 mx-auto w-100 scrollY h-50v ">
+                        <div className="p-3 mx-auto w-100 scrollY h-65v ">
                             <label className="w-100 font_20">收件人信箱
                                 <input type="text" className="input_1 mt-2 pl-2" />
                             </label>
@@ -44,7 +44,7 @@ class InstallTrackingCode extends Component {
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
-                            <NavLeftPush />
+                            <NavLeftPush one />
                             <div className="main_right">
                                 <h2>安裝追蹤碼</h2>
                                 <SettingTitle three />

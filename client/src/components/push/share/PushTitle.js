@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 class PushTitle extends Component {
     render() {
@@ -6,9 +7,9 @@ class PushTitle extends Component {
         return (
             <>
                 <div className="box radius10">
-                    <span className={this.props.one&&'selected_text'}>特定頁面推播</span>
+                    <span><Link to="/push" className={(this.props.one?'selected_text':'text-dark') + ' dec_none btn_like'}>特定頁面推播</Link></span>
                     <span>&nbsp;｜&nbsp;</span>
-                    <span className={this.props.one?'':'selected_text'}>設定黑名單</span>
+                    <span><Link to="/push/blacklist" className={(this.props.two?'selected_text':'text-dark') + ' dec_none btn_like'}>設定黑名單</Link></span>
                 </div>
             </>
         )

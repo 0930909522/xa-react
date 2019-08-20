@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row } from "react-bootstrap";
 import Header from "../Header";
+import Footer from '../Footer';
 import NavLeftPush from "../share/NavLeftPush";
 import PushTitle from '../share/PushTitle';
 
@@ -10,49 +11,21 @@ class PushPage extends Component {
         this.state = {
             content: [
                 {
-                    'title': '主題活動',
+                    'title': '文章',
                     'content': "&lt;!--xnet_java_code--&gt;<br />&lt;script asyncsrc='https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1'> &lt;/script&gt;<br />&lt;script>window.dataLayer =window.dataLayer || [];<br />function gtag()&#123;dataLayer.push(arguments);&#125;<br />gtag('js', new Date());<br />gtag('config', 'XN-00001843-1');<br />&lt;/script&gt;",
                     'choose': false,
                     'show': false
                 },
                 {
-                    'title': '專題報導',
+                    'title': '商品',
                     'content': "&lt;!--xnet_java_code--&gt;<br />&lt;script asyncsrc='https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1'> &lt;/script&gt;<br />&lt;script>window.dataLayer =window.dataLayer || [];<br />function gtag()&#123;dataLayer.push(arguments);&#125;<br />gtag('js', new Date());<br />gtag('config', 'XN-00001843-1');<br />&lt;/script&gt;",
-                    'choose': false,
-                    'show': false
-                },
-                {
-                    'title': '推薦商品',
-                    'content': null,
-                    'choose': false,
-                    'show': false
-                },
-                {
-                    'title': '熱門商品',
-                    'content': null,
-                    'choose': false,
-                    'show': false
-                },
-                {
-                    'title': '選擇電商平台',
-                    'content': null,
-                    'choose': false,
-                    'show': false
-                },
-                {
-                    'title': '推薦文章',
-                    'content': null,
-                    'choose': false,
-                    'show': false
-                },
-                {
-                    'title': '選擇媒體平台',
-                    'content': null,
                     'choose': false,
                     'show': false
                 }
             ],
+            iframeSize: [{width:500, height:300},{width:500, height:300}],
             showBtn: false,
+            showData: false,
             shareCode: "<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());"
         };
         this.string = '讓其他商家，也能在您頁面的任一位置投放';
@@ -91,18 +64,24 @@ class PushPage extends Component {
         }
         this.setState({ content: newContent });
     }
+    setIframe = (e, index, name) =>{
+        const value = e.target.value;
+        const newIframeSize = this.state.iframeSize;
+        newIframeSize[index][name] = value;
+        this.setState({iframeSize: newIframeSize});
+    }
 
     render() {
         return (
             <>
                 <Header />
-                <div className="w-100 bg_gray">
-                    <div className="box w-75 mx-auto bg-white my-5">
-                        <h5 className="bg-secondary p-2 text-white">
+                <div className={(!this.state.showData && 'd-none ') + 'w-100 bg_gray'}>
+                    <div className="box w-75 mx-auto bg-white my-5 radius10">
+                        <h4 className="bg-warning py-3 pl-4 pr-2 text-white d-flex justify-content-between">
                             以電子郵件寄送程式碼
                             <button className="float-right mr-2 btn_noborder_r text-white">X</button>
-                        </h5>
-                        <div className="p-4">
+                        </h4>
+                        <div className="p-3 mx-auto w-100 scrollY h-65v ">
                             <label className="w-100">收件人信箱
                                 <input type="text" className="w-100 mt-2 pl-2" />
                             </label>
@@ -124,7 +103,7 @@ class PushPage extends Component {
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
-                            <NavLeftPush />
+                            <NavLeftPush three />
                             <div className="main_right">
                                 <h2>推播安裝</h2>
                                 <PushTitle one />
@@ -143,9 +122,18 @@ class PushPage extends Component {
                                                 </tr>
                                                 {(val.content !== null && val.show) && <tr>
                                                     <td colSpan="2">
-                                                        {this.string}{(val.title === '主題活動' ? '主題式的活動宣傳' : '專題相關報導')}
+                                                        {this.string}
                                                         <br />
-                                                        <code dangerouslySetInnerHTML={{ __html: val.content }}></code>
+                                                        <code dangerouslySetInnerHTML={{ __html: val.content }} />
+                                                        <div className="mt-2 text-center">
+                                                            <label className="mx-3">寬度&nbsp;<input type="number" onChange={(e)=>this.setIframe(e, index, 'width')} /></label>
+                                                            <label className="mx-3">高度&nbsp;<input type="number" onChange={(e)=>this.setIframe(e, index, 'height')} /></label>
+                                                            <div className="mt-2 d-flex justify-content-center">
+                                                                {
+                                                                    <iframe title="advertisement example" src="https://www.w3school.com.cn/html/html_iframe.asp" width={this.state.iframeSize[index].width} height={this.state.iframeSize[index].height} style={{'border': 'none'}} />
+                                                                }
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>}
                                             </tbody>
@@ -162,6 +150,7 @@ class PushPage extends Component {
                         </Row>
                     </Container>
                 </div>
+                <Footer />
             </>
         )
     }

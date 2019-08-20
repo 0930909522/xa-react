@@ -13,13 +13,17 @@ class Verification extends Component {
     inputNum = (i, e) => {
         if (e.keyCode === 13 && i < 5) {
             this.inputs[i].focus();
-        }else if(e.keyCode === 8 && i > 1){
-            this.inputs[i - 2].focus();
-        }
-    }
-    upInputNum = (i, e)=>{
-        if(e.target.value.length === 1 && i < 5){
+        } else if (e.keyCode === 8 && i > 1) {
+            if(this.inputs[i-1].value !== ''){
+                this.inputs[i-1].focus();
+            }else{
+                this.inputs[i-2].focus();
+            }
+        }else if(e.target.value.length === 1 && i < 5){
             this.inputs[i].focus();
+            console.log('a')
+        }else{
+            return ;
         }
     }
     render() {
@@ -36,10 +40,10 @@ class Verification extends Component {
                                 <h6>已將「驗證碼」寄送至您登錄的電子郵件信箱。<br />請輸入郵件中的「驗證碼」並送出。<br /><br />※「驗證碼」的有效期限為郵件寄出後的24小時內。</h6>
                                 <div className="my-4 mx-auto">
                                     <h4>請輸入驗證碼</h4>
-                                    {(function (rows, i, type) {
+                                    {(function (rows, i, that) {
                                         while (++i <= 5) {
                                             let j = i;
-                                            rows.push(<input key={i} type="text" maxLength="1" pattern="\d" name="psd" ref={(e) => type.inputs[j - 1] = e} className="vertify_col font_20" onKeyDown={(e) => type.inputNum(j, e)} onKeyUp={(e) => type.upInputNum(j, e)} />)
+                                            rows.push(<input key={i} type="text" maxLength="1" pattern="\d" name="psd" ref={(e) => that.inputs[j - 1] = e} className="vertify_col font_20" onKeyDown={(e) => that.inputNum(j, e)} />)
                                         }
                                         return rows;
                                     })([], 0, this)

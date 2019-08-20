@@ -16,7 +16,7 @@ class SignIn extends Component {
                             <h3 className="mb-3">智媒推推</h3>
                             <input placeholder="請輸入電子郵箱" type="email" name="email" className="input_1 my-3" />
                             <input placeholder=" 請輸入密碼" type="password" name="psd" className="input_1" />
-                            <a href="javascript:void(0)" className="my-1 d-block">忘記密碼？</a>
+                            <a href="XXX" className="my-1 d-block">忘記密碼？</a>
                             <button className="btn btn-outline-primary radius20 font_20 my-4 p-2 w-100">登入</button>
                             <div className="text-center">
                                 <p className="d-block mb-2 text-dark">還沒有帳號？</p>

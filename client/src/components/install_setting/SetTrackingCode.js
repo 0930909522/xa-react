@@ -13,7 +13,7 @@ class SetTrackingCode extends Component {
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
-                            <NavLeftPush />
+                            <NavLeftPush one />
                             <div className="main_right">
                                 <h2>安裝追蹤碼</h2>
                                 <SettingTitle one />
