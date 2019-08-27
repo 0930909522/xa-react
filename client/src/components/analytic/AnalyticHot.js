@@ -60,7 +60,7 @@ class AnalyticGroup extends Component {
 
     getDataFromDb = () => {
         // axios.get('/datas/analyticHot.json')
-        axios.get('http://r.xnet.world/demo/hotPages.json')
+        axios.get('http://r.xnet.world/demo//analyticHot.json')
             .then(response => {
                 this.setState({
                     basic: response.data,
@@ -87,7 +87,7 @@ class AnalyticGroup extends Component {
 
 
                                     <h3>熱門頁面關鍵字</h3>
-                                    {this.state.keywords ?
+                                    {this.state.basic.keywords ?
                                         <div className="chart_box">
                                             <BubbleChart
                                                 graph={{
@@ -95,14 +95,14 @@ class AnalyticGroup extends Component {
                                                     offsetX: -0.05,
                                                     offsetY: -0.01,
                                                 }}
-                                                width={600}
-                                                height={630}
+                                                width={630}
+                                                height={660}
                                                 padding={8} // optional value, number that set the padding between bubbles
                                                 showLegend={false} // optional value, pass false to disable the legend.
                                                 legendPercentage={20} // number that represent the % of with that legend going to use.
                                                 legendFont={{
                                                     family: 'Arial',
-                                                    size: 15,
+                                                    size: 14,
                                                     color: '#000',
                                                     weight: 'normal',
                                                 }}
@@ -122,7 +122,7 @@ class AnalyticGroup extends Component {
                                                 //Custom bubble/legend click functions such as searching using the label, redirecting to other page
                                                 bubbleClickFun={this.bubbleClick}
                                                 legendClickFun={this.legendClick}
-                                                data={this.state.keywords}
+                                                data={this.state.basic.keywords}
                                             />
                                         </div>
                                         : <span />}

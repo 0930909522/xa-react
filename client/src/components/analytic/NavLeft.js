@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { IoIosPeople , IoMdContact, IoMdContacts} from 'react-icons/io';
+import { IoIosHappy, IoIosOptions, IoMdContact, IoMdContacts} from 'react-icons/io';
 import { GoRuby , GoDesktopDownload, GoBookmark} from 'react-icons/go';
 import { FaHandshake } from 'react-icons/fa';
 
@@ -20,8 +20,9 @@ class NavLeft extends Component {
           <li> <GoRuby /> <Link to="/asset_rise">資產價值</Link></li>
           <li> <GoDesktopDownload /> <Link to="/source">流量來源</Link></li>
           <li> <GoBookmark /> <Link to="/hot">熱門頁面</Link></li>
-          <li> <IoMdContacts /> <Link to="/group">用戶分群</Link></li>
-          <li> <FaHandshake /> <Link to="/interaction">互動指標</Link></li>
+          <li> <IoIosHappy /> <Link to="/interest">興趣分群</Link></li>
+          <li> <IoIosOptions /> <Link to="/group">功能分群</Link></li>
+          <li style={{color: "#aaa"}}> <FaHandshake /> <Link to="/interaction" style={{color: "#aaa"}}>互動分群</Link></li>
         </ul>
       </div>
     );

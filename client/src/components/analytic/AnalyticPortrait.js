@@ -13,24 +13,39 @@ class AnalyticPortrait extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            openExample: false,
             fish: [
-                { "id": "g1", "name": "海豚", "info": "友善、可馴化", "percent": "10", "bgColor": "#f19ec2" },
-                { "id": "g2", "name": "烏龜", "info": "動作緩慢慢", "percent": "20", "bgColor": "#f6b37f" },
-                { "id": "g3", "name": "蝦子", "info": "雜食、消費種類廣泛", "percent": "22", "bgColor": "#f6e206" },
-                { "id": "g4", "name": "鮟鱇魚", "info": "潛在消費者", "percent": "55", "bgColor": "#8f82bc" },
-                { "id": "g5", "name": "鮪魚", "info": "經濟價值高", "percent": "40", "bgColor": "#b3d465" },
-                { "id": "g6", "name": "鯊魚", "info": "消費兇猛、追求速度", "percent": "31", "bgColor": "#a09f9f" },
-                { "id": "g7", "name": "鯨魚", "info": "消費量大", "percent": "3", "bgColor": "#3e95de" }
+                { "id": "g1", "name": "海豚", "info": "友善、可馴化", "percent": "0", "bgColor": "#f19ec2" },
+                { "id": "g2", "name": "烏龜", "info": "動作緩慢慢", "percent": "0", "bgColor": "#f6b37f" },
+                { "id": "g3", "name": "蝦子", "info": "雜食、消費種類廣泛", "percent": "0", "bgColor": "#f6e206" },
+                { "id": "g4", "name": "鮟鱇魚", "info": "潛在消費者", "percent": "0", "bgColor": "#8f82bc" },
+                { "id": "g5", "name": "鮪魚", "info": "經濟價值高", "percent": "0", "bgColor": "#b3d465" },
+                { "id": "g6", "name": "鯊魚", "info": "消費兇猛、追求速度", "percent": "0", "bgColor": "#a09f9f" },
+                { "id": "g7", "name": "鯨魚", "info": "消費量大", "percent": "0", "bgColor": "#3e95de" }
             ],
             basic: "",
         }
     }
     componentDidMount() {
         this.getDataFromDb();
+        this.getFishFromDb();
     }
 
+    getFishFromDb = (id) => {
+        const url = "http://r.xnet.world/demo/analyticFish.json";
+        axios.get(url)
+            .then(response => {
+                this.setState({
+                    fish: response.data.fish
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     getDataFromDb = (id) => {
-        const url = id ? "http://r.xnet.world/demo/analyticProtrait/" + id + ".json" : "datas/analyticPortrait.json"
+        const url = id ? "http://r.xnet.world/demo/analyticProtrait/" + id + ".json" : "http://r.xnet.world/demo/analyticProtrait/main.json"
         axios.get(url)
             .then(response => {
                 this.setState({
@@ -45,6 +60,9 @@ class AnalyticPortrait extends Component {
     changeFish = (id) => {
         this.getDataFromDb(id);
         //console.log(id)
+    }
+    showExample = () => {
+        this.setState(prev => ({ openExample: !prev.openExample }));
     }
 
     render() {
@@ -123,10 +141,10 @@ class AnalyticPortrait extends Component {
                                             {detail ? detail.map((item, i) =>
                                                 <li key={i}>
                                                     <div className="head">
-                                                        {item.name}
+                                                        {item.name }
                                                     </div>
                                                     <div className="cont">
-                                                        {item.score}
+                                                        {item.score ? item.score : "無"}
                                                         <span> {item.info ? `(${item.info})` : ""}</span>
                                                     </div>
                                                 </li>
@@ -143,9 +161,9 @@ class AnalyticPortrait extends Component {
                                                 {/* <CircularProgressbar value={item.percent} text={`${item.percent}%`} strokeWidth='11' */}
                                                 <CircularProgressbar value={item.percent} text={item.show} strokeWidth='11'
                                                     styles={buildStyles({
-                                                        pathColor: `${item.bgColor}`,
+                                                        pathColor: item.bgcolor,
                                                         textColor: '#aaa',
-                                                        textSize: '30px',
+                                                        textSize: '20px',
                                                         trailColor: '#dedede'
                                                     })}
                                                 />
@@ -158,12 +176,13 @@ class AnalyticPortrait extends Component {
                             <div className="box">
 
                                 <div style={{ display: "flex", alignItem: "center", justifyContent: "center" }}>
-                                    <h3 className="no_border inline">用戶分佈</h3>
+                                    <h3 className="no_border inline">用戶分佈 <br /> 
+                                    <div style={{ fontSize: "15px", color: "#3472ff", cursor: "pointer" }} onClick={() => this.showExample()}>分布範例</div> </h3> <br />
+
                                     <ul className="icons">
                                         {this.state.fish.map((item, i) =>
 
-                                            <li onClick={()=>this.changeFish(item.id)} key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss" : null}>
-                                                
+                                            <li onClick={() => this.changeFish(item.id)} key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss" : null}>
                                                 <CircularProgressbarWithChildren value={item.percent} strokeWidth='8'
                                                     styles={buildStyles({
                                                         pathColor: `${item.bgColor}`,
@@ -172,19 +191,27 @@ class AnalyticPortrait extends Component {
                                                     })}
                                                 >
                                                     <OverlayTrigger trigger="hover" placement="right" overlay={<Popover title={item.name}> {item.info} </Popover>}>
-                                                    <div className={item.id + " icon"}></div>
+                                                        <div className={item.id + " icon"}></div>
                                                     </OverlayTrigger>
                                                 </CircularProgressbarWithChildren>
-                                                
+
                                                 <div style={{ marginTop: "3px" }}>{item.percent}%</div>
-                                                
+
                                             </li>
 
                                         )}
 
                                     </ul>
+
                                 </div>
 
+                                {this.state.openExample ?
+                                    <div>
+                                        {/* <hr /> */}
+                                        <h3>分布範例</h3>
+                                        <img src="./fish_example.jpg" alt="" style={{maxWidth: "100%"}} />
+                                    </div> : <span />
+                                }
 
                             </div>
 

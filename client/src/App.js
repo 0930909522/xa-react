@@ -4,15 +4,15 @@ import './App.scss';
 import './style.scss';
 // import axios from 'axios';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
-// import Home from './components/Main';
-// import AnalyticGeneral from './components/analytic/AnalyticGeneral';
-// import AnalyticSource from './components/analytic/AnalyticSource';
-// import AnalyticHot from './components/analytic/AnalyticHot';
-// import AnalyticInteraction from './components/analytic/AnalyticInteraction';
-// import AnalyticAsset from './components/analytic/AnalyticAsset';
-// import AnalyticPortrait from './components/analytic/AnalyticPortrait';
-// import AnalyticGroup from './components/analytic/AnalyticGroup';
-// import DBTest from './components/DBTest';
+import Home from './components/Main';
+import AnalyticGeneral from './components/analytic/AnalyticGeneral';
+import AnalyticSource from './components/analytic/AnalyticSource';
+import AnalyticHot from './components/analytic/AnalyticHot';
+import AnalyticInteraction from './components/analytic/AnalyticInteraction';
+import AnalyticAsset from './components/analytic/AnalyticAsset';
+import AnalyticPortrait from './components/analytic/AnalyticPortrait';
+import AnalyticGroup from './components/analytic/AnalyticGroup';
+import DBTest from './components/DBTest';
 import Push from './components/push/Push';
 // import ActivityNew from './components/push/ActivityNew';
 // import ActivityBuilt from './components/push/ActivityBuilt';
@@ -55,21 +55,21 @@ class App extends Component {
     return (
       <div className="all">
         <Router>
-          {/* <Route exact path="/" component={AnalyticPortrait} />  */}
+          <Route exact path="/" component={AnalyticPortrait} /> 
           {/* 訪客總覽 */}
-          {/* <Route path="/general" component={AnalyticGeneral} />  */}
+          <Route path="/general" component={AnalyticGeneral} /> 
           {/* 流料來源 */}
-          {/* <Route path="/source" component={AnalyticSource} />  */}
+          <Route path="/source" component={AnalyticSource} /> 
           {/* 熱門頁面 */}
-          {/* <Route path="/hot" component={AnalyticHot} />  */}
+          <Route path="/hot" component={AnalyticHot} /> 
           {/* 互動指標 */}
-          {/* <Route path="/interaction" component={AnalyticInteraction} />  */}
+          <Route path="/interaction" component={AnalyticInteraction} /> 
           {/* 資產價值 */}
-          {/* <Route path="/asset_rise" component={AnalyticAsset} /> */}
+          <Route path="/asset_rise" component={AnalyticAsset} />
           {/* 用戶畫像 */}
-          {/* <Route path="/portrait" component={AnalyticPortrait} /> */}
+          <Route path="/portrait" component={AnalyticPortrait} />
           {/* 用戶分群 */}
-          {/* <Route path="/group" component={AnalyticGroup} /> */}
+          <Route path="/group" component={AnalyticGroup} />
           {/* 推播 主題活動-新增 */}
           {/* <Route path="/push/add" component={ActivityNew} /> */}
           {/* 推播 主題活動-修改廣告 */}

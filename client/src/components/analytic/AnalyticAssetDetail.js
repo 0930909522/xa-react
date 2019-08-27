@@ -58,7 +58,8 @@ class AnalyticAssetDetail extends Component {
               {`${(percent * 100).toFixed(0)}%`}
             </text>
           );
-        };
+        }; 
+
         const pieChart = this.state.newData.source ? this.state.newData.source.pieChart : null;
         const lineChart = this.state.newData.source ? this.state.newData.source.lineChart : null;
         const renderPieChart = (
@@ -112,7 +113,7 @@ class AnalyticAssetDetail extends Component {
                             { content ? content.map( (item, i) => {
                                 return <li key={i} onClick={
                                     () => this.setState({thisNO: i+1, newData: this.state.basic.content[i]})
-                                }>第 {i+1} 名：{item.title}</li>
+                                }> <span className="no">{i+1}</span> {item.title.split("@")[0]}</li>
                             }) : <li/>}
                         </ul>
                         <h3> 第 {this.state.thisNO} 名 </h3>
