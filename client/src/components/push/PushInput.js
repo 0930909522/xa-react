@@ -69,10 +69,14 @@ class PushInput extends Component {
         let newEditIndex = 0;
         if (this.props.data === undefined) {
             newData.contain = [];
+            newData.action = 'add';
             newData.contain[0] = Object.assign({}, initilaContain);
         } else {
             newData = this.props.data;
+            newData.action = 'modify';
         }
+        newData.type = this.props.type;
+        console.log(newData)
         this.setState({ editIndex: newEditIndex, data: newData })
     }
     addingTopic = (e, type, index) => {
@@ -96,6 +100,9 @@ class PushInput extends Component {
     }
     selectContent = id => {
         this.setState({ editIndex: parseInt(id) });
+    }
+    submit = () =>{
+        console.log(this.state.data)
     }
 
     render() {
@@ -227,7 +234,7 @@ class PushInput extends Component {
                     </div>
 
                     <div className="d-flex mt-3">
-                        <button className="btn btn-outline-primary w-100 m-3 radius20 font_20" onClick={this.props.handleOpen}>確認</button>
+                        <button className="btn btn-outline-primary w-100 m-3 radius20 font_20" onClick={this.submit}>確認</button>
                         <button className="btn btn-outline-primary w-100 m-3 radius20 font_20" onClick={this.props.handleOpen}>取消</button>
                     </div>
                 </div>

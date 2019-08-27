@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Row } from "react-bootstrap";
-import Header from "../Header";
-import Footer from '../Footer';
-import NavLeftPush from "../share/NavLeftPush";
-import PushTitle from '../share/PushTitle';
+import { pushpage } from '../share/ajax';
+// import { Container, Row } from "react-bootstrap";
+// import Header from "../Header";
+// import Footer from '../Footer';
+// import NavLeftPush from "../share/NavLeftPush";
+// import PushTitle from '../share/PushTitle';
 
 class PushPage extends Component {
     constructor(props) {
@@ -12,23 +13,34 @@ class PushPage extends Component {
             content: [
                 {
                     'title': '文章',
-                    'content': "&lt;!--xnet_java_code--&gt;<br />&lt;script asyncsrc='https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1'> &lt;/script&gt;<br />&lt;script>window.dataLayer =window.dataLayer || [];<br />function gtag()&#123;dataLayer.push(arguments);&#125;<br />gtag('js', new Date());<br />gtag('config', 'XN-00001843-1');<br />&lt;/script&gt;",
-                    'choose': false,
-                    'show': false
+                    'choose': false
                 },
                 {
                     'title': '商品',
-                    'content': "&lt;!--xnet_java_code--&gt;<br />&lt;script asyncsrc='https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1'> &lt;/script&gt;<br />&lt;script>window.dataLayer =window.dataLayer || [];<br />function gtag()&#123;dataLayer.push(arguments);&#125;<br />gtag('js', new Date());<br />gtag('config', 'XN-00001843-1');<br />&lt;/script&gt;",
-                    'choose': false,
-                    'show': false
+                    'choose': false
                 }
             ],
-            iframeSize: [{width:500, height:300},{width:500, height:300}],
             showBtn: false,
-            showData: false,
-            shareCode: "<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());<!--xnet_java_code--><script async src=\"https://www.xnettagmanager.com/gtag/js?id=XN-00001843-1\"></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());"
         };
-        this.string = '讓其他商家，也能在您頁面的任一位置投放';
+    }
+    componentDidMount() {
+        const getData = this.props.sendData;
+        if (getData.acceptType !== null) {
+            const newData = this.state.content;
+            getData.acceptType.forEach(val => {
+                switch (val) {
+                    case 'media':
+                        newData[0].choose = true;
+                        break;
+                    case 'ecommerce':
+                        newData[1].choose = true;
+                        break;
+                    default:
+                        break;
+                }
+            })
+            this.setState({content: newData, showBtn: true});
+        }
     }
 
     toggleClickAll = e => {
@@ -56,25 +68,31 @@ class PushPage extends Component {
             showBtn: booleanBtn
         });
     }
-    toggleTr = (e, index) => {
-        const newContent = [...this.state.content];
-        newContent[index].show = !newContent[index].show;
-        if (newContent[index].content !== null) {
-            e.target.classList.toggle('text-info');
+    submit = () => {
+        let postData = {
+            token: null,
+            acceptType: []
+        };
+        if (this.state.content[0].choose) {
+            postData.acceptType.push('media');
         }
-        this.setState({ content: newContent });
-    }
-    setIframe = (e, index, name) =>{
-        const value = e.target.value;
-        const newIframeSize = this.state.iframeSize;
-        newIframeSize[index][name] = value;
-        this.setState({iframeSize: newIframeSize});
+        if (this.state.content[1].choose) {
+            postData.acceptType.push('ecommerce');
+        }
+        postData.token = localStorage.getItem('token');
+        pushpage(postData)
+            .then(res => {
+                this.props.getResponseData('acceptType', postData.acceptType);
+                this.props.getResponseData('step1Data', res);
+                this.props.changeStatus(2);
+            })
+
     }
 
     render() {
         return (
             <>
-                <Header />
+                {/* <Header />
                 <div className={(!this.state.showData && 'd-none ') + 'w-100 bg_gray'}>
                     <div className="box w-75 mx-auto bg-white my-5 radius10">
                         <h4 className="bg-warning py-3 pl-4 pr-2 text-white d-flex justify-content-between">
@@ -106,51 +124,34 @@ class PushPage extends Component {
                             <NavLeftPush three />
                             <div className="main_right">
                                 <h2>推播安裝</h2>
-                                <PushTitle one />
-                                <div className="box">
-                                    <table className="pushTable_r w-100" cellPadding="15">
-                                        <thead>
-                                            <tr>
-                                                <th colSpan="2"><input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;選擇安裝推播的類別</th>
-                                            </tr>
-                                        </thead>
-                                        {this.state.content.map((val, index) => (
-                                            <tbody key={val.title}>
-                                                <tr>
-                                                    <td><input type="checkbox" checked={val.choose} onChange={() => this.clickCheckbox(index)} /></td>
-                                                    <td onClick={(e) => this.toggleTr(e, index)}>{val.title}<span className={(val.show && val.content !== null) ? 'table-triangle-down' : 'table-triangle-top'}></span></td>
-                                                </tr>
-                                                {(val.content !== null && val.show) && <tr>
-                                                    <td colSpan="2">
-                                                        {this.string}
-                                                        <br />
-                                                        <code dangerouslySetInnerHTML={{ __html: val.content }} />
-                                                        <div className="mt-2 text-center">
-                                                            <label className="mx-3">寬度&nbsp;<input type="number" onChange={(e)=>this.setIframe(e, index, 'width')} /></label>
-                                                            <label className="mx-3">高度&nbsp;<input type="number" onChange={(e)=>this.setIframe(e, index, 'height')} /></label>
-                                                            <div className="mt-2 d-flex justify-content-center">
-                                                                {
-                                                                    <iframe title="advertisement example" src="https://www.w3school.com.cn/html/html_iframe.asp" width={this.state.iframeSize[index].width} height={this.state.iframeSize[index].height} style={{'border': 'none'}} />
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>}
-                                            </tbody>
-                                        ))}
-                                    </table>
-                                </div>
-                                {(this.state.showBtn) && (
-                                    <div className="text-center my-3">
-                                        <button className="btn btn-secondary">生成code並寄送電子郵件</button>
-                                    </div>
-                                )}
-                            </div>
+                                <PushTitle one /> */}
+                <div className="box radius10">
+                    <table className="pushTable_r w-100" cellPadding="15">
+                        <thead>
+                            <tr>
+                                <th colSpan="2"><input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;選取佈告欄類型</th>
+                            </tr>
+                        </thead>
+                        {this.state.content.map((val, index) => (
+                            <tbody key={val.title}>
+                                <tr>
+                                    <td><input type="checkbox" checked={val.choose} onChange={() => this.clickCheckbox(index)} /></td>
+                                    <td>{val.title}</td>
+                                </tr>
+                            </tbody>
+                        ))}
+                    </table>
+                </div>
+                <div className="text-center my-3">
+                    <button className="btn btn-secondary mx-1" disabled={!this.state.showBtn} onClick={() => this.submit()}>&nbsp;&nbsp;&nbsp;確認&nbsp;&nbsp;&nbsp;</button>
+                    <button className="btn btn-secondary mx-1" onClick={() => this.props.changeStatus(0)}>&nbsp;&nbsp;&nbsp;取消&nbsp;&nbsp;&nbsp;</button>
+                </div>
+                {/* </div>
 
                         </Row>
                     </Container>
                 </div>
-                <Footer />
+                <Footer /> */}
             </>
         )
     }

@@ -14,12 +14,12 @@ class Header extends Component {
             <Nav className="mr-auto">
               <Nav.Link href="#home">回首頁</Nav.Link>
               <Nav.Link href="#features">數據分析</Nav.Link>
-              <Nav.Link href="#install">安裝設定</Nav.Link>
+              <Nav.Link href="/board">安裝設定</Nav.Link>
               <Nav.Link href="#report">帳務報表</Nav.Link>
               <Nav.Link href="#buy">功能購買</Nav.Link>
             </Nav>
-            <FaBell className="header_svg" />
-            <FaUser className="header_svg" />
+            <Nav.Link href=""><FaBell className="header_svg" /></Nav.Link>
+            <Nav.Link href="/memberCentre/edit"><FaUser className="header_svg" /></Nav.Link>
             {/* <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-2" />
               <Button variant="outline-primary">Search</Button>

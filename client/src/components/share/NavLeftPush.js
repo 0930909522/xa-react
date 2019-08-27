@@ -15,7 +15,7 @@ class NavLeft extends Component {
         <ul className="nav_left">
           <li className={this.props.one && 'selected_text'}> <FaCode /> <Link to="/trackingCode/setting" className="dec_none btn_like">安裝追蹤碼</Link></li>
           <li className={this.props.two && 'selected_text'}> <IoIosSettings /> <Link to="/push" className="dec_none btn_like">推播設定</Link></li>
-          <li className={this.props.three && 'selected_text'}> <FaTools /> <Link to="/pushInstall" className="dec_none btn_like">推播安裝</Link></li>
+          <li className={this.props.three && 'selected_text'}> <FaTools /> <Link to="/board" className="dec_none btn_like">佈告欄設定</Link></li>
         </ul>
       </div>
     );

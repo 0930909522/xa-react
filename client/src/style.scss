@@ -264,6 +264,12 @@ button.radius20 {
     opacity: 1;
 }
 
+.table_checkbox{
+    width: 1.5rem;
+        height: 1.5rem;
+        vertical-align: middle;
+}
+
 %forTable {
     border: $gray solid 1px;
     border-collapse: collapse;
@@ -279,6 +285,17 @@ button.radius20 {
     }
 }
 
+.table_simple{
+    th{
+        border-bottom: 1px solid $black;
+    }
+    tr:not(:last-child){
+        td:not(:last-child):not(:first-child){
+            border-bottom: 1px solid $gray;
+        }
+    }
+}
+
 .pushTable_r {
     @extend %forTable;
 }
@@ -288,23 +305,23 @@ button.radius20 {
     table-layout: fixed;
 }
 
-.table-triangle-top {
-    position: absolute;
-    border-style: solid;
-    border-width: 0 20px 20px 0;
-    border-color: transparent $gray transparent transparent;
-    top: 0;
-    right: 0;
-}
+// .table-triangle-top {
+//     position: absolute;
+//     border-style: solid;
+//     border-width: 0 20px 20px 0;
+//     border-color: transparent $gray transparent transparent;
+//     top: 0;
+//     right: 0;
+// }
 
-.table-triangle-down {
-    position: absolute;
-    border-style: solid;
-    border-width: 20px 20px 0 0;
-    border-color: transparent $gray transparent transparent;
-    bottom: 0;
-    right: 0;
-}
+// .table-triangle-down {
+//     position: absolute;
+//     border-style: solid;
+//     border-width: 20px 20px 0 0;
+//     border-color: transparent $gray transparent transparent;
+//     bottom: 0;
+//     right: 0;
+// }
 
 .table_r {
     border-collapse: collapse;
@@ -564,4 +581,12 @@ button.radius20 {
         line-height: 100%;
         color: $blue2;
     }
+}
+
+.iframe_border{
+    width:500px;
+    height: 500px;
+    overflow: auto;
+    margin: 20px auto;
+    border: 1px solid $gray;
 }

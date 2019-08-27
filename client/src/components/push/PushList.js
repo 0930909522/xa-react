@@ -3,11 +3,13 @@ import PushInput from './PushInput';
 // import {FaTrashAlt} from 'react-icons/fa';
 // import Switch from './share/Switch';
 import { FaPlusCircle, FaPencilAlt } from "react-icons/fa";
+// import { type } from 'os';
 
 class PushList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            type: null,
             open: false,
             editIndex: null,
             data: [{
@@ -63,11 +65,27 @@ class PushList extends Component {
         }
 
     }
+    componentDidMount() {
+        let newType = this.props.type.split('/');
+        newType = newType[newType.length - 2].replace('<', '').trim();
+        switch (newType) {
+            case '主題活動':
+                newType = 'activity';
+                break;
+
+            case '專題報導':
+                newType = 'article';
+                break;
+            default:
+                break;
+        }
+        this.setState({ type: newType });
+    }
     openEdit = index => {
         this.setState({ open: !this.state.open, editIndex: index })
     }
-    closeEdit = index =>{
-        this.setState({ open: !this.state.open})
+    closeEdit = index => {
+        this.setState({ open: !this.state.open })
     }
     render() {
         return (
@@ -105,6 +123,7 @@ class PushList extends Component {
                 </div>
                 {this.state.open &&
                     <PushInput
+                        type={this.state.type}
                         handleOpen={this.closeEdit}
                         data={this.state.data[this.state.editIndex]}
                     />

@@ -30,9 +30,9 @@ import Push from './components/push/Push';
 // import PopularArticleBuilt from './components/push/PopularArticleBuilt';
 // import MediaPlaform from './components/push/MediaPlaform';
 import BlackList from './components/push/BlackList';
-import PushPage from './components/push_install/PushPage';
-import SetBlacklist from './components/push_install/SetBlackList'; 
-import InstallationGuide from './components/push_install/InstallationGuide';
+// import PushPage from './components/push_install/PushPage';
+// import SetBlacklist from './components/push_install/SetBlackList'; 
+// import InstallationGuide from './components/push_install/InstallationGuide';
 import SetTrackingCode from './components/install_setting/SetTrackingCode';
 import ModifySetting from './components/install_setting/ModifySetting';
 import InstallTrackingCode from './components/install_setting/InstallTrackingCode';
@@ -46,6 +46,8 @@ import LoginAndSecure from './components/main_page/LoginAndSecure';
 import Billing from './components/main_page/Billing';
 import DebitCard from './components/main_page/DebitCard';
 import Service from './components/main_page/Service';
+import Board from './components/install_setting/Board';
+import EditPage from './components/main_page/EditPage';
 
 class App extends Component {
   state = {}
@@ -68,7 +70,6 @@ class App extends Component {
           {/* <Route path="/portrait" component={AnalyticPortrait} /> */}
           {/* 用戶分群 */}
           {/* <Route path="/group" component={AnalyticGroup} /> */}
-          
           {/* 推播 主題活動-新增 */}
           {/* <Route path="/push/add" component={ActivityNew} /> */}
           {/* 推播 主題活動-修改廣告 */}
@@ -115,8 +116,10 @@ class App extends Component {
           <Route path="/signup/success" component={VerifySuccess} />
           {/* sign in*/}
           <Route path="/signup/signin" component={SignIn} />
-          {/* 會員中心 (導覽)、會員中心 (編輯使用者資訊) */}
+          {/* 會員中心 (編輯使用者資訊) */}
           <Route path="/memberCentre/edit" component={EditUserInfo} />
+          {/* 會員中心 (編輯網站資訊) */}
+          <Route path="/memberCentre/website" component={EditPage} />
           {/* 會員中心 (登入與帳號安全) */}
           <Route path="/memberCentre/loginAndSecure" component={LoginAndSecure} />
           {/* 會員中心(帳單與儲值) */}
@@ -129,12 +132,14 @@ class App extends Component {
           <Route exact path="/push" component={Push} />
           {/* 推播 黑名單 */}
           <Route path="/push/blacklist" component={BlackList} />
+          {/* 布告欄（清單） */}
+          <Route path="/board" component={Board} />
           {/* 特定頁面推播 */}
-          <Route exact path="/pushInstall" component={PushPage} />
+          {/* <Route exact path="/pushInstall" component={PushPage} /> */}
           {/* 設定黑名單-已建立 */}
-          <Route path="/pushInstall/blacklist" component={SetBlacklist} />
+          {/* <Route path="/pushInstall/blacklist" component={SetBlacklist} /> */}
           {/* 安裝教學 */}
-          <Route path="/pushInstall/installationGuide" component={InstallationGuide} />
+          {/* <Route path="/pushInstall/installationGuide" component={InstallationGuide} /> */}
         </Router>
       </div>
     );

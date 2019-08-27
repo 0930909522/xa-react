@@ -8,8 +8,6 @@ class EditUserInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            guideNum: 0,
-            visited: null,
             editData: [true, true],
             data: {
                 "nickname": "小明",
@@ -32,19 +30,6 @@ class EditUserInfo extends Component {
             temporaryData: null
 
         };
-        this.guide = [<div><h2 className="my-5">歡迎使用智媒推推</h2><h4 className="my-5">智媒推推讓您更有效的流量提升，針對媒體與電商的需求設計，讓您更簡便的投放操作。</h4>
-        </div>, <div><p>AAAAAAA</p></div>, <div><p>BBBBB</p></div>];
-    }
-    handleChange = e => {
-        this.setState({ guideNum: e.target.value })
-    }
-    componentDidMount() {
-        if (localStorage.getItem('visited') !== '1') {
-            this.setState({ visited: 0 });
-        } else {
-            this.setState({ visited: 1 });
-        }
-        localStorage.setItem('visited', '1');
     }
     changeBtn = i => {
         const newEditData = this.state.editData;
@@ -66,21 +51,6 @@ class EditUserInfo extends Component {
         return (
             <>
                 <Header />
-                <div className={this.state.visited === 0 ? "w-100 bg_gray" : "w-100 bg_gray d-none"}>
-                    <div className="box w-75 mx-auto p-5 bg-white my-5">
-                        <div className="d-inline-block h-15em">
-                            {this.guide[this.state.guideNum]}
-                        </div>
-                        <div className="d-flex flex-column">
-                            <button className="align-self-start my-5 btn btn-info">開始使用</button>
-                            <div className="text-center">
-                                <input name="choose" type="radio" className="mx-2" value="0" onChange={this.handleChange} defaultChecked />
-                                <input name="choose" type="radio" className="mx-2" value="1" onChange={this.handleChange} />
-                                <input name="choose" type="radio" className="mx-2" value="2" onChange={this.handleChange} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>

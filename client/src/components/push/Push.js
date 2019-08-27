@@ -78,7 +78,7 @@ class Push extends Component {
                     </table>
                   </div>
                 </div>
-                {this.state.openList && <PushList />}
+                {this.state.openList && <PushList type={this.state.title} />}
               </div>
             </Row>
           </Container>

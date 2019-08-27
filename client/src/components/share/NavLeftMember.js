@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import { FaLock, FaCreditCard } from 'react-icons/fa';
+import { FaLock, FaCreditCard, FaLaptop } from 'react-icons/fa';
 import {IoMdPerson} from 'react-icons/io';
 
 class NavLeftMember extends Component {
@@ -14,6 +14,7 @@ class NavLeftMember extends Component {
         <h2><span style={{fontSize:"20px"}}>今周刊</span> 數據分析 </h2>
         <ul className="nav_left">
           <li className={(this.props.one)?'selected_text':'text-dark'}> <IoMdPerson /> <Link to="/memberCentre/edit" className="dec_none btn_like">編輯使用者資訊</Link></li>
+          <li className={(this.props.four)?'selected_text':'text-dark'}> <FaLaptop /> <Link to="/memberCentre/website" className="dec_none btn_like">編輯網站資訊</Link></li>
           <li className={(this.props.two)?'selected_text':'text-dark'}> <FaLock /> <Link to="/memberCentre/loginAndSecure" className="dec_none btn_like">登入與帳號安全</Link></li>
           <li className={(this.props.three)?'selected_text':'text-dark'}> <FaCreditCard /> <Link to="/memberCentre/billing/two" className="dec_none btn_like">帳單與儲值</Link></li>
         </ul>
