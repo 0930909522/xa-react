@@ -78,7 +78,7 @@ class AnalyticSource extends Component {
           </select>
         </div>
         {
-          this.state.basic ? <BarChart width={650} height={300} data={data}>
+          this.state.basic ? <BarChart width={800} height={300} data={data}>
           <CartesianGrid stroke="#eee" />
           <Tooltip labelFormatter={(name) => '' + name} />
           <Bar type="monotone" dataKey="old" name={user[0].name} fill={user[0].color} />

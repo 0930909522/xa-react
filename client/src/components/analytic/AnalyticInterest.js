@@ -7,7 +7,7 @@ import { Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bo
 import { CircularProgressbar, buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 
-class AnalyticGroup extends Component {
+class AnalyticInterest extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +23,7 @@ class AnalyticGroup extends Component {
     }
 
     getDataFromDb = () => {
-        axios.get('http://r.xnet.world/demo/analyticGroup.json')
+        axios.get('http://r.xnet.world/demo/analyticInterest.json')
             .then(response => {
                 let circles = response.data.circles;
                 let newCircles = JSON.stringify(circles);
@@ -75,7 +75,7 @@ class AnalyticGroup extends Component {
                                                     </CircularProgressbarWithChildren>
                                                 </div>
                                                 <div className="rightbox">
-                                                    <span>興趣排行</span> {this.state.now +1} <br />
+                                                    <span>興趣排行</span> {this.state.now +1}  <br />
                                                     <span>閱讀總數</span> {this.state.circles[this.state.now].count}
                                                 </div>
                                             </h3>
@@ -160,4 +160,4 @@ class AnalyticGroup extends Component {
     }
 }
 
-export default AnalyticGroup;
+export default AnalyticInterest;
