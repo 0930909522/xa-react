@@ -15,13 +15,13 @@ class EditPage extends Component {
             status: 0,
             data: [{
                 sn: '幸福來敲門',
-                dn: 'happycometrue.com',
+                dn: 'happycometrue',
                 type: 'newmedia',
                 choose: false,
                 edit: false
             }, {
                 sn: '創意時代',
-                dn: 'culturallaunch.com',
+                dn: 'culturallaunch',
                 type: 'newmedia',
                 choose: false,
                 edit: true

@@ -264,10 +264,10 @@ button.radius20 {
     opacity: 1;
 }
 
-.table_checkbox{
+.table_checkbox {
     width: 1.5rem;
-        height: 1.5rem;
-        vertical-align: middle;
+    height: 1.5rem;
+    vertical-align: middle;
 }
 
 %forTable {
@@ -285,13 +285,21 @@ button.radius20 {
     }
 }
 
-.table_simple{
-    th{
+.table_simple {
+    th {
         border-bottom: 1px solid $black;
     }
-    tr:not(:last-child){
-        td:not(:last-child):not(:first-child){
-            border-bottom: 1px solid $gray;
+    tr{
+        td:not(:last-child):not(:first-child) {
+            width: 20%;
+            input{
+                width: 100%;
+            }
+        }
+        &:not(:last-child) {
+            td:not(:last-child):not(:first-child) {
+                border-bottom: 1px solid $gray;
+            }
         }
     }
 }
@@ -313,7 +321,6 @@ button.radius20 {
 //     top: 0;
 //     right: 0;
 // }
-
 // .table-triangle-down {
 //     position: absolute;
 //     border-style: solid;
@@ -322,7 +329,6 @@ button.radius20 {
 //     bottom: 0;
 //     right: 0;
 // }
-
 .table_r {
     border-collapse: collapse;
     th,
@@ -583,10 +589,53 @@ button.radius20 {
     }
 }
 
-.iframe_border{
-    width:500px;
+.iframe_border {
+    width: 500px;
     height: 500px;
     overflow: auto;
     margin: 20px auto;
     border: 1px solid $gray;
+}
+
+.person_btn {
+    position: relative;
+    &:hover {
+        .person_sign {
+            max-height: 200px;
+            overflow: visible;
+            z-index: 2;
+            &::before {
+                content: '\25B2';
+                color: #1D4E87;
+                font-size: 25px;
+                position: absolute;
+                top: -25px;
+                left: 60px;
+                margin: auto;
+            }
+        }
+    }
+    .person_sign {
+        background: #1D4E87;
+        box-sizing: border-box;
+        color: white;
+        max-height: 0;
+        overflow: hidden;
+        list-style: none;
+        position: absolute;
+        transform: translate(-55px, 20px);
+        transition: all .2s ease;
+        width: 150px;
+        li {
+            padding: 10px 0;
+            text-align: center;
+            &:not(:last-child) {
+                border-bottom: 0.5px solid white;
+            }
+            &:hover{
+                background: #163D69;
+            }
+        }
+        
+    }
 }

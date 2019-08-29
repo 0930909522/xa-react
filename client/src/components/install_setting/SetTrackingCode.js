@@ -43,7 +43,7 @@ class SetTrackingCode extends Component {
         this.setState({ data: newData });
     }
     submit = () => {
-        let postData = this.state.data;
+        let postData = this.state.data;      
         for (let i in postData) {
             if (postData[i] === '') {
                 alert('欄位不可為空');
@@ -62,12 +62,9 @@ class SetTrackingCode extends Component {
     }
     cancel = () => {
         const newData = this.state.data;
-        for (let i in newData) {
-            newData[i] = '';
-            if (i === 'type') {
-                newData[i] = 'newmedia';
-            }
-        }
+        newData.dn = '';
+        newData.sn = '';
+        newData.type = 'newmedia';
         this.setState({ data: newData });
     }
     render() {

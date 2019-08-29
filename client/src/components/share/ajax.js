@@ -75,7 +75,7 @@ export const login = postData => {
         })
 }
 
-export const tracking = async (postData) => {
+export const trackingList = async (postData) => {
     let data;
     await fetch('http://192.168.50.103/sbir/website/signup', {
         method: 'POST',
@@ -96,9 +96,51 @@ export const tracking = async (postData) => {
     return data;
 }
 
+export const tracking = async (postData) => {
+    let data;
+    await fetch('http://192.168.50.103/sbir/website/create', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    })
+        .then(response => response.json())
+        .then(response => {
+            data = forAjax(response);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    return data;
+}
+
+export const modifyTracking = async (postData) => {
+    let data;
+    await fetch('http://192.168.50.103/sbir/website/modify', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    })
+        .then(response => response.json())
+        .then(response => {
+            data = forAjax(response);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    return data;
+}
+
 export const pushpage = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/brandlist', {
+    await fetch('http://192.168.50.103/sbir/board/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
