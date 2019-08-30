@@ -134,6 +134,13 @@ class EditPage extends Component {
                                                     <button className="btn_noborder text-primary" onClick={() => this.changeStatus(1)}><FaPlusCircle /></button>
                                                 </th>
                                             </tr>
+                                            <tr>
+                                                <th>狀態</th>
+                                                <th>網站名稱</th>
+                                                <th>網站網址</th>
+                                                <th>產業類型</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             {/* <tr>

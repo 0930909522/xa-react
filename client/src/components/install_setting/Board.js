@@ -33,7 +33,7 @@ class Board extends Component {
         getBoard(postData) //載入資訊
             .then(response => {
                 let getData = response || [];
-                if(getData.length === 0){
+                if (getData.length === 0) {
                     this.changeStatus(1);
                 }
                 getData.forEach(function (val, index, array) {
@@ -43,7 +43,7 @@ class Board extends Component {
                 this.setState({ data: getData });
                 console.log(getData)
             })
-        this.setState({userAddingData: Object.assign({}, initialUserAddingData)}); //初始化
+        this.setState({ userAddingData: Object.assign({}, initialUserAddingData) }); //初始化
 
     }
     toggleClickAll = e => {
@@ -77,7 +77,12 @@ class Board extends Component {
         this.setState({ content: newContent });
     }
     changeStatus = num => {
-        this.setState({ status: num })
+
+        if (num === 0) {
+            this.setState({ status: num, userAddingData: Object.assign({}, initialUserAddingData) })
+        } else {
+            this.setState({ status: num })
+        }
         console.log(num)
     }
     saveData = (text, data) => {
@@ -95,17 +100,17 @@ class Board extends Component {
         this.changeStatus(1);
     }
     deleteList = () => {
-        let postData = {token: null, boardIdList: []};
+        let postData = { token: null, boardIdList: [] };
         postData.token = localStorage.getItem('token');
-        this.state.data.forEach((val)=>{
-            if(val.choose){
+        this.state.data.forEach((val) => {
+            if (val.choose) {
                 postData.boardIdList.push(val.boardId);
             }
         })
         deleteBoard(postData)
-        .then(response=>{
-            window.location.reload();
-        })
+            .then(response => {
+                window.location.reload();
+            })
     }
 
     render() {
@@ -117,7 +122,7 @@ class Board extends Component {
                         <Row>
                             <NavLeftPush three />
                             <div className="main_right">
-                                <h2 className="btn_like" onClick={() => this.changeStatus(0)}>佈告欄</h2>
+                                <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">佈告欄</span></h2>
                                 <div className={this.state.status === 0 ? 'd-none' : ''}>
                                     <span className={this.state.status > 0 ? 'text-primary' : ''}>選取黑名單項目</span>
                                     <span>&nbsp;｜&nbsp;</span>

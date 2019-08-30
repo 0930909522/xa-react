@@ -11,7 +11,7 @@ const TableElement = (props) => {
                     {val.verified ? <div className="warning_icon bg-success">已認證</div> : <div className="warning_icon bg-danger">未認證</div>}
                 </td>
                 <td>
-                    <h5>{val.sn}</h5>
+                    {val.sn}
                 </td>
                 <td>
                     {val.dn}

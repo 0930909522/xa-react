@@ -1,5 +1,6 @@
 $black: #000000;
 $gray: #bebebe;
+$gray2: #A8A8A8;
 $placeholder: #757575;
 $blue: #4E82F7;
 $blue2: #0071bc;
@@ -12,6 +13,20 @@ $orange: #f8b551;
 
 html {
     background: #f3f3f3;
+}
+
+.p_relative {
+    position: relative;
+}
+
+.opacity0 {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.opacity1 {
+    opacity: 1;
 }
 
 h1,
@@ -286,7 +301,13 @@ button.radius20 {
 }
 
 .table_simple {
-    th {
+    tr:hover {
+        td {
+            background: #EDEDED;
+            cursor: pointer;
+        }
+    }
+    tr:nth-child(2) th {
         border-bottom: 1px solid $black;
     }
     tr {
@@ -298,7 +319,7 @@ button.radius20 {
             }
         }
         &:not(:last-child) {
-            td{
+            td {
                 border-bottom: 1px solid $gray;
             }
         }
@@ -640,11 +661,90 @@ button.radius20 {
     }
 }
 
-.warning_icon{
+.warning_icon {
     border-radius: 10px;
     background-color: yellow;
     color: #FFFFFF;
     font-size: 12px;
     padding: 5px;
     @extend .btn_like;
+}
+
+%small_alert {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 0;
+    transition: all .3s ease;
+    .content {
+        border-radius: 10px;
+        left: 0;
+        margin: 0 auto;
+        max-width: 30%;
+        position: absolute;
+        padding: 5px;
+        right: 0;
+        top: 20px;
+        text-align: center;
+        &::before {
+            content: '\25B2';
+            font-size: 25px;
+            position: absolute;
+            top: -25px;
+            left: 47.5%;;
+        }
+    }
+}
+
+.small_alert_danger {
+    @extend %small_alert;
+    .content {
+        background-color: #F8D7DA;
+        &::before {
+            color: #F8D7DA;
+        }
+    }
+}
+
+.small_alert_success {
+    @extend %small_alert;
+    .content {
+        background-color: #D4EDDA;
+        &::before {
+            color: #D4EDDA;
+        }
+    }
+}
+
+.alertMsg{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    .content{
+        @extend .radius10;
+        border: 3px solid $gray2;
+        background: #FFFFFF;
+        display: table-cell;
+        font-weight: 600;
+        text-align: center;
+        min-height: 100px;
+        padding: 7px 10px 15px;
+        width: 300px;
+        word-break: break-all;
+        .close_btn{
+            @extend .btn_like;
+            border-radius: 100%;
+            border: none;
+            color: #FFFFFF;
+            background: #F45D5D;
+            outline: none;
+        }
+        p{
+            display: inline-block;
+            margin: 0;
+            text-align: left;
+        }
+    }
 }

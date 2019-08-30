@@ -12,16 +12,16 @@ class SetBlackList extends Component {
             data: [],
             modified: false
         }
-        this.clickAllBtn = null;
+        // this.clickAllBtn = null;
     }
     componentDidMount() {
         let newData = this.props.sendData.step1Data || [];
         const getData = this.props.sendData;
-        if (getData.boardId === null) {
+        if (getData.boardId === null) { //新增資料狀態
             newData.forEach(function (val, index, array) {
                 array[index] = { choose: false, name: val }
             })
-        } else {
+        } else { //修改資料狀態
             let bol = false;
             newData.forEach(function (val, index, array) {
                 (getData.blacklist.find(element => element === val) !== undefined) ? bol = true : bol = false;
@@ -32,13 +32,13 @@ class SetBlackList extends Component {
 
         this.setState({ data: newData });
     }
-    toggleClickAll = e => {
-        const newContent = [...this.state.data];
-        newContent.forEach(function (val) {
-            val.choose = e.target.checked;
-        })
-        this.setState({ data: newContent });
-    }
+    // toggleClickAll = e => {
+    //     const newContent = [...this.state.data];
+    //     newContent.forEach(function (val) {
+    //         val.choose = e.target.checked;
+    //     })
+    //     this.setState({ data: newContent });
+    // }
     toggleStatus = num => {
         const newData = this.state.data;
         newData[num].choose = !newData[num].choose;
@@ -59,19 +59,30 @@ class SetBlackList extends Component {
         postData.acceptType = this.props.sendData.acceptType;
         postData.token = localStorage.getItem('token');
         postData.owner = localStorage.getItem('view');
-        if(this.state.modified){
+        if (this.state.modified) {
             postData.boardId = this.props.sendData.boardId;
             modifyBoard(postData);
             window.location.reload();
-        }else{
+        } else {
             setblacklist(postData)
-            .then((res) => {
-                this.props.getResponseData('boardId', res);
-                this.props.changeStatus(3);
-            })
+                .then((res) => {
+                    this.props.getResponseData('boardId', res);
+                    this.props.changeStatus(3);
+                })
         }
     }
     render() {
+        // 不可全選
+        let arr = this.state.data;
+        let countBtn = arr.reduce((accumulator, currentValue) => {
+            if (currentValue.choose === true) {
+                return accumulator + 1;
+            } else {
+                return accumulator;
+            }
+        }, 0);
+        (countBtn === arr.length) ? countBtn = true : countBtn = false;
+        
         return (
             <>
                 {/* <Header />
@@ -87,8 +98,8 @@ class SetBlackList extends Component {
                     <table className="pushTable_r w-100 text-center" cellPadding="15">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" onClick={this.toggleClickAll} ref={(e) => this.clickAllBtn = e} /></th>
-                                <th>網站名稱</th>
+                                {/* <th><input type="checkbox" onClick={this.toggleClickAll} ref={(e) => this.clickAllBtn = e} /></th> */}
+                                <th colSpan="2">網站名稱</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -104,7 +115,7 @@ class SetBlackList extends Component {
                     </table>
                 </div>
                 <div className="text-center my-3" >
-                    <button className="btn btn-secondary mx-1" onClick={this.submit}>&nbsp;&nbsp;&nbsp;確認&nbsp;&nbsp;&nbsp;</button>
+                    <button className="btn btn-secondary mx-1" onClick={this.submit} disabled={countBtn} >&nbsp;&nbsp;&nbsp;確認&nbsp;&nbsp;&nbsp;</button>
                     <button className="btn btn-secondary mx-1" onClick={() => this.props.changeStatus(0)}>&nbsp;&nbsp;&nbsp;取消&nbsp;&nbsp;&nbsp;</button>
                 </div>
                 {/* </div>

@@ -1,20 +1,35 @@
 import React, { Component } from 'react';
+import Smallalert from '../share/Smallalert';
 // import { Container, Row } from "react-bootstrap";
 // import Header from "../Header";
 // import NavLeftPush from "../share/NavLeftPush";
 // import PushTitle from '../share/PushTitle';
 
 class InstallationGuide extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            size:[200, 300]
+            showAlert: false,
+            size: [200, 300]
         }
     }
-    changeSize = (index, num) =>{
+    changeSize = (index, num) => {
         let newSize = this.state.size;
         newSize[index] = num;
-        this.setState({size: newSize});
+        this.setState({ size: newSize });
+    }
+    copyId = () => {
+        document.getElementById('copiedText').select();
+        let copyState = false;
+        if (document.execCommand('copy')) {
+            copyState = 1;
+        } else {
+            copyState = 2;
+        }
+        this.setState({ showAlert: copyState });
+        setTimeout(() => {
+            this.setState({ showAlert: false });
+        }, 4000);
     }
     render() {
         return (
@@ -31,10 +46,17 @@ class InstallationGuide extends Component {
                     <h2>3個步驟就能在網站上安裝廣告模組</h2>
                     <br />
                     <div className="text-center">
-                        <label className="mx-2">寬度：<input type="text" onChange={(e)=>this.changeSize(0, e.target.value)} /></label>
-                        <label className="mx-2">高度：<input type="text" onChange={(e)=>this.changeSize(1, e.target.value)} /></label>
-                        <div id={this.props.sendData} w="350" h="620" className="xnet_widget iframe_border">
+                        <label className="mx-2">寬度：<input defaultValue="200" type="text" onChange={(e) => this.changeSize(0, e.target.value)} /></label>
+                        <label className="mx-2">高度：<input defaultValue="300" type="text" onChange={(e) => this.changeSize(1, e.target.value)} /></label>
+                        <div className="iframe_border">
                             <iframe title="example" width={this.state.size[0]} height={this.state.size[1]} src="http://www.writephponline.com/" />
+                        </div>
+                        <div className="my-5">
+                            {/* <h5 className="w-75 mx-auto bg-primary p-3 radius10 text-light"><small>我的 ID</small><p className="mt-2"><strong>{}</strong></p></h5> */}
+                            <textarea value={`<div id="${this.props.sendData}" w="${this.state.size[0]}" h="${this.state.size[1]}" class="xnet_widget"></div>`} style={{ 'width': '500px' }} id="copiedText" className="p-3" readOnly></textarea>
+                            <button className="d-block btn btn-info mx-auto" onClick={this.copyId}>點我複製 ID</button>
+                            <Smallalert text="複製成功" attr={this.state.showAlert === 1 ? 'small_alert_success opacity1' : 'opacity0'} />
+                            <Smallalert text="無法複製" attr={this.state.showAlert === 2 ? 'small_alert_danger opacity1' : 'opacity0'} />
                         </div>
                     </div>
                     <h5>步驟一：</h5>

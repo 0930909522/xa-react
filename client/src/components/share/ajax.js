@@ -1,5 +1,5 @@
 export const register = async (postData) => {
-    fetch('http://192.168.50.103/sbir/signup', {
+    fetch('http://192.168.50.103/sbir/user/signup', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -12,7 +12,7 @@ export const register = async (postData) => {
         .then(response => {
             switch (response.status) {
                 case 1:
-                    window.location.href = '/signup/signin';
+                    window.location.href = '/sbir/user/signin';
                     break;
                 case 2:
                     alert('電子信箱重覆');
@@ -31,7 +31,7 @@ export const register = async (postData) => {
 }
 
 export const login = postData => {
-    fetch('http://192.168.50.103/sbir/signin', {
+    fetch('http://192.168.50.103/sbir/user/signin', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -46,16 +46,16 @@ export const login = postData => {
                 case 1:
                     localStorage.setItem('token', response.token);
                     localStorage.setItem('name', response.name);
-                    if (typeof response.view ===  'undefined') {
+                    if (!response.hasOwnProperty('view')) {
                         // 如果第一次登入
                         localStorage.setItem('visited', '1');
-                        // window.location.href = '/trackingCode/setting';
+                        window.location.href = '/trackingCode/setting';
                     } else {
                         localStorage.setItem('visited', '0');
                         localStorage.setItem('view', response.view);
-                        // window.location.href = '/memberCentre/edit';
+                        window.location.href = '/memberCentre/edit';
                     }
-                    window.location.href = '/memberCentre/edit';
+                    // window.location.href = '/memberCentre/edit';
                     break;
                 case 2:
                     alert('帳號不正確');
@@ -160,6 +160,7 @@ export const modifyTracking = async (postData) => {
 //     return data;
 // }
 
+// 第一階段選擇後送出
 export const pushpage = async postData => {
     let data;
     await fetch('http://192.168.50.103/sbir/brand/list', {
@@ -178,6 +179,8 @@ export const pushpage = async postData => {
     })
     return data;
 }
+
+// 選擇黑名單送出
 export const setblacklist = async postData => {
     let data;
     await fetch('http://192.168.50.103/sbir/board', {
