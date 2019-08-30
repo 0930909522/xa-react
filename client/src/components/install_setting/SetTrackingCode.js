@@ -4,7 +4,7 @@ import { Row, Col } from "react-bootstrap";
 // import NavLeftPush from "../share/NavLeftPush";
 // import SettingTitle from '../share/SettingTitle';
 // import Footer from '../Footer';
-import { tracking } from '../share/ajax';
+import { addTracking } from '../share/ajax';
 
 class SetTrackingCode extends Component {
     constructor(props) {
@@ -43,7 +43,8 @@ class SetTrackingCode extends Component {
         this.setState({ data: newData });
     }
     submit = () => {
-        let postData = this.state.data;      
+        let postData = this.state.data;
+        postData.dn = postData.dn.replace('https://', '').replace('http://', '');   
         for (let i in postData) {
             if (postData[i] === '') {
                 alert('欄位不可為空');
@@ -51,12 +52,11 @@ class SetTrackingCode extends Component {
             }
         }
         postData.token = localStorage.getItem('token');
-        tracking(postData).then(response => {
+        addTracking(postData).then(response => {
             if (response !== undefined) {
-                console.log(response)
                 localStorage.setItem('view', response.view);
                 alert('資料傳送成功，前往新專案');
-                this.cancel();
+                window.location.reload();
             }
         })
     }

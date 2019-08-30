@@ -7,88 +7,104 @@ import { FaTrashAlt, FaPlusCircle } from "react-icons/fa";
 import SetTrackingCode from "../install_setting/SetTrackingCode";
 import TableElement from './TableElement';
 import TableElementEdit from './TableElementEdit';
+import { trackingList, modifyTracking } from '../share/ajax';
 
 class EditPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             status: 0,
-            data: [{
-                sn: '幸福來敲門',
-                dn: 'happycometrue',
-                type: 'newmedia',
-                choose: false,
-                edit: false
-            }, {
-                sn: '創意時代',
-                dn: 'culturallaunch',
-                type: 'newmedia',
-                choose: false,
-                edit: true
-            }],
+            data: [],
         }
     }
     componentDidMount() {
-        // let postData = {};
-        // postData.token = localStorage.getItem('token');
-        // postData.owner = localStorage.getItem('view');
-        // getBoard(postData) //載入資訊
-        //     .then(response => {
-        //         let getData = response || [];
-        //         if(getData.length === 0){
-        //             this.changeStatus(1);
-        //         }
-        //         getData.forEach(function (val, index, array) {
-        //             array[index].show = false;
-        //             array[index].choose = false;
-        //         })
-        //         this.setState({ data: getData });
-        //         console.log(getData)
-        //     })
-        // this.setState({userAddingData: Object.assign({}, initialUserAddingData)}); //初始化
+        let postData = {};
+        postData.token = localStorage.getItem('token');
+        trackingList(postData)
+            .then(response => {
+                let getData = response || [];
+                if (getData.length === 0) {
+                    this.changeStatus(1);
+                }
+                getData.forEach(function (val, index, array) {
+                    array[index].edit = false;
+                    // array[index].choose = false;
+                })
+                this.setState({ data: getData });
+            })
 
     }
-    toggleClickAll = e => {
-        const newContent = [...this.state.data];
-        newContent.forEach(function (val) {
-            val.choose = e.target.checked;
-        })
-        this.setState({
-            content: newContent,
-            showBtn: e.target.checked
-        });
-    }
-    clickCheckbox = index => {
-        const newContent = [...this.state.data];
-        let booleanBtn = false;
-        newContent[index].choose = !newContent[index].choose;
-        for (let i of newContent) {
-            if (i.choose) {
-                booleanBtn = true;
-                break;
-            }
-        }
-        this.setState({
-            content: newContent,
-            showBtn: booleanBtn
-        });
-    }
+    // toggleClickAll = e => {
+    //     const newContent = [...this.state.data];
+    //     newContent.forEach(function (val) {
+    //         val.choose = e.target.checked;
+    //     })
+    //     this.setState({
+    //         content: newContent,
+    //         showBtn: e.target.checked
+    //     });
+    // }
+    // clickCheckbox = index => {
+    //     const newContent = [...this.state.data];
+    //     let booleanBtn = false;
+    //     newContent[index].choose = !newContent[index].choose;
+    //     for (let i of newContent) {
+    //         if (i.choose) {
+    //             booleanBtn = true;
+    //             break;
+    //         }
+    //     }
+    //     this.setState({
+    //         content: newContent,
+    //         showBtn: booleanBtn
+    //     });
+    // }
     changeStatus = num => {
         this.setState({ status: num })
         console.log(num)
     }
-    editData = index =>{
+    editData = index => {
         const newData = this.state.data;
         newData[index].edit = !newData[index].edit;
-        this.setState({data: newData})
+        this.setState({ data: newData })
     }
-    submitEdit = (index, data) =>{
+    submitEdit = (index, data) => {
         const newData = this.state.data;
         newData[index].sn = data[0];
         newData[index].type = data[1];
-        this.setState({data: newData});
-        this.editData(index);
+        if(newData[index].verified === false){
+            newData[index].dn = data[2];
+        }
+        this.setState({ data: newData });
+        const postData = {...newData[index]};
+        delete postData.choose;
+        delete postData.verified;
+        delete postData.edit;
+        if(newData[index].verified === true){
+            delete postData.dn;
+        }else{
+            postData.dn = data[2];
+        }
+        postData.token = localStorage.getItem('token');
+        console.log(postData)
+        modifyTracking(postData)
+        .then(response=>{
+            if(response.status === 4){
+                alert('此專案已不存在');
+                window.location.reload();
+                return ;
+            }
+            this.editData(index);
+        })
     }
+    // deleteList = () => {
+    //     const postData = {
+    //         token: localStorage.getItem('token'),
+
+    //     };
+        
+
+    // }
 
     render() {
         return (
@@ -120,29 +136,29 @@ class EditPage extends Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            {/* <tr>
                                                 <td>
                                                     <input type="checkbox" className="table_checkbox" onClick={this.toggleClickAll} />
                                                 </td>
                                                 <td colSpan="3"></td>
-                                            </tr>
+                                            </tr> */}
                                             {this.state.data.map((val, index) => (
                                                 !val.edit ? <TableElement
                                                     val={val}
                                                     index={index}
-                                                    key={val.sn}
+                                                    key={index}
                                                     clickCheckbox={this.clickCheckbox}
                                                     editData={this.editData}
                                                 />
                                                     :
-                                                <TableElementEdit
-                                                    val={val}
-                                                    index={index}
-                                                    key={val.sn}
-                                                    clickCheckbox={this.clickCheckbox}
-                                                    editData={this.editData}
-                                                    submitData={this.submitEdit}
-                                                />
+                                                    <TableElementEdit
+                                                        val={val}
+                                                        index={index}
+                                                        key={index}
+                                                        clickCheckbox={this.clickCheckbox}
+                                                        editData={this.editData}
+                                                        submitData={this.submitEdit}
+                                                    />
                                             ))}
                                             {(this.state.showBtn) && <tr><td colSpan="4"></td><td className="btn_like" onClick={this.deleteList}><FaTrashAlt /></td></tr>}
                                         </tbody>

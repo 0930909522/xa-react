@@ -49,12 +49,13 @@ export const login = postData => {
                     if (typeof response.view ===  'undefined') {
                         // 如果第一次登入
                         localStorage.setItem('visited', '1');
-                        window.location.href = '/trackingCode/setting';
+                        // window.location.href = '/trackingCode/setting';
                     } else {
                         localStorage.setItem('visited', '0');
                         localStorage.setItem('view', response.view);
-                        window.location.href = '/memberCentre/edit';
+                        // window.location.href = '/memberCentre/edit';
                     }
+                    window.location.href = '/memberCentre/edit';
                     break;
                 case 2:
                     alert('帳號不正確');
@@ -77,7 +78,7 @@ export const login = postData => {
 
 export const trackingList = async (postData) => {
     let data;
-    await fetch('http://192.168.50.103/sbir/website/signup', {
+    await fetch('http://192.168.50.103/sbir/website/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -88,7 +89,7 @@ export const trackingList = async (postData) => {
     })
         .then(response => response.json())
         .then(response => {
-            data = forAjax(response);
+            data = forAjax(response).websitelist;
         })
         .catch(err => {
             console.log(err);
@@ -96,9 +97,9 @@ export const trackingList = async (postData) => {
     return data;
 }
 
-export const tracking = async (postData) => {
+export const addTracking = async (postData) => {
     let data;
-    await fetch('http://192.168.50.103/sbir/website/create', {
+    await fetch('http://192.168.50.103/sbir/website', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -119,8 +120,8 @@ export const tracking = async (postData) => {
 
 export const modifyTracking = async (postData) => {
     let data;
-    await fetch('http://192.168.50.103/sbir/website/modify', {
-        method: 'POST',
+    await fetch('http://192.168.50.103/sbir/website', {
+        method: 'PUT',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
@@ -138,9 +139,30 @@ export const modifyTracking = async (postData) => {
     return data;
 }
 
+// export const deleteTracking = async (postData) => {
+//     let data;
+//     await fetch('http://192.168.50.103/sbir/website', {
+//         method: 'DELETE',
+//         mode: 'cors',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Accept': 'application/json'
+//         },
+//         body: JSON.stringify(postData)
+//     })
+//         .then(response => response.json())
+//         .then(response => {
+//             data = forAjax(response);
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         })
+//     return data;
+// }
+
 export const pushpage = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/list', {
+    await fetch('http://192.168.50.103/sbir/brand/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -158,7 +180,7 @@ export const pushpage = async postData => {
 }
 export const setblacklist = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/create', {
+    await fetch('http://192.168.50.103/sbir/board', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -177,7 +199,7 @@ export const setblacklist = async postData => {
 
 export const getBoard = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/boardlist', {
+    await fetch('http://192.168.50.103/sbir/board/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -196,8 +218,8 @@ export const getBoard = async postData => {
 
 export const modifyBoard = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/update', {
-        method: 'POST',
+    await fetch('http://192.168.50.103/sbir/board', {
+        method: 'PUT',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
@@ -215,7 +237,7 @@ export const modifyBoard = async postData => {
 
 export const deleteBoard = async postData => {
     let data = [];
-    await fetch('http://192.168.50.103/sbir/board/delete', {
+    await fetch('http://192.168.50.103/sbir/board', {
         method: 'DELETE',
         mode: 'cors',
         headers: {
@@ -248,6 +270,7 @@ function forAjax(response){
             alert('無法預期的錯誤');
             break;
         default:
+            newData = response;
             console.log(response);
             break;
     }

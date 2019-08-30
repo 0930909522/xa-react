@@ -289,15 +289,16 @@ button.radius20 {
     th {
         border-bottom: 1px solid $black;
     }
-    tr{
-        td:not(:last-child):not(:first-child) {
-            width: 20%;
-            input{
+    tr {
+        td:nth-child(2),
+        td:nth-child(3) {
+            width: 30%;
+            input {
                 width: 100%;
             }
         }
         &:not(:last-child) {
-            td:not(:last-child):not(:first-child) {
+            td{
                 border-bottom: 1px solid $gray;
             }
         }
@@ -632,10 +633,18 @@ button.radius20 {
             &:not(:last-child) {
                 border-bottom: 0.5px solid white;
             }
-            &:hover{
+            &:hover {
                 background: #163D69;
             }
         }
-        
     }
+}
+
+.warning_icon{
+    border-radius: 10px;
+    background-color: yellow;
+    color: #FFFFFF;
+    font-size: 12px;
+    padding: 5px;
+    @extend .btn_like;
 }
