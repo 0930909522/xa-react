@@ -12,6 +12,7 @@ import AnalyticInteraction from './components/analytic/AnalyticInteraction';
 import AnalyticAsset from './components/analytic/AnalyticAsset';
 import AnalyticPortrait from './components/analytic/AnalyticPortrait';
 import AnalyticGroup from './components/analytic/AnalyticGroup';
+import Test from './components/analytic/Test';
 import DBTest from './components/DBTest';
 import Push from './components/push/Push';
 // import ActivityNew from './components/push/ActivityNew';
@@ -70,6 +71,10 @@ class App extends Component {
           <Route path="/portrait" component={AnalyticPortrait} />
           {/* 用戶分群 */}
           <Route path="/group" component={AnalyticGroup} />
+
+          {/* 測試用 */}
+          <Route path="/test" component={Test} />
+          
           {/* 推播 主題活動-新增 */}
           {/* <Route path="/push/add" component={ActivityNew} /> */}
           {/* 推播 主題活動-修改廣告 */}

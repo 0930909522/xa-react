@@ -6,119 +6,373 @@ import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
 import Detail from './AnalyticAssetDetail';
+import Loading from '../../images/loading.svg';
 import { PieChart, Pie, Cell, LineChart, Line, Tooltip, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
+
+import CanvasJSReact from './assets/canvasjs.react';
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class AnalyticAsset extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isDetail: false,
-      assetId: "rise",
-      categoryId: "c1",
+      //isDetail: false,
+      //assetId: "rise",
+      //categoryId: "c1",
+      categoryId: "all",
+      subCategoryId: "",
+      category: [],
+      subCategory: [],
       listIndex: 0,
+      listInterval: 7,
       intervalIsSet: false,
       newData: "",
       basic: "",
+      articles: "",
+      isLoading: false,
+      noData: false,
+      color: ["4f81bc", "c0504e", "9bbb58", "23bfaa", "8064a1", "4aacc5", "f79647", "788c8b", "067795"],
+      assetName: [
+        "上升資料",
+        "衰退資產",
+        "主力資產",
+        "孱弱資產",
+      ],
+      getApi: [
+        "https://node.aiday.org/sbir/asset/overview",
+        "https://node.aiday.org/sbir/asset/summary",
+        "https://node.aiday.org/sbir/asset/detail",
+      ]
     }
   }
 
   componentDidMount() {
-    this.getDataFromDb();
+    this.getApiFromDb(0);
+    //this.getDataFromDb();
   }
 
-  getDataFromDb = () => {
-    // axios.get('/datas/analyticAsset.json')
-    axios.get('http://r.xnet.world/demo/analyticAsset.json')
-      .then(response => {
-        this.setState({
-          basic: response.data,
-          newData: response.data.type[0]
+  apiOverview = (response) =>{
+      let res = response.data;
+        if( res.status === 1){
+          res.data = res.data.filter( item => {
+            return item.lineChart !== null && item.id !== "mean"
+          });
+        }
+        let category = [];
+        res.data.map( (item, index) => {
+          if(!item.name){
+            res.data[index].name = item.id
+          }
+          category.push({
+            id: item.id,
+            name: item.name,
+          });
         });
+
+        let noData = false;
+        noData = res.data.length ? false : true;
+        this.setState({
+          basic: res,
+          isLoading: false,
+          noData: noData,
+          category: category,
+          subCategory: [],
+          articles: "",
+        });
+  }
+
+  apiSummary = (response) => {
+    let res = response.data;
+    if( res.status === 1){
+      res.data = res.data.filter( item => {
+        return item.lineChart !== null && item.id !== "mean"
+      });
+    }
+    let subCategory = [];
+    res.data.map( (item, index) => {
+      if(!item.name){
+        res.data[index].name = item.id
+      }
+      subCategory.push({
+        id: item.id,
+        name: item.name,
+      });
+    });
+    let noData = false;
+    noData = res.data.length ? false : true;
+    this.setState({
+      basic: res,
+      isLoading: false,
+      noData: noData,
+      subCategory: subCategory,
+      articles: "",
+    });
+  }
+
+  apiDetail = (response) => {
+    let res = response.data;
+    if( res.status === 1){
+      res.data = res.data.filter( item => {
+        return item.lineChart !== null && item.id !== "mean"
+      });
+    }
+    this.setState({ articles: res }, () => {
+      //console.log(this.state.articles);
+    });
+  }
+
+  getApiFromDb = (apiIndex) => {
+      axios.post(this.state.getApi[apiIndex], {
+        type: this.state.listIndex + 1,
+        interval: this.state.listInterval,
+        owner: "foodnext",
+        token: "123",
+        id1: this.state.categoryId,
+        id2: this.state.subCategoryId,
+      }, {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      }})
+      .then(response => {
+        switch (apiIndex) {
+          case 0 :
+            this.apiOverview(response);
+            break;
+          case 1 :
+            this.apiSummary(response);
+            break;
+          case 2 :
+            this.apiDetail(response);
+            break;
+        }
       })
       .catch(function (error) {
         console.log(error);
       });
-  };
+  }
 
+  // getDataFromDb = () => {
+  //   // axios.get('/datas/analyticAsset.json')
+  //   axios.get('http://r.xnet.world/demo/analyticAsset.json')
+  //     .then(response => {
+  //       this.setState({
+  //         basic: response.data,
+  //         newData: response.data.type[0]
+  //       });
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // };
+
+  //點選大標題（上升...）
   listClick(i) {
+    this.setState({isLoading: true});
     this.setState({
-      newData: this.state.basic.type[i],
-      listIndex: i
+      //newData: this.state.basic.type[i],
+      listIndex: i,
+      categoryId: "all"
+    }, () => {
+      this.getApiFromDb(0);
     });
+    
   }
-  goDetail = (id) => {
-    console.log("id", id);
-    this.setState({ categoryId: id });
-    this.openPopup()
-  }
+  // goDetail = (id) => {
+  //   console.log("id", id);
+  //   this.setState({ categoryId: id });
+  //   this.openPopup()
+  // }
 
   openPopup = () => {
     this.setState(prev => ({ isDetail: !prev.isDetail }));
   }
+  setInterval = (e) => {
+    this.setState({
+      isLoading: true,
+      listInterval: e.target.value}, ()=>{
+        this.state.categoryId === "all" ?
+          this.getApiFromDb(0) :
+          this.getApiFromDb(1);
+      });
+  }
+
+
+  clickSubCategorylist = e => {
+    let id = e.target.value;
+    let name = e.target.options[e.target.selectedIndex].text;
+    this.setSubCategory(id, name)
+  }
+
+  clickCategorylist = e => {
+    let id = e.target.value;
+    let name = e.target.options[e.target.selectedIndex].text;
+    this.setCategory(id, name)
+  }
+  setCategory = (id, name) => {
+    this.setState({
+      isLoading: true,
+      categoryName: name,
+      subCategoryId: "",
+      categoryId: id}, ()=>{
+        if(id === "all"){
+          this.getApiFromDb(0);
+        } else {
+          this.getApiFromDb(1);
+        }
+    });
+  }
+  setSubCategory = (id, name) => {
+    this.setState({
+      subCategoryName: name,
+      subCategoryId: id}, ()=>{
+        this.getApiFromDb(2);
+    });
+  }
+
+  addPieData = () => {
+    let result = [];
+    let sum = 0;
+    this.state.basic ? this.state.basic.data.map( item => {
+      sum += item.pv
+    }): console.log("Error");
+    if(sum !== 0){
+      let now = this;
+      this.state.basic.data.map( item => {
+        let y = item.pv;
+        let p = Math.round((item.pv / sum) * 10000) / 100;
+        let label = item.name;
+        let id = item.id;
+        result.push({ y: y, p: p, label: label, id: id, 
+          click: (e) => {
+            this.state.categoryId !== "all" ? 
+              now.setSubCategory(e.dataPoint.id, e.dataPoint.label) :
+              now.setCategory(e.dataPoint.id, e.dataPoint.label);
+          }
+        });
+      });
+    }
+    return result
+  }
+
+  addLineData = () => {
+    let result = [];
+    this.state.basic ? this.state.basic.data.map( (item, index) => {
+      let subResult = [];
+      item.lineChart ? item.lineChart.map((subItem)=>{
+        let _y = subItem.date.split("-")[0],
+            _m = subItem.date.split("-")[1] - 1,
+            _d = subItem.date.split("-")[2];
+        subResult.push({
+          x: new Date(_y, _m, _d),
+          y: subItem.pv,
+        })
+      }): console.log("Error");
+      let info = {
+        type: "line",
+        showInLegend: true,
+        name: item.name,
+        markerType: "square",
+        xValueFormatString: "DD MMM, YYYY",
+        color: "#"+this.state.color[index],
+        dataPoints: subResult
+      }
+      result.push(info);
+    }): console.log("Error");
+    return result
+  }
+
+  addLineDetailData = () => {
+    let result = [];
+    this.state.articles ? this.state.articles.data.map( (item, index) => {
+      let subResult = [];
+      item.lineChart ? item.lineChart.map((subItem)=>{
+        let _y = subItem.date.split("-")[0],
+            _m = subItem.date.split("-")[1] - 1,
+            _d = subItem.date.split("-")[2];
+        subResult.push({
+          x: new Date(_y, _m, _d),
+          y: subItem.pv,
+        })
+      }): console.log("Error");
+      let info = {
+        type: "line",
+        showInLegend: true,
+        name: item.name,
+        markerType: "square",
+        xValueFormatString: "DD MMM, YYYY",
+        color: "#"+this.state.color[index],
+        dataPoints: subResult
+      }
+      console.log("info", info);
+      result.push(info);
+    }): console.log("Error");
+    return result
+  }
 
   render() {
     const RADIAN = Math.PI / 180;
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-      const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-      const y = cy + radius * Math.sin(-midAngle * RADIAN);
-      return (
-        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-          {`${(percent * 100).toFixed(0)}%`}
-        </text>
-      );
-    };
     const proportion = this.state.newData.proportion;
     const lineChart = this.state.newData.lineChart;
-    const renderProportion = (
-      <>
-        <div className="chart_ids">
-          {proportion ? <ul className="type_raw">
-            {proportion.map((item, i) => <li key={i}><span className="dot" style={{ backgroundColor: item.color }}></span> {item.name}</li>)}
-          </ul> : <span />}
-
-          <select >
-            {this.state.basic ? this.state.basic.interval.map(
-              (item, index) => <option key={index} value={index}>{item.name}</option>) : ""}
-          </select>
-        </div>
-        {
-          this.state.basic ? <PieChart width={800} height={400} onMouseEnter={this.onPieEnter}>
-            <Pie
-              data={proportion}
-              // cx={150}
-              // cy={150}
-              labelLine={false}
-              label={renderCustomizedLabel}
-              outerRadius={150}
-              fill="#8884d8"
-              dataKey="value"
-            >
-              {
-                proportion.map((item, i) => <Cell onClick={() => this.goDetail(item.id) } key={i} fill={item.color} />)
-              }
-            </Pie>
-          </PieChart> : <span />
+    const pieData = {
+			exportEnabled: false,
+      animationEnabled: true,
+      // width: 400,
+			// title: {
+			// 	text: "全部分類"
+      // },
+      titleFontSize: 14,
+      legend:{
+        cursor: "pointer",
+        verticalAlign	:"top",
+        horizontalAlign	:"center",
+        itemclick: (e) => {
+          this.state.categoryId !== "all" ? 
+            this.setSubCategory(e.dataPoint.id, e.dataPoint.label) :
+            this.setCategory(e.dataPoint.id, e.dataPoint.label);
         }
-      </>
-    );
-    const renderLineChart = (
-      <>
-        {proportion ?
-          <LineChart width={800} height={400} data={lineChart}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
-            <Legend />
-            {/* <Line type="monotone" dataKey="c1" stroke="#8884d8" activeDot={{ r: 8 }} /> */}
-            {proportion.map((item, i) => <Line key={i} type="monotone" dataKey={item.id} stroke={item.color} name={item.name} />)}
-          </LineChart> : <span />}
-      </>
-    );
-
-
+      },
+			data: [{
+        type: "pie",
+        radius:  "80%",
+				startAngle: 75,
+        toolTipContent: "<b>{label}</b>: {y}%",
+				showInLegend: true,
+				legendText: "{label}",
+				indexLabelFontSize: 14,
+        indexLabel: "{label}：{p}% - 瀏覽數：{y} ",
+				dataPoints: this.addPieData()
+			}]
+    };
+    const lineData = {
+			animationEnabled: true,
+			// title:{
+			// 	text: "Monthly Sales - 2017"
+      // },
+      // width: 700,
+      axisX:{      
+        // valueFormatString: "DD-MMM" ,
+        // labelAngle: -50
+      },
+			axisY: {
+				title: "瀏覽量",
+				//prefix: "$",
+				includeZero: false
+			},
+			data: this.addLineData()
+    };
+    const lineDetailData = {
+			animationEnabled: true,
+      axisX:{      
+        valueFormatString: "DD-MMM" ,
+        labelAngle: -50
+      },
+			axisY: {
+				title: "瀏覽量",
+				includeZero: false
+			},
+			data: this.addLineDetailData()
+		};
     return (
       <>
         <Header />
@@ -126,40 +380,103 @@ class AnalyticAsset extends Component {
           <Container className="main_analytic">
             <Row>
               <NavLeft />
-
-              {this.state.isDetail ?
+              {/* {this.state.isDetail ?
                 <Detail
                   openPopup={this.openPopup}
                   assetId={this.state.assetId}
                   categoryId={this.state.categoryId}
-                /> : <span />}
+                /> : <span />} */}
               <div className="main_right">
                 <h2>資產價值</h2>
                 <div className="box">
                   <div className="list">
-                    <ul>
-                      {this.state.basic ? this.state.basic.type.map((item, index) =>
-                        index === this.state.listIndex ?
-                          <li onClick={() => this.listClick(index)} className="act" key={index}>{item.name}</li> :
-                          <li onClick={() => this.listClick(index)} key={index}>{item.name}</li>
-                      ) : ""}
+                    <ul>                    
+                      {this.state.assetName.map((item, index) =>
+                          index === this.state.listIndex ?
+                            <li onClick={() => this.listClick(index)} className="act" key={index}>{item}</li> :
+                            <li onClick={() => this.listClick(index)} key={index}>{item}</li>
+                      )}
                     </ul>
                   </div>
                 </div>
                 <div className="box">
-                  <h3>分類占比</h3>
+                  <h3>分類占比
+                    <div className="select">
+                      <label>
+                        主分類：
+                        <select value={this.state.categoryId} onChange={this.clickCategorylist}>
+                          <option value="all">全部</option>
+                          {this.state.category ? this.state.category.map( (item, index) => 
+                            <option key={index} value={item.id}>{item.name}</option>
+                          ):console.log("Error")}
+                        </select>
+                      </label>
+
+                      {this.state.subCategory.length > 0 ? <label>
+                        次分類：
+                        <select value={this.state.subCategoryId} onChange={this.clickSubCategorylist}>
+                          <option value="all">全部</option>
+                          {this.state.subCategory ? this.state.subCategory.map( (item, index) => 
+                            <option key={index} value={item.id}>{item.name}</option>
+                          ):console.log("Error")}
+                        </select>
+                      </label> : <span/>}
+
+                      {/* subCategory */}
+                      <label>
+                        分析區間：
+                        <select onChange={this.setInterval}>
+                          <option value="7">一週趨勢</option>
+                          <option value="5">5日趨勢</option>
+                          <option value="3">3日趨勢</option>
+                          <option value="1">1日趨勢</option>
+                        </select>
+                      </label>
+                    </div>
+                  </h3>
+                  
+                  
                   <div className="chart_box">
-                    <div className="chart">
-                      {renderProportion}
+                    {this.state.categoryId !== "all" ? 
+                      <div className="subtitle">主分類：<span>{this.state.categoryName}</span></div> : <span />
+                    }
+                    <div className="chart" >
+                      {/* {renderProportion} */}
+                      {this.state.isLoading ? 
+                        <div style={{lineHeight: "300px"}}><img src={Loading} alt="Loading" /></div> : 
+                        !this.state.noData ? <CanvasJSChart options = {pieData} /> : <div style={{lineHeight: "300px"}}>該區間無資料</div>
+                      }
                     </div>
                   </div>
+                  
+                  {this.state.articles.data ? <React.Fragment>
+                    <h3>{this.state.subCategoryName} <span>文章排行</span></h3>
+                    <ul className="articles">
+                      {this.state.articles.data.map( (item, index) => 
+                        <li key={index}>
+                          <span className="pv"><span>瀏覽 </span>{item.pv}</span> <a href={item.id}>{item.name}</a>
+                        </li>
+                      )}
+                    </ul>
+                    <hr/>
+                    <div className="chart_box">
+                      <CanvasJSChart options = {lineDetailData} /> 
+                    </div>
+                    
+                  </React.Fragment> : <span />}
+                  
                 </div>
 
                 <div className="box">
                   <h3>{this.state.newData.name} 流量統計</h3>
                   <div className="chart_box">
                     <div className="chart">
-                      {renderLineChart}
+
+                      {this.state.isLoading ? 
+                        <div style={{lineHeight: "300px"}}><img src={Loading} alt="Loading" /></div> : 
+                        !this.state.noData ? <CanvasJSChart options = {lineData} /> : <div style={{lineHeight: "300px"}}>該區間無資料</div>
+                      }
+                      
                     </div>
                   </div>
                 </div>
