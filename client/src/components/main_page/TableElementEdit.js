@@ -6,23 +6,25 @@ class TableElementEdit extends Component {
         super(props);
         this.sn = null;
         this.type = null;
+        this.dn = null;
     }
     submit = () =>{
-        this.props.submitData(this.props.index, [this.sn.value, this.type.value]);
+        this.props.submitData(this.props.index, [this.sn.value, this.type.value, this.dn.value]);
     }
     render() {
-        const { val, index, clickCheckbox, editData } = this.props;
+        const { val, index, editData } = this.props;
         return (
             <React.Fragment>
                 <tr>
                     <td className="align-items-center">
-                        <input type="checkbox" className="table_checkbox" checked={val.choose} onChange={() => clickCheckbox(index)} />
+                        {/* <input type="checkbox" className="table_checkbox" checked={val.choose} onChange={() => clickCheckbox(index)} /> */}
+                        {val.verified ? <div className="warning_icon bg-success">已認證</div> : <div className="warning_icon bg-danger">未認證</div>}
                     </td>
                     <td>
                         <input type="text" className="pl-1" defaultValue={val.sn} ref={(e)=>this.sn = e} />
                     </td>
                     <td>
-                        <input type="text" className="pl-1" value={val.dn} disabled />
+                        <input type="text" className="pl-1" defaultValue={val.dn} disabled={val.verified} ref={(e)=>this.dn = e} />
                     </td>
                     <td>
                         <select defaultValue={val.type} ref={(e)=>this.type = e} >

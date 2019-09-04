@@ -1,5 +1,6 @@
 $black: #000000;
 $gray: #bebebe;
+$gray2: #A8A8A8;
 $placeholder: #757575;
 $blue: #4E82F7;
 $blue2: #0071bc;
@@ -12,6 +13,20 @@ $orange: #f8b551;
 
 html {
     background: #f3f3f3;
+}
+
+.p_relative {
+    position: relative;
+}
+
+.opacity0 {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.opacity1 {
+    opacity: 1;
 }
 
 h1,
@@ -264,10 +279,10 @@ button.radius20 {
     opacity: 1;
 }
 
-.table_checkbox{
+.table_checkbox {
     width: 1.5rem;
-        height: 1.5rem;
-        vertical-align: middle;
+    height: 1.5rem;
+    vertical-align: middle;
 }
 
 %forTable {
@@ -285,13 +300,28 @@ button.radius20 {
     }
 }
 
-.table_simple{
-    th{
+.table_simple {
+    tr:hover {
+        td {
+            background: #EDEDED;
+            cursor: pointer;
+        }
+    }
+    tr:nth-child(2) th {
         border-bottom: 1px solid $black;
     }
-    tr:not(:last-child){
-        td:not(:last-child):not(:first-child){
-            border-bottom: 1px solid $gray;
+    tr {
+        td:nth-child(2),
+        td:nth-child(3) {
+            width: 30%;
+            input {
+                width: 100%;
+            }
+        }
+        &:not(:last-child) {
+            td {
+                border-bottom: 1px solid $gray;
+            }
         }
     }
 }
@@ -313,7 +343,6 @@ button.radius20 {
 //     top: 0;
 //     right: 0;
 // }
-
 // .table-triangle-down {
 //     position: absolute;
 //     border-style: solid;
@@ -322,7 +351,6 @@ button.radius20 {
 //     bottom: 0;
 //     right: 0;
 // }
-
 .table_r {
     border-collapse: collapse;
     th,
@@ -583,15 +611,141 @@ button.radius20 {
     }
 }
 
-.iframe_border{
-    width:500px;
+.iframe_border {
+    width: 500px;
     height: 500px;
     overflow: auto;
     margin: 20px auto;
     border: 1px solid $gray;
 }
 
-
-.canvasjs-chart-credit {
-    display: none;
+.person_btn {
+    position: relative;
+    &:hover {
+        .person_sign {
+            max-height: 200px;
+            overflow: visible;
+            z-index: 2;
+            &::before {
+                content: '\25B2';
+                color: #1D4E87;
+                font-size: 25px;
+                position: absolute;
+                top: -25px;
+                left: 60px;
+                margin: auto;
+            }
+        }
+    }
+    .person_sign {
+        background: #1D4E87;
+        box-sizing: border-box;
+        color: white;
+        max-height: 0;
+        overflow: hidden;
+        list-style: none;
+        position: absolute;
+        transform: translate(-55px, 20px);
+        transition: all .2s ease;
+        width: 150px;
+        li {
+            padding: 10px 0;
+            text-align: center;
+            &:not(:last-child) {
+                border-bottom: 0.5px solid white;
+            }
+            &:hover {
+                background: #163D69;
+            }
+        }
+    }
 }
+
+.warning_icon {
+    border-radius: 10px;
+    background-color: yellow;
+    color: #FFFFFF;
+    font-size: 12px;
+    padding: 5px;
+    @extend .btn_like;
+}
+
+%small_alert {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 0;
+    transition: all .3s ease;
+    .content {
+        border-radius: 10px;
+        left: 0;
+        margin: 0 auto;
+        max-width: 30%;
+        position: absolute;
+        padding: 5px;
+        right: 0;
+        top: 20px;
+        text-align: center;
+        &::before {
+            content: '\25B2';
+            font-size: 25px;
+            position: absolute;
+            top: -25px;
+            left: 47.5%;;
+        }
+    }
+}
+
+.small_alert_danger {
+    @extend %small_alert;
+    .content {
+        background-color: #F8D7DA;
+        &::before {
+            color: #F8D7DA;
+        }
+    }
+}
+
+.small_alert_success {
+    @extend %small_alert;
+    .content {
+        background-color: #D4EDDA;
+        &::before {
+            color: #D4EDDA;
+        }
+    }
+}
+
+.alertMsg{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    .content{
+        @extend .radius10;
+        border: 3px solid $gray2;
+        background: #FFFFFF;
+        display: table-cell;
+        font-weight: 600;
+        text-align: center;
+        min-height: 100px;
+        padding: 7px 10px 15px;
+        width: 300px;
+        word-break: break-all;
+        .close_btn{
+            @extend .btn_like;
+            border-radius: 100%;
+            border: none;
+            color: #FFFFFF;
+            background: #F45D5D;
+            outline: none;
+        }
+        p{
+            display: inline-block;
+            margin: 0;
+            text-align: left;
+        }
+    }
+}
+

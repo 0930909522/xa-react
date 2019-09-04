@@ -1,12 +1,34 @@
 import React, { Component } from 'react';
-import { Container , Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 import { FaBell, FaUser } from 'react-icons/fa';
+import AlertMsg from './share/AlertMsg';
 
 class Header extends Component {
-  state = {}
+  state = { showAlertMsg: false };
+  logout = () => {
+    if(!localStorage.getItem('name')){
+      window.location.href = '/sbir/user/signin';
+      return;
+    }
+    this.setState({ showAlertMsg: true });
+    setTimeout(() => {
+      this.setState({ showAlertMsg: false });
+      localStorage.removeItem('name');
+      localStorage.removeItem('view');
+      localStorage.removeItem('visited');
+      localStorage.removeItem('token');
+      window.location.href = '/sbir/user/signin';
+    }, 4000);
+  }
   render() {
     return (
-        <Navbar variant="dark"  className="main_header">
+      <>
+        <AlertMsg
+          text="登出成功..."
+          attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+          close={() => this.setState({ showAlertMsg: false })}
+        />
+        <Navbar variant="dark" className="main_header">
           <Container>
             <Navbar.Brand href="#home">
               <img src="/logo.jpg" alt="pt" /> Xnet Analytics <span>     </span>
@@ -19,13 +41,22 @@ class Header extends Component {
               <Nav.Link href="#buy">功能購買</Nav.Link>
             </Nav>
             <Nav.Link href=""><FaBell className="header_svg" /></Nav.Link>
-            <Nav.Link href="/memberCentre/edit"><FaUser className="header_svg" /></Nav.Link>
+            <div className="person_btn">
+              <div ref={(e) => this.person_sign = e} className="btn_like"><FaUser className="header_svg" />
+              </div>
+              <ul className="person_sign">
+                <li>{localStorage.getItem('name') || '訪客'}</li>
+                <li><Nav.Link href="/memberCentre/edit">進入會員中心</Nav.Link></li>
+                <li className="btn_like" onClick={this.logout}>{localStorage.getItem('name')?'登出':'登入'}</li>
+              </ul>
+            </div>
             {/* <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-2" />
               <Button variant="outline-primary">Search</Button>
             </Form> */}
           </Container>
         </Navbar>
+      </>
     );
   }
 }

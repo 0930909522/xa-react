@@ -1,5 +1,5 @@
 export const register = async (postData) => {
-    fetch('http://192.168.50.103/sbir/signup', {
+    fetch('http://192.168.50.103/sbir/user/signup', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -12,7 +12,7 @@ export const register = async (postData) => {
         .then(response => {
             switch (response.status) {
                 case 1:
-                    window.location.href = '/signup/signin';
+                    window.location.href = '/sbir/user/signin';
                     break;
                 case 2:
                     alert('電子信箱重覆');
@@ -31,7 +31,7 @@ export const register = async (postData) => {
 }
 
 export const login = postData => {
-    fetch('http://192.168.50.103/sbir/signin', {
+    fetch('http://192.168.50.103/sbir/user/signin', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -46,7 +46,7 @@ export const login = postData => {
                 case 1:
                     localStorage.setItem('token', response.token);
                     localStorage.setItem('name', response.name);
-                    if (typeof response.view ===  'undefined') {
+                    if (!response.hasOwnProperty('view')) {
                         // 如果第一次登入
                         localStorage.setItem('visited', '1');
                         window.location.href = '/trackingCode/setting';
@@ -55,6 +55,7 @@ export const login = postData => {
                         localStorage.setItem('view', response.view);
                         window.location.href = '/memberCentre/edit';
                     }
+                    // window.location.href = '/memberCentre/edit';
                     break;
                 case 2:
                     alert('帳號不正確');
@@ -75,9 +76,30 @@ export const login = postData => {
         })
 }
 
-export const tracking = async (postData) => {
+export const trackingList = async (postData) => {
     let data;
-    await fetch('http://192.168.50.103/sbir/website/signup', {
+    await fetch('http://192.168.50.103/sbir/website/list', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    })
+        .then(response => response.json())
+        .then(response => {
+            data = forAjax(response).websitelist;
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    return data;
+}
+
+export const addTracking = async (postData) => {
+    let data;
+    await fetch('http://192.168.50.103/sbir/website', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -96,9 +118,52 @@ export const tracking = async (postData) => {
     return data;
 }
 
+export const modifyTracking = async (postData) => {
+    let data;
+    await fetch('http://192.168.50.103/sbir/website', {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    })
+        .then(response => response.json())
+        .then(response => {
+            data = forAjax(response);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    return data;
+}
+
+// export const deleteTracking = async (postData) => {
+//     let data;
+//     await fetch('http://192.168.50.103/sbir/website', {
+//         method: 'DELETE',
+//         mode: 'cors',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Accept': 'application/json'
+//         },
+//         body: JSON.stringify(postData)
+//     })
+//         .then(response => response.json())
+//         .then(response => {
+//             data = forAjax(response);
+//         })
+//         .catch(err => {
+//             console.log(err);
+//         })
+//     return data;
+// }
+
+// 第一階段選擇後送出
 export const pushpage = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/brandlist', {
+    await fetch('http://192.168.50.103/sbir/brand/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -114,9 +179,11 @@ export const pushpage = async postData => {
     })
     return data;
 }
+
+// 選擇黑名單送出
 export const setblacklist = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/create', {
+    await fetch('http://192.168.50.103/sbir/board', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -135,7 +202,7 @@ export const setblacklist = async postData => {
 
 export const getBoard = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/boardlist', {
+    await fetch('http://192.168.50.103/sbir/board/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -154,8 +221,8 @@ export const getBoard = async postData => {
 
 export const modifyBoard = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/update', {
-        method: 'POST',
+    await fetch('http://192.168.50.103/sbir/board', {
+        method: 'PUT',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
@@ -173,7 +240,7 @@ export const modifyBoard = async postData => {
 
 export const deleteBoard = async postData => {
     let data = [];
-    await fetch('http://192.168.50.103/sbir/board/delete', {
+    await fetch('http://192.168.50.103/sbir/board', {
         method: 'DELETE',
         mode: 'cors',
         headers: {
@@ -206,6 +273,7 @@ function forAjax(response){
             alert('無法預期的錯誤');
             break;
         default:
+            newData = response;
             console.log(response);
             break;
     }

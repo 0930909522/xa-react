@@ -76,7 +76,6 @@ class PushInput extends Component {
             newData.action = 'modify';
         }
         newData.type = this.props.type;
-        console.log(newData)
         this.setState({ editIndex: newEditIndex, data: newData })
     }
     addingTopic = (e, type, index) => {
