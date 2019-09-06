@@ -129,7 +129,7 @@ class PushPage extends Component {
                     <table className="pushTable_r w-100" cellPadding="15">
                         <thead>
                             <tr>
-                                <th colSpan="2"><input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;選取佈告欄類型</th>
+                                <th colSpan="2"><input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;選取類型</th>
                             </tr>
                         </thead>
                         {this.state.content.map((val, index) => (

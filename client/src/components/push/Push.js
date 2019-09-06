@@ -17,10 +17,10 @@ class Push extends Component {
     }
   }
   chooseType = type => {
-    let newTitle = null;
-    if (type === '主題活動' || type === '專題報導') {
-      newTitle = '<span> / 特定推播</span>';
-    }
+    let newTitle = '';
+    // if (type === '主題活動' || type === '專題報導') {
+    //   newTitle = '<span> / 特定推播</span>';
+    // }
     newTitle += '<strong className="font_20 btn_like"> / ' + type + '</strong>';
     this.setState({ title: newTitle, openList: true });
   }
@@ -37,7 +37,7 @@ class Push extends Component {
             <Row>
               <NavLeftPush two />
               <div className="main_right">
-                <h2><span className="btn_like" onClick={this.closeList}>推播設定</span><span dangerouslySetInnerHTML={{ __html: this.state.title }}></span></h2>
+                <h2><span className="btn_like" onClick={this.closeList}>推出去</span><span dangerouslySetInnerHTML={{ __html: this.state.title }}></span></h2>
                 <PushTitle one />
                 <div className={this.state.openList === true ? 'd-none' : ''}>
                   <div className="box radius10">
@@ -61,8 +61,8 @@ class Push extends Component {
                       <tbody>
                         <tr>
                           <td><button className="btn_outline w-75" onClick={() => this.chooseType('主題活動')}><FaRegCalendar />&nbsp;主題活動</button></td>
-                          <td><button className="btn_outline w-75"><FaHandPointUp />&nbsp;選擇電商平台</button></td>
-                          <td><button className="btn_outline w-75"><FaHandPointUp />&nbsp;選擇媒體平台</button></td>
+                          {/* <td><button className="btn_outline w-75"><FaHandPointUp />&nbsp;選擇電商平台</button></td>
+                          <td><button className="btn_outline w-75"><FaHandPointUp />&nbsp;選擇媒體平台</button></td> */}
                         </tr>
                         <tr>
                           <td><button className="btn_outline w-75" onClick={() => this.chooseType('專題報導')}><FaRegNewspaper />&nbsp;專題報導</button></td>
@@ -71,8 +71,8 @@ class Push extends Component {
                         </tr>
                         <tr>
                           <td></td>
-                          <td><button className="btn_outline w-75"><FaFireAlt />&nbsp;熱門商品</button></td>
-                          <td><button className="btn_outline w-75"><FaFireAlt />&nbsp;熱門文章</button></td>
+                          {/* <td><button className="btn_outline w-75"><FaFireAlt />&nbsp;熱門商品</button></td>
+                          <td><button className="btn_outline w-75"><FaFireAlt />&nbsp;熱門文章</button></td> */}
                         </tr>
                       </tbody>
                     </table>

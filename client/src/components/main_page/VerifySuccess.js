@@ -19,7 +19,7 @@ class VerifySuccess extends Component {
                                     <FaCheck style={{ 'color': '#16C60C' }} />
                                 </div>
                                 <p>已經成功建立智媒推推帳號<br />登入後就可以開始管理你的廣告服務</p>
-                                <Link to="/signup/signin" className="dec_none"><button className="d-block btn btn-outline-primary w-75 mx-auto mt-5 mb-2 radius20 font_20">前往</button></Link>
+                                <Link to="/signup/signin" className="dec_none"><button className="d-block btn btn-outline-primary w-75 mx-auto mt-5 mb-2 radius20 font_20">立即登入</button></Link>
                             </div>
                         </div>
                     </Container>

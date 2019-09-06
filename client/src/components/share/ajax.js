@@ -1,5 +1,5 @@
 export const register = async (postData) => {
-    fetch('http://192.168.50.103/sbir/user/signup', {
+    fetch('https://node.aiday.org/sbir/user/signup', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -12,7 +12,7 @@ export const register = async (postData) => {
         .then(response => {
             switch (response.status) {
                 case 1:
-                    window.location.href = '/sbir/user/signin';
+                    window.location.href = '/signup/signin';
                     break;
                 case 2:
                     alert('電子信箱重覆');
@@ -31,7 +31,7 @@ export const register = async (postData) => {
 }
 
 export const login = postData => {
-    fetch('http://192.168.50.103/sbir/user/signin', {
+    fetch('https://node.aiday.org/sbir/user/signin', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -55,7 +55,6 @@ export const login = postData => {
                         localStorage.setItem('view', response.view);
                         window.location.href = '/memberCentre/edit';
                     }
-                    // window.location.href = '/memberCentre/edit';
                     break;
                 case 2:
                     alert('帳號不正確');
@@ -78,7 +77,7 @@ export const login = postData => {
 
 export const trackingList = async (postData) => {
     let data;
-    await fetch('http://192.168.50.103/sbir/website/list', {
+    await fetch('https://node.aiday.org/sbir/website/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -99,7 +98,7 @@ export const trackingList = async (postData) => {
 
 export const addTracking = async (postData) => {
     let data;
-    await fetch('http://192.168.50.103/sbir/website', {
+    await fetch('https://node.aiday.org/sbir/website', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -120,7 +119,7 @@ export const addTracking = async (postData) => {
 
 export const modifyTracking = async (postData) => {
     let data;
-    await fetch('http://192.168.50.103/sbir/website', {
+    await fetch('https://node.aiday.org/sbir/website', {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -141,7 +140,7 @@ export const modifyTracking = async (postData) => {
 
 // export const deleteTracking = async (postData) => {
 //     let data;
-//     await fetch('http://192.168.50.103/sbir/website', {
+//     await fetch('https://node.aiday.org/sbir/website', {
 //         method: 'DELETE',
 //         mode: 'cors',
 //         headers: {
@@ -163,7 +162,7 @@ export const modifyTracking = async (postData) => {
 // 第一階段選擇後送出
 export const pushpage = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/brand/list', {
+    await fetch('https://node.aiday.org/sbir/brand/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -183,7 +182,7 @@ export const pushpage = async postData => {
 // 選擇黑名單送出
 export const setblacklist = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board', {
+    await fetch('https://node.aiday.org/sbir/board', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -202,7 +201,7 @@ export const setblacklist = async postData => {
 
 export const getBoard = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board/list', {
+    await fetch('https://node.aiday.org/sbir/board/list', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -221,7 +220,7 @@ export const getBoard = async postData => {
 
 export const modifyBoard = async postData => {
     let data;
-    await fetch('http://192.168.50.103/sbir/board', {
+    await fetch('https://node.aiday.org/sbir/board', {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -240,7 +239,7 @@ export const modifyBoard = async postData => {
 
 export const deleteBoard = async postData => {
     let data = [];
-    await fetch('http://192.168.50.103/sbir/board', {
+    await fetch('https://node.aiday.org/sbir/board', {
         method: 'DELETE',
         mode: 'cors',
         headers: {
@@ -253,6 +252,25 @@ export const deleteBoard = async postData => {
         response.forEach(val=>{
             forAjax(val);
         })
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
+
+export const getUserInfo = async postData => {
+    let data;
+    await fetch('https://node.aiday.org/sbir/user/info', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    }).then(response => response.json()
+    ).then(response => {
+        data = forAjax(response);
     }).catch(err => {
         console.log(err);
     })

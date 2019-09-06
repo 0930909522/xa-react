@@ -3,49 +3,61 @@ import { Container, Row } from "react-bootstrap";
 import Header from "../Header";
 import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
+import { getUserInfo } from '../share/ajax';
+import EditUserInfoElement from './EditUserInfoElement';
 
 class EditUserInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            editData: [true, true],
+            editData: false,
             data: {
-                "nickname": "小明",
-                "email": "a123@gmail.com",
-                "company": "智媒",
-                "serviceType": "新媒體",
-                "job": "PM",
-                "data": [{
-                    "id": 1,
-                    "name": "美環",
-                    "email": "beautiful@gmail.com",
-                    "permission": "分析員"
-                }, {
-                    "id": 2,
-                    "name": "美環",
-                    "email": "beautiful@gmail.com",
-                    "permission": "分析員"
-                }]
+                "name": "",
+                "email": "",
+                "companyName": "",
+                "companyType": "",
+                "taxId": ""
             },
             temporaryData: null
-
         };
+        this.title = ['電子郵件信箱', '暱稱', '公司名稱', '服務類型', '統編']
     }
-    changeBtn = i => {
-        const newEditData = this.state.editData;
-        if(newEditData[i] === false){
-            this.setState({data: this.state.temporaryData, temporaryData: null});
+    componentDidMount() {
+        let postData = { token: localStorage.getItem('token') };
+        getUserInfo(postData).then(response => {
+            let newData = response;
+            delete newData.status;
+            this.setState({ data: newData })
+        })
+    }
+    changeBtn = () => {
+        let haveInput = false;
+        if (this.state.editData) {
+            // 編輯模式中
+            for (let i in this.state.data) {
+                if (this.state.data[i] !== '') {
+                    haveInput = true;
+                }
+            }
+            if (!haveInput) {
+                // 如果沒輸入
+                this.setState({ data: this.state.temporaryData });
+            } else {
+                // 有輸入，送出資料
+            }
+        } else {
+            // 檢視模式
+            this.setState({ temporaryData: this.state.data });
         }
-        newEditData[i] = !newEditData[i];
-        this.setState({ editData: newEditData });
+        this.setState({ editData: !this.state.editData });
     }
-    typeData = e =>{
-        let newData = this.state.temporaryData;
-        if(newData === null){
-            newData = this.state.data;
+    typeData = e => {
+        let newData = this.state.data;
+        if(e.target.id === 'eamil' || e.target.id === 'taxId'){
+            return ;
         }
         newData[e.target.id] = e.target.value;
-        this.setState({temporaryData: newData});
+        this.setState({ data: newData });
     }
     render() {
         return (
@@ -60,21 +72,20 @@ class EditUserInfo extends Component {
                                 <div className=" mt-20">
                                     <h4 className="text-primary">個人檔案</h4>
                                     <hr />
-                                    <label htmlFor="nickname">暱稱</label>
-                                    <input name="nickname" id="nickname" type="text" className="input_1 mb-3" defaultValue={this.state.data.nickname} readOnly={this.state.editData[0]} onChange={this.typeData} />
-                                    <label htmlFor="company">公司名稱</label>
-                                    <input name="company" id="company" type="text" className="input_1 mb-3" defaultValue={this.state.data.company} readOnly={this.state.editData[0]}  onChange={this.typeData} />
-                                    <label htmlFor="serviceType">服務類型</label>
-                                    <input name="serviceType" id="serviceType" type="text" className="input_1 mb-3" defaultValue={this.state.data.serviceType} readOnly={this.state.editData[0]}  onChange={this.typeData} />
-                                    <label htmlFor="job">公司職稱</label>
-                                    <input name="job" id="job" type="text" className="input_1" defaultValue={this.state.data.job} readOnly={this.state.editData[0]}  onChange={this.typeData} />
-                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={() => this.changeBtn(0)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button>
-
-                                    <h4 className="text-primary mt-5">電子郵件信箱</h4>
-                                    <hr />
-                                    <label htmlFor="email">電子郵件信箱</label>
-                                    <input name="email" id="email" type="email" className="input_1" defaultValue={this.state.data.email} readOnly={this.state.editData[1]}  onChange={this.typeData} />
-                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={() => this.changeBtn(1)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button>
+                                    {Object.keys(this.state.data).map((key, index) =>
+                                        <React.Fragment key={index}>
+                                            <label>{this.title[index]}</label>
+                                            <EditUserInfoElement
+                                                name={this.state.data[key]}
+                                                keyElement={key}
+                                                editData={this.state.editData}
+                                                inputWord={this.typeData}
+                                                readOnly={(this.title[index] !== '電子郵件信箱' && this.title[index] !== '統編') ? false : true}
+                                            />
+                                        </React.Fragment>
+                                    )}
+                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={this.changeBtn}>{this.state.editData ? '儲存' : '變更'}</button>
+                                    {this.state.editData && <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={() => window.location.reload()}>取消</button>}
                                 </div>
                             </div>
 

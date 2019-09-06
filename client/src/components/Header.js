@@ -17,7 +17,7 @@ class Header extends Component {
       localStorage.removeItem('view');
       localStorage.removeItem('visited');
       localStorage.removeItem('token');
-      window.location.href = '/sbir/user/signin';
+      window.location.href = '/signup/signin';
     }, 4000);
   }
   render() {

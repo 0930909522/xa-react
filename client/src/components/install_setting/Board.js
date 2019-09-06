@@ -122,7 +122,7 @@ class Board extends Component {
                         <Row>
                             <NavLeftPush three />
                             <div className="main_right">
-                                <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">佈告欄</span></h2>
+                                <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">放進來</span></h2>
                                 <div className={this.state.status === 0 ? 'd-none' : ''}>
                                     <span className={this.state.status > 0 ? 'text-primary' : ''}>選取黑名單項目</span>
                                     <span>&nbsp;｜&nbsp;</span>
@@ -135,7 +135,7 @@ class Board extends Component {
                                         <thead>
                                             <tr>
                                                 <th className="d-flex justify-content-between align-items-center">
-                                                    <input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;佈告欄清單
+                                                    <input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;清單
                                                     <button className="btn_noborder text-primary" onClick={() => this.changeStatus(1)}><FaPlusCircle /></button>
                                                 </th>
                                             </tr>
@@ -147,7 +147,7 @@ class Board extends Component {
                                                         <td className="d-flex justify-content-between align-items-center">
                                                             <div>
                                                                 <input type="checkbox" checked={val.choose} onChange={() => this.clickCheckbox(index)} />
-                                                                <h5 className="d-inline-block vertical_middle ml-5" style={{ 'margin': '0' }}>{'佈告欄 ' + (index + 1)}</h5>
+                                                                <h5 className="d-inline-block vertical_middle ml-5" style={{ 'margin': '0' }}>{'清單 ' + (index + 1)}</h5>
                                                             </div>
                                                             <div>
                                                                 <FaSearch onClick={(e) => this.toggleTr(index)} className="btn_like mx-2" />
@@ -158,7 +158,7 @@ class Board extends Component {
                                                     {
                                                         (val.content !== null && val.show) && <tr>
                                                             <td colSpan="2">
-                                                                <strong>佈告欄類別</strong>
+                                                                <strong>類別</strong>
                                                                 {
                                                                     val.acceptType.map((val, index) => (
                                                                         <h6 key={index}>{val}</h6>
