@@ -48,11 +48,43 @@ li {list-style: none;}
         padding: 15px;
         background-color: #fff;
         overflow: auto;
+        .select {
+            float: right;
+            font-size: 14px;
+            select {
+                outline: none;
+            }
+            label {
+                padding-left: 15px;
+            }
+        }
         h3 {
             // font-weight: bold;
             span{
                 font-weight: normal;
                 font-size: 15px;
+            }
+        }
+        .articles {
+            margin-top: 15px;
+            li {
+                margin: 5px 1px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis; 
+                a {
+                    color: $dark
+                }
+                .pv {
+                    background-color: #007bff;
+                    color: #fff;
+                    font-style:italic; 
+                    padding: 2px 7px 2px 5px;
+                    span {
+                        font-style:normal; 
+                        font-size: 13px;
+                    }
+                }
             }
         }
         .icons {
@@ -273,9 +305,27 @@ li {list-style: none;}
         }
         .chart_box {
             text-align: center;
+            position: relative;
+            &:after{
+                position: absolute;
+                content: "";
+                width: 70px;
+                height: 13px;
+                background-color: #fff;
+                bottom: 0;
+                left: 0;
+            }
+            .subtitle {
+                margin: 15px 0;
+                font-size: 14px;
+                span {
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            }
             .chart {
-                display: inline-block;
-                margin: 0 auto;
+                // display: inline-block;
+                // margin: 0 auto;
                 .chart_ids {
                     position: relative;
                     text-align: left;
@@ -479,4 +529,7 @@ $media_md: 768px;
     color: #fff;
     text-align: center;
     padding: 25px;
+}
+.canvasjs-chart-credit {
+    display: none;
 }
