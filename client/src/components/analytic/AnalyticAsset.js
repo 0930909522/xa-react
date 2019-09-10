@@ -336,7 +336,7 @@ class AnalyticAsset extends Component {
         type: "pie",
         radius:  "80%",
 				startAngle: 75,
-        toolTipContent: "<b>{label}</b>: {y}%",
+        toolTipContent: "<b>{label}</b>: {y}",
 				showInLegend: true,
 				legendText: "{label}",
 				indexLabelFontSize: 14,
