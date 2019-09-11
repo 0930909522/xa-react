@@ -21,6 +21,7 @@ class Header extends Component {
     }, 4000);
   }
   render() {
+    const cIndex = this.props.cateIndex;
     return (
       <>
         <AlertMsg
@@ -35,10 +36,10 @@ class Header extends Component {
             </Navbar.Brand>
             <Nav className="mr-auto">
               <Nav.Link href="#home">回首頁</Nav.Link>
-              <Nav.Link href="#features">數據分析</Nav.Link>
-              <Nav.Link href="/board">安裝設定</Nav.Link>
-              <Nav.Link href="#report">帳務報表</Nav.Link>
-              <Nav.Link href="#buy">功能購買</Nav.Link>
+              <Nav.Link href="/" className={cIndex === 1 ? "active" : ""}>數據分析</Nav.Link>
+              <Nav.Link href="/board" className={cIndex === 2 ? "active" : ""}>推播管理</Nav.Link>
+              <Nav.Link href="#report" className={cIndex === 3 ? "active" : ""}>帳務報表</Nav.Link>
+              <Nav.Link href="#buy" className={cIndex === 4 ? "active" : ""}>功能購買</Nav.Link>
             </Nav>
             <Nav.Link href=""><FaBell className="header_svg" /></Nav.Link>
             <div className="person_btn">
