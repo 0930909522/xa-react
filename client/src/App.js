@@ -6,6 +6,9 @@ import './style.scss';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Home from './components/Main';
 import AnalyticGeneral from './components/analytic/AnalyticGeneral';
+import AnalyticRealTime from './components/analytic/AnalyticRealTime';
+import AnalyticBasis from './components/analytic/AnalyticBasis';
+import AnalyticCheck from './components/analytic/AnalyticCheck';
 import AnalyticSource from './components/analytic/AnalyticSource';
 import AnalyticHot from './components/analytic/AnalyticHot';
 import AnalyticInteraction from './components/analytic/AnalyticInteraction';
@@ -59,6 +62,12 @@ class App extends Component {
           <Route exact path="/" component={AnalyticPortrait} /> 
           {/* 訪客總覽 */}
           <Route path="/general" component={AnalyticGeneral} /> 
+          {/* 即時資訊 */}
+          <Route path="/realtime" component={AnalyticRealTime} /> 
+          {/* 基礎數據分析 */}
+          <Route path="/basis" component={AnalyticBasis} /> 
+          {/*  */}
+          <Route path="/check" component={AnalyticCheck} /> 
           {/* 流料來源 */}
           <Route path="/source" component={AnalyticSource} /> 
           {/* 熱門頁面 */}

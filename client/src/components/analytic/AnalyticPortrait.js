@@ -114,7 +114,7 @@ class AnalyticPortrait extends Component {
             </Popover>
         );
         return (<>
-            <Header />
+            <Header cateIndex={1} />
             <div className="layout_main">
                 <Container className="main_analytic">
                     <Row>
@@ -210,6 +210,7 @@ class AnalyticPortrait extends Component {
                                         {/* <hr /> */}
                                         <h3>分布範例</h3>
                                         <img src="./fish_example.jpg" alt="" style={{maxWidth: "100%"}} />
+                                        <img src="./fish_example1.jpg" alt="" style={{maxWidth: "100%"}} />
                                     </div> : <span />
                                 }
 

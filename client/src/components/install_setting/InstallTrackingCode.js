@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Container, Row } from "react-bootstrap";
 import Header from "../Header";
 import Footer from '../Footer';
-import NavLeftPush from "../share/NavLeftPush";
+// import NavLeftPush from "../share/NavLeftPush";
+import NavLeft from '../analytic/NavLeft';
 import SettingTitle from '../share/SettingTitle';
 
 class InstallTrackingCode extends Component {
@@ -18,7 +19,7 @@ class InstallTrackingCode extends Component {
     render() {
         return (
             <>
-                <Header />
+                <Header cateIndex={1} />
                 <div className={(!this.state.showData && 'd-none ') + 'w-100 bg_gray'}>
                     <div className="box w-75 mx-auto bg-white my-5 radius10">
                         <h4 className="bg-warning py-3 pl-4 pr-2 text-white d-flex justify-content-between">
@@ -44,7 +45,7 @@ class InstallTrackingCode extends Component {
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
-                            <NavLeftPush one />
+                            <NavLeft one />
                             <div className="main_right">
                                 <h2>安裝追蹤碼</h2>
                                 <SettingTitle three />

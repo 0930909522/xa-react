@@ -375,7 +375,7 @@ class AnalyticAsset extends Component {
 		};
     return (
       <>
-        <Header />
+        <Header cateIndex={1} />
         <div className="layout_main">
           <Container className="main_analytic">
             <Row>
