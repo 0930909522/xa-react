@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link } from 'react-router-dom';
-import { FaCode, FaTools } from 'react-icons/fa';
+import { FaTools } from 'react-icons/fa';
 import {IoIosSettings} from 'react-icons/io';
 
 class NavLeft extends Component {

@@ -53,6 +53,11 @@ button.font_20 {
     font-size: 20px;
 }
 
+.text_ellipsis{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 .selected_text {
     color: $blue;
     a {
@@ -87,6 +92,10 @@ button.radius20 {
 
 .round {
     border-radius: 100%;
+}
+
+.bg_gray1{
+    background: #DADADA;
 }
 
 .bg_gray {
@@ -338,22 +347,6 @@ button.radius20 {
     table-layout: fixed;
 }
 
-// .table-triangle-top {
-//     position: absolute;
-//     border-style: solid;
-//     border-width: 0 20px 20px 0;
-//     border-color: transparent $gray transparent transparent;
-//     top: 0;
-//     right: 0;
-// }
-// .table-triangle-down {
-//     position: absolute;
-//     border-style: solid;
-//     border-width: 20px 20px 0 0;
-//     border-color: transparent $gray transparent transparent;
-//     bottom: 0;
-//     right: 0;
-// }
 .table_r {
     border-collapse: collapse;
     th,
@@ -365,6 +358,11 @@ button.radius20 {
         width: 2em;
         height: 2em;
         vertical-align: middle;
+    }
+}
+.even{
+    tr:nth-child(even){
+        background: #F2F2F2;
     }
 }
 
@@ -443,6 +441,13 @@ button.radius20 {
 .border_content {
     border: 3px solid;
     font-weight: 600;
+}
+
+.a_hover{
+    color: #21A6BB;
+    &:hover{
+        @extend .btn_like;
+    }
 }
 
 .btn_like:hover {
