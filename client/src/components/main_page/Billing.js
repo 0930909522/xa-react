@@ -145,8 +145,15 @@ class Billing extends Component {
                                 <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/ 帳單與儲值</span></h2>
                                 <MemberCentreTitle num={this.state.type} />
                                 <div className="cards">
-                                    <MemberCard title="您的餘額" buttonName="儲值已付款">
+                                    {/* <MemberCard title="您的餘額" buttonName="儲值已付款">
                                         <h1>$7,640.00</h1>
+                                    </MemberCard> */}
+                                    <MemberCard title="您的推播餘額" buttonName="儲值付款">
+                                        <h1>$0</h1>
+                                    </MemberCard>
+                                    <MemberCard title="服務與用量" buttonName="查看更多內容" handleClick={()=>window.location = '/memberCentre/service'}>
+                                        <h6 className="my-2">會員資格：付費會員 - 月繳</h6>
+                                        <h6 className="my-2">會員方案期限：2019年3月3日 ~ 2019年4月3日</h6>
                                     </MemberCard>
                                     <MemberCard title="付款方式" buttonName="管理付款方式" handleClick={this.togglePayData}>
                                         <Row>
@@ -159,10 +166,6 @@ class Billing extends Component {
                                             </Col>
                                         </Row>
                                     </MemberCard>
-                                    <MemberCard title="服務與用量" buttonName="查看更多內容">
-                                        <h6 className="my-2">會員資格：付費會員 - 月繳</h6>
-                                        <h6 className="my-2">會員方案期限：2019年3月3日 ~ 2019年4月3日</h6>
-                                    </MemberCard>
                                     <MemberCard title="交易明細" buttonName="查看更多內容">
                                         <div className="d-flex justify-content-between my-2">
                                             <span>2019年2月1日 -2019年2月28日</span>
@@ -173,7 +176,7 @@ class Billing extends Component {
                                             <span>$9,460</span>
                                         </div>
                                     </MemberCard>
-                                    <MemberCard title="帳號設定" buttonName="管理設定">
+                                    <MemberCard title="帳號設定" buttonName="管理設定" handleClick={()=>window.location = '/memberCentre/edit'}>
                                         <h6 className="my-2">統一編號：27311180</h6>
                                         <h6 className="my-2">今周刊出版社股份有限公司</h6>
                                     </MemberCard>

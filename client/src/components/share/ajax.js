@@ -277,6 +277,25 @@ export const getUserInfo = async postData => {
     return data;
 }
 
+export const updateUserInfo = async postData => {
+    let data;
+    await fetch('https://node.aiday.org/sbir/user/info', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    }).then(response => response.json()
+    ).then(response => {
+        data = forAjax(response);
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
+
 function forAjax(response){
     let newData;
     switch (response.status) {

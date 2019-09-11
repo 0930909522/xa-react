@@ -50,32 +50,11 @@ class Push extends Component {
 
                   <div className="box radius10">
                     <h4 className="my-3">選擇推播類別</h4>
-                    <table className="table_spec w-100 text-center" cellPadding="15">
-                      <thead>
-                        <tr>
-                          <th>目標推播</th>
-                          <th>商品推播</th>
-                          <th>文章推播</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><button className="btn_outline w-75" onClick={() => this.chooseType('主題活動')}><FaRegCalendar />&nbsp;主題活動</button></td>
-                          {/* <td><button className="btn_outline w-75"><FaHandPointUp />&nbsp;選擇電商平台</button></td>
-                          <td><button className="btn_outline w-75"><FaHandPointUp />&nbsp;選擇媒體平台</button></td> */}
-                        </tr>
-                        <tr>
-                          <td><button className="btn_outline w-75" onClick={() => this.chooseType('專題報導')}><FaRegNewspaper />&nbsp;專題報導</button></td>
-                          <td><button className="btn_outline w-75"><FaRegThumbsUp />&nbsp;推薦商品</button></td>
-                          <td><button className="btn_outline w-75"><FaRegThumbsUp />&nbsp;推薦文章</button></td>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          {/* <td><button className="btn_outline w-75"><FaFireAlt />&nbsp;熱門商品</button></td>
-                          <td><button className="btn_outline w-75"><FaFireAlt />&nbsp;熱門文章</button></td> */}
-                        </tr>
-                      </tbody>
-                    </table>
+                    <div></div>
+                    <button className="btn_outline w-45 m-2" onClick={() => this.chooseType('主題活動')}><FaRegCalendar />&nbsp;主題活動</button>
+                    <button className="btn_outline w-45 m-2" onClick={() => this.chooseType('專題報導')}><FaRegNewspaper />&nbsp;專題報導</button>
+                    <button className="btn_outline w-45 m-2"><FaRegThumbsUp />&nbsp;推薦商品</button>
+                    <button className="btn_outline w-45 m-2"><FaRegThumbsUp />&nbsp;推薦文章</button>
                   </div>
                 </div>
                 {this.state.openList && <PushList type={this.state.title} />}
