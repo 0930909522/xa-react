@@ -13,8 +13,8 @@ class NavLeftReport extends Component {
         </div>
         <h2><span style={{fontSize:"20px"}}>今周刊</span> 數據分析 </h2>
         <ul className="nav_left">
-          <li className={this.props.one && 'selected_text'}> <FaNewspaper /> <Link to="/push" className="dec_none btn_like">我的推播</Link></li>
-          <li className={this.props.two && 'selected_text'}> <FaRegMoneyBillAlt /> <Link to="/board" className="dec_none btn_like">我的收益</Link></li>
+          <li className={this.props.one && 'selected_text'}> <FaNewspaper /> <Link to="/report/push" className="dec_none btn_like">我的推播</Link></li>
+          <li className={this.props.two && 'selected_text'}> <FaRegMoneyBillAlt /> <Link to="/report/income" className="dec_none btn_like">我的收益</Link></li>
         </ul>
       </div>
     );

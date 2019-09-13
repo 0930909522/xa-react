@@ -149,8 +149,8 @@ class App extends Component {
           <Route path="/push/blacklist" component={BlackList} />
           {/* 布告欄（清單） */}
           <Route path="/board" component={Board} />
-          {/* 財務報表(我的推播) */}
-          <Route path="/report" component={Receipt} />
+          {/* 財務報表 */}
+          <Route path="/report/:id" component={Receipt} />
           {/* 特定頁面推播 */}
           {/* <Route exact path="/pushInstall" component={PushPage} /> */}
           {/* 設定黑名單-已建立 */}
