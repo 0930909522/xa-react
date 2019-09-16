@@ -79,7 +79,7 @@ class EditUserInfo extends Component {
                             <NavLeftMember one />
                             <div className="main_right">
                                 <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/編輯使用者資訊</span></h2>
-                                <div className=" mt-20">
+                                <div className="box radius10 mt-20">
                                     <h4 className="text-primary">個人檔案</h4>
                                     <hr />
                                     {Object.keys(this.state.data).map((key, index) =>
