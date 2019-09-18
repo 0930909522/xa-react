@@ -51,12 +51,12 @@ class SetTrackingCode extends Component {
                 return;
             }
         }
-        postData.token = localStorage.getItem('token');
+
         addTracking(postData).then(response => {
             if (response !== undefined) {
                 localStorage.setItem('view', response.view);
-                alert('資料傳送成功，前往新專案');
-                window.location.reload();
+                alert('資料傳送成功');
+                this.props.changeStatus();
             }
         })
     }
@@ -137,7 +137,7 @@ class SetTrackingCode extends Component {
                     </Row>
                     <div className="d-flex justify-content-center">
                         <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={this.submit}>新增</button>
-                        <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={this.props.changeStatus}>取消</button>
+                        <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={()=>window.location.reload()}>取消</button>
                     </div>
                 </div>
                 {/* </div>

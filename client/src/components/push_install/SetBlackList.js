@@ -46,8 +46,8 @@ class SetBlackList extends Component {
     }
     submit = () => {
         let postData = {
-            token: null,
-            owner: null,
+            // token: null,
+            view: null,
             blacklist: [],
             acceptType: []
         };
@@ -57,8 +57,8 @@ class SetBlackList extends Component {
             }
         }
         postData.acceptType = this.props.sendData.acceptType;
-        postData.token = localStorage.getItem('token');
-        postData.owner = localStorage.getItem('view');
+        // postData.token = localStorage.getItem('token');
+        postData.view = localStorage.getItem('view');
         if (this.state.modified) {
             postData.boardId = this.props.sendData.boardId;
             modifyBoard(postData);

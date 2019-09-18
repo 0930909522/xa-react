@@ -5,6 +5,7 @@ import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
 import { FaTrashAlt, FaPlusCircle } from "react-icons/fa";
 import SetTrackingCode from "../install_setting/SetTrackingCode";
+import CheckTrackingCode from '../install_setting/CheckTrackingCode';
 import TableElement from './TableElement';
 import TableElementEdit from './TableElementEdit';
 import { trackingList, modifyTracking } from '../share/ajax';
@@ -14,26 +15,31 @@ class EditPage extends Component {
         super(props);
         this.state = {
             status: 0,
+            dataOnCheckPage:{
+                url:'happycometrue.com',
+                name: '幸福來敲門'
+            },
             data: [],
         }
     }
-    componentDidMount() {
-        let postData = {};
-        postData.token = localStorage.getItem('token');
-        trackingList(postData)
-            .then(response => {
-                let getData = response || [];
-                if (getData.length === 0) {
-                    this.changeStatus(1);
-                }
-                getData.forEach(function (val, index, array) {
-                    array[index].edit = false;
-                    // array[index].choose = false;
-                })
-                this.setState({ data: getData });
-            })
+    // componentDidMount() {
+    //     // let postData = {};
+    //     // postData.token = localStorage.getItem('token');
+    //     trackingList()
+    //         .then(response => {
+    //             let getData = response || [];
+    //             if (getData.length === 0) {
+    //                 this.changeStatus(1);
+    //             }
+    //             getData.forEach(function (val, index, array) {
+    //                 array[index].edit = false;
+    //                 // array[index].choose = false;
+    //             })
+    //             this.setState({ data: getData });
+    //         })
 
-    }
+    // }
+
     // toggleClickAll = e => {
     //     const newContent = [...this.state.data];
     //     newContent.forEach(function (val) {
@@ -174,8 +180,15 @@ class EditPage extends Component {
                                 {
                                     this.state.status === 1 &&
                                     <SetTrackingCode
-                                        changeStatus={() => this.changeStatus(0)}
+                                        changeStatus={() => this.changeStatus(2)}
                                     />
+                                }
+                                {
+                                     this.state.status === 2 &&
+                                     <CheckTrackingCode
+                                         changeStatus={() => this.changeStatus(0)}
+                                         data={this.state.dataOnCheckPage}
+                                     />
                                 }
                             </div>
 

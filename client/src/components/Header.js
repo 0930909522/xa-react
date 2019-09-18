@@ -2,21 +2,18 @@ import React, { Component } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { FaBell, FaUser } from 'react-icons/fa';
 import AlertMsg from './share/AlertMsg';
+import {logout} from './share/ajax';
 
 class Header extends Component {
   state = { showAlertMsg: false };
   logout = () => {
-    if(!localStorage.getItem('name')){
-      window.location.href = '/sbir/user/signin';
-      return;
-    }
     this.setState({ showAlertMsg: true });
+    localStorage.removeItem('name');
+    localStorage.removeItem('view');
+    localStorage.removeItem('visited');
+    logout();
     setTimeout(() => {
       this.setState({ showAlertMsg: false });
-      localStorage.removeItem('name');
-      localStorage.removeItem('view');
-      localStorage.removeItem('visited');
-      localStorage.removeItem('token');
       window.location.href = '/signup/signin';
     }, 4000);
   }

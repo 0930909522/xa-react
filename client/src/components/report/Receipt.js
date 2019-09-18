@@ -159,7 +159,7 @@ class Receipt extends Component {
                                             <td>{val.type}</td>
                                             <td className="text-center">
                                                 <span
-                                                    className="text_ellipsis d-block a_hover"
+                                                    className="text_ellipsis d-block a_hover mx-auto"
                                                     style={{ 'maxWidth': '100px' }}
                                                     onClick={() => this.showMsg(index)}
                                                 >
@@ -230,7 +230,7 @@ class Receipt extends Component {
                                                         <td>{val.type}</td>
                                                         <td className="text-center">
                                                             <span
-                                                                className="text_ellipsis d-block a_hover"
+                                                                className="text_ellipsis d-block a_hover mx-auto"
                                                                 style={{ 'maxWidth': '100px' }}
                                                                 onClick={() => this.showMsg(index)}
                                                             >

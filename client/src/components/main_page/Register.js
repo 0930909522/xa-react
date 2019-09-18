@@ -13,7 +13,7 @@ class Register extends Component {
             checkEmail: false,
             hasRead: false,
             data: {
-                "nickname": null,
+                "name": null,
                 "email": null,
                 "pwd": null,
                 "companyName": null,
@@ -44,8 +44,8 @@ class Register extends Component {
     }
     checkPwd = e =>{
         let lowerCase = /[a-z]/g.test(e.target.value);
-        let UpperCase = /[A-Z]/g.test(e.target.value);
-        if(lowerCase && UpperCase && e.target.value.length >= 8){
+        let number = /[0-9]/g.test(e.target.value);
+        if(lowerCase && number && e.target.value.length >= 8){
             this.setState({checkPwd : true});
         }else{
             this.setState({checkPwd : false});
@@ -105,7 +105,7 @@ class Register extends Component {
                     <Container className="main_analytic w-50">
                         <h4 className="text-center">建立新帳號</h4>
                         <div className="box px-5">
-                            <input name="nickname" id="nickname" type="text" className="input_1 mb-4" placeholder="暱稱" onChange={(e) => this.addData(e, 'nickname')} />
+                            <input name="name" id="name" type="text" className="input_1 mb-4" placeholder="暱稱" onChange={(e) => this.addData(e, 'name')} />
                             <input name="email" id="email" type="email" className="input_1 mb-4" placeholder="電子郵件信箱" onChange={(e) => this.addData(e, 'email')} />
                             <input name="pwd" id="pwd" type="password" className="input_1 mb-4" placeholder="密碼：8個以上包含半形英文數字" onChange={(e) => this.addData(e, 'pwd')} />
                             <input name="pwd2" id="pwd2" type="password" className="input_1 mb-4" placeholder="再次輸入密碼" onKeyUp={(e)=>this.doubleCheckPwd(e)} />

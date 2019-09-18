@@ -28,8 +28,8 @@ class Board extends Component {
     }
     componentDidMount() {
         let postData = {};
-        postData.token = localStorage.getItem('token');
-        postData.owner = localStorage.getItem('view');
+        // postData.token = localStorage.getItem('token');
+        postData.view = localStorage.getItem('view');
         getBoard(postData) //載入資訊
             .then(response => {
                 let getData = response || [];
