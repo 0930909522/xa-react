@@ -5,6 +5,8 @@ import Footer from '../Footer';
 import MemberCentreTitle from '../share/MemberCentreTitle';
 import NavLeftMember from '../share/NavLeftMember';
 import MemberCard from '../share/MemberCard';
+import PopMsg from '../share/PopMsg';
+import PushBill from './PushBill';
 import { FaRegCreditCard, FaAngleDown, FaCheck, FaAngleUp } from "react-icons/fa";
 
 
@@ -13,6 +15,7 @@ class Billing extends Component {
         super(props);
         this.state = {
             showPayData: false,
+            showPushPay: false,
             payState: 0,
             // showMoreCard: false,
             sent: false,
@@ -22,15 +25,15 @@ class Billing extends Component {
     }
     componentDidMount() {
         let newShowPayData = this.state.showPayData;
-        if(this.props.match.params.type === 'three'){
+        if (this.props.match.params.type === 'three') {
             newShowPayData = true;
         }
-        this.setState({ type: this.props.match.params.type, showPayData: newShowPayData})
+        this.setState({ type: this.props.match.params.type, showPayData: newShowPayData })
     }
     componentDidUpdate(preProp) {
         if (preProp.match.params.type !== this.props.match.params.type) {
             let newShowPayData = this.state.showPayData;
-            if(this.props.match.params.type === 'three' && this.state.showPayData !== true){
+            if (this.props.match.params.type === 'three' && this.state.showPayData !== true) {
                 newShowPayData = true;
             }
             this.setState({ type: this.props.match.params.type, showPayData: newShowPayData })
@@ -43,19 +46,23 @@ class Billing extends Component {
         }
         this.setState({ payState: newNum });
     }
-    togglePayData = () => {
-        this.setState({ showPayData: !this.state.showPayData });
+    toggleClose = (name) => {
+        this.setState({ [name]: !this.state[name] });
     }
     render() {
         return (
             <>
                 <Header />
-                <div className={(!this.state.showPayData && 'd-none ') + 'w-100 bg_gray'}>
-                    <div className="box w-75 mx-auto bg-white my-5 radius10">
-                        <h4 className="bg-warning py-3 pl-4 pr-2 text-white d-flex justify-content-between">
-                            {(this.state.sent === false) ? <span>付款</span> : <span>OK</span>}
-                            <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.togglePayData}>&#10006;</button>
-                        </h4>
+                <PushBill
+                    showPushPay={this.state.showPushPay}
+                    close={() => this.toggleClose('showPushPay')}
+                />
+                <PopMsg
+                    show={this.state.showPayData}
+                    title={(this.state.sent === false) ? '付款' : 'OK'}
+                    close={() => this.toggleClose('showPayData')}
+                >
+                    <>
                         <div className={(this.state.sent === false) ? "p-5 scrollY h-65v m-1" : "d-none"}>
                             <h4 className="mb-5 p-4 btn_like bg-light radius10" onClick={() => this.choosePayState(1)}>
                                 <span className="text-primary">匯款</span>
@@ -135,8 +142,10 @@ class Billing extends Component {
                             <br />已經收到您通知已付款的訊息，<br />資料核對無誤後會儘速為您儲值，<br />謝謝！
                             </h4>
                         </div>
-                    </div>
-                </div>
+                    </>
+                </PopMsg>
+                {/* </div>
+                </div> */}
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
@@ -145,8 +154,15 @@ class Billing extends Component {
                                 <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/ 帳單與儲值</span></h2>
                                 <MemberCentreTitle num={this.state.type} />
                                 <div className="cards">
-                                    <MemberCard title="您的餘額" buttonName="儲值已付款">
+                                    {/* <MemberCard title="您的餘額" buttonName="儲值已付款">
                                         <h1>$7,640.00</h1>
+                                    </MemberCard> */}
+                                    <MemberCard title="您的推播餘額" buttonName="儲值付款" handleClick={()=>this.setState({showPushPay: true})}>
+                                        <h1>$0</h1>
+                                    </MemberCard>
+                                    <MemberCard title="服務與用量" buttonName="查看更多內容" handleClick={() => window.location = '/memberCentre/service'}>
+                                        <h6 className="my-2">會員資格：付費會員 - 月繳</h6>
+                                        <h6 className="my-2">會員方案期限：2019年3月3日 ~ 2019年4月3日</h6>
                                     </MemberCard>
                                     <MemberCard title="付款方式" buttonName="管理付款方式" handleClick={this.togglePayData}>
                                         <Row>
@@ -159,10 +175,6 @@ class Billing extends Component {
                                             </Col>
                                         </Row>
                                     </MemberCard>
-                                    <MemberCard title="服務與用量" buttonName="查看更多內容">
-                                        <h6 className="my-2">會員資格：付費會員 - 月繳</h6>
-                                        <h6 className="my-2">會員方案期限：2019年3月3日 ~ 2019年4月3日</h6>
-                                    </MemberCard>
                                     <MemberCard title="交易明細" buttonName="查看更多內容">
                                         <div className="d-flex justify-content-between my-2">
                                             <span>2019年2月1日 -2019年2月28日</span>
@@ -173,7 +185,7 @@ class Billing extends Component {
                                             <span>$9,460</span>
                                         </div>
                                     </MemberCard>
-                                    <MemberCard title="帳號設定" buttonName="管理設定">
+                                    <MemberCard title="帳號設定" buttonName="管理設定" handleClick={() => window.location = '/memberCentre/edit'}>
                                         <h6 className="my-2">統一編號：27311180</h6>
                                         <h6 className="my-2">今周刊出版社股份有限公司</h6>
                                     </MemberCard>

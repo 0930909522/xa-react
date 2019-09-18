@@ -11,6 +11,44 @@ class Service extends Component {
         this.state = {
             showData: false
         }
+        this.title = [
+            '智媒推推系統',
+            '頁面比對驗證功能',
+            '基礎分析功能',
+            '進階分析功能',
+            '推播成效報告功能',
+            '智媒收費',
+            '廣告推播付費功能',
+            '廣告曝光收益'
+        ]
+        this.data0 = [
+            '自行安裝',
+            '×',
+            '1. 用戶分析\n2. 流量來源分析\n3. 客群分析\n4. 消費分析\n5. 價值分析(主力、上 升、衰退、遺珠、孱弱)',
+            '×',
+            '×',
+            '儲值面額 10,000 / 次\n儲值面額 15,000 / 次\n儲值面額 20,000 / 次',
+            '曝光數: 30元 / 百次\n點擊數: 25元 / 次',
+            '曝光數: 12元 / 百次\n點擊數: 8元 / 次'
+        ];
+        this.data1 = [
+            '全自動程式系統安裝',
+            '確認內容頁\n商品頁\n導購頁\n結帳頁網址驗證',
+            '1. 用戶分析\n2. 流量來源分析\n3. 客群分析\n4. 消費分析\n5. 價值分析(主力、上 升、衰退、遺珠、孱弱)',
+            '1. 用戶互動分析\n2. 適配度分析\n3. 用戶畫像分析\n4. 微數據分析\n商品頁 \n導購頁\n結帳頁網址驗證',
+            '推播調整建議',
+            '8000~1.5萬 / 月\n5~6萬 / 季\n25~30萬 / 年',
+            '曝光數: 30元 / 百次\n點擊數: 25元 / 次',
+            '曝光數: 6元 / 百次\n點擊數: 5元 / 次'];
+        this.data2 = [
+            '全自動程式系統安裝',
+            '確認內容頁\n商品頁\n導購頁\n結帳頁網址驗證',
+            '1. 用戶分析\n2. 流量來源分析\n3. 客群分析\n4. 消費分析\n5. 價值分析(主力、上 升、衰退、遺珠、孱弱)',
+            '1. 用戶互動分析\n2. 適配度分析\n3. 用戶畫像分析\n4. 微數據分析\n商品頁 \n導購頁\n結帳頁網址驗證',
+            '1. 推播調整建議\n2. 推播成效報告',
+            '5~6萬 / 季\n25~30萬 / 年',
+            '1. 無限智能配對推播曝光次數\n2. 保證點擊1,000次/月',
+            '曝光數: 6元 / 百次\n點擊數: 5元 / 次'];
     }
     toggleShowData = () => {
         this.setState({ showData: !this.state.showData });
@@ -27,29 +65,29 @@ class Service extends Component {
                         </h4>
                         <div className="p-3 mx-auto w-100 scrollY h-65v ">
                             <Row>
-                                <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">付費會員</h2></Col>
+                                <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">資產分析</h2></Col>
                                 <Col sm={6}>
                                     <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">月繳</button><span className="ml-3">8000 ~ 1.5萬 / 月</span></div>
-                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div>
-                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">年繳</button><span className="ml-3">25 ~ 30萬 / 年</span></div>
+                                    {/* <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div> */}
+                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">年繳</button><span className="ml-3">36萬 / 年</span></div>
                                 </Col>
 
                             </Row>
-                            <div className="mt-2 text-secondary text-center">
+                            {/* <div className="mt-2 text-secondary text-center">
                                 <h5>廣告推播付費功能：曝光數：30元/百次點擊數：25元/次</h5>
                                 <h5>廣告曝光收益：曝光數：6元/百次點擊數：5元/次</h5>
-                            </div>
+                            </div> */}
                             <hr className="dash_line" />
                             <Row>
-                                <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">VIP會員</h2></Col>
+                                <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">用戶分析</h2></Col>
                                 <Col sm={6}>
-                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div>
-                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">年繳</button><span className="ml-3">25 ~ 30萬 / 年</span></div>
+                                    {/* <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div> */}
+                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">年繳</button><span className="ml-3">96萬 / 年</span></div>
                                 </Col>
                             </Row>
-                            <div className="mt-2 text-secondary text-center">
-                            <h5>廣告推播付費功能：<br/><span>1.無限智能配對推播曝光次數<br/>2.保證點擊1000次/月</span></h5><h5>廣告曝光收益：曝光數：6元/百次點擊數：5元/次</h5>
-                            </div>
+                            {/* <div className="mt-2 text-secondary text-center">
+                                <h5>廣告推播付費功能：<br /><span>1.無限智能配對推播曝光次數<br />2.保證點擊1000次/月</span></h5><h5>廣告曝光收益：曝光數：6元/百次點擊數：5元/次</h5>
+                            </div> */}
                             <div className="text-center my-4">
                                 <button className="btn btn-outline-primary w-75 p-2 font_20 radius20">我要更改方案，請聯絡我</button>
                             </div>
@@ -79,57 +117,37 @@ class Service extends Component {
                                         <tr>
                                             <td></td>
                                             <td>免費會員</td>
-                                            <td>付費會員</td>
-                                            <td>VIP會員</td>
+                                            <td>資產分析</td>
+                                            <td>用戶分析</td>
                                         </tr>
-                                        <tr>
-                                            <td>智媒推推系統</td>
-                                            <td>自行安裝</td>
-                                            <td>全自動程式系統安裝</td>
-                                            <td>全自動程式系統安裝</td>
-                                        </tr>
-                                        <tr>
-                                            <td>頁面比對驗證功能</td>
-                                            <td>&#10006;</td>
-                                            <td>確認內容頁<br />商品頁<br />導購頁<br />結帳頁網址驗證</td>
-                                            <td>確認內容頁<br />商品頁<br />導購頁<br />結帳頁網址驗證</td>
-                                        </tr>
-                                        <tr>
-                                            <td>基礎分析功能</td>
-                                            <td>1. 用戶分析<br />2. 流量來源分析<br />3. 客群分析<br />4. 消費分析<br />5. 價值分析(主力、上 升、衰退、遺珠、孱弱)</td>
-                                            <td>1. 用戶分析<br />2. 流量來源分析<br />3. 客群分析<br />4. 消費分析<br />5. 價值分析(主力、上 升、衰退、遺珠、孱弱)</td>
-                                            <td>1. 用戶分析<br />2. 流量來源分析<br />3. 客群分析<br />4. 消費分析<br />5. 價值分析(主力、上 升、衰退、遺珠、孱弱)</td>
-                                        </tr>
-                                        <tr>
-                                            <td>進階分析功能</td>
-                                            <td>&#10006;</td>
-                                            <td>1. 用戶互動分析<br />2. 適配度分析<br />3. 用戶畫像分析<br />4. 微數據分析</td>
-                                            <td>1. 用戶互動分析<br />2. 適配度分析<br />3. 用戶畫像分析<br />4. 微數據分析</td>
-                                        </tr>
-                                        <tr>
-                                            <td>推播成效報告 功能</td>
-                                            <td>&#10006;</td>
-                                            <td>推播調整建議</td>
-                                            <td>1. 推播調整建議<br />2. 推播成效報告</td>
-                                        </tr>
-                                        <tr>
-                                            <td>智媒收費</td>
-                                            <td>0元</td>
-                                            <td>8000~1.5萬 / 月<br />5~6萬 / 季<br />25~30萬 / 年</td>
-                                            <td>5~6萬 / 季<br />25~30萬 / 年</td>
-                                        </tr>
-                                        <tr>
-                                            <td>廣告推播付費功能</td>
-                                            <td>曝光數: 30元 / 百次<br />點擊數: 25元 / 次</td>
-                                            <td>曝光數: 30元 / 百次<br />點擊數: 25元 / 次</td>
-                                            <td>1. 無限智能配對推播曝光次數<br />2. 保證點擊1,000次/月</td>
-                                        </tr>
-                                        <tr>
-                                            <td>廣告曝光收益</td>
-                                            <td>曝光數: 12元 / 百次<br />點擊數: 8元 / 次</td>
-                                            <td>曝光數: 6元 / 百次<br />點擊數: 5元 / 次</td>
-                                            <td>曝光數: 6元 / 百次<br />點擊數: 5元 / 次</td>
-                                        </tr>
+                                        {this.title.map((val, index) =>
+                                            <tr key={index}>
+                                                <td>{val}</td>
+                                                <td>
+                                                    {this.data0[index].split('\n').map((text, index2) => (
+                                                        <React.Fragment key={index2}>
+                                                            {text}
+                                                            <br />
+                                                        </React.Fragment>))
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {this.data1[index].split('\n').map((text, index2) => (
+                                                        <React.Fragment key={index2}>
+                                                            {text}
+                                                            <br />
+                                                        </React.Fragment>))
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {this.data2[index].split('\n').map((text, index2) => (
+                                                        <React.Fragment key={index2}>
+                                                            {text}
+                                                            <br />
+                                                        </React.Fragment>))
+                                                    }
+                                                </td>
+                                            </tr>)}
                                     </tbody>
                                 </table>
                                 <p className="mt-20">※可依照客戶需求客製化數據分析，費用待議。</p>

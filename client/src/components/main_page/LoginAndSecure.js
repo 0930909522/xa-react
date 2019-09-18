@@ -1,84 +1,128 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Container, Row } from "react-bootstrap";
 import Header from "../Header";
 import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
+import AlertMsg from '../share/AlertMsg';
 
-class LoginAndSecure extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            editData: [true, true],
-            data: {
-                "nickname": "小明",
-                "email": "a123@gmail.com",
-                "company": "智媒",
-                "serviceType": "新媒體",
-                "job": "PM",
-                "data": [{
-                    "id": 1,
-                    "name": "美環",
-                    "email": "beautiful@gmail.com",
-                    "permission": "分析員"
-                }, {
-                    "id": 2,
-                    "name": "美環",
-                    "email": "beautiful@gmail.com",
-                    "permission": "分析員"
-                }]
-            },
-            temporaryData: null
+const LoginAndSecure = () => {
+    const [psd, changePsd] = useState('');
+    const [checkPsd, changeCheckPsd] = useState('');
+    const [editing, changeState] = useState(false);
+    const [msg, changeMsg] = useState('');
+    const [showMsg, showAlertMsg] = useState(false);
 
-        };
-    }
 
-    componentDidMount() {
-        const addPsd = this.state.data;
-        addPsd.password = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
-        this.setState({ data: addPsd });
-    }
-
-    changeBtn = (i, e) => {
-        const newEditData = this.state.editData;
-        if (newEditData[i] === false) {
-            this.setState({ data: this.state.temporaryData, temporaryData: null });
+    const submit = () => {
+        if (editing === true) {
+            if (psd.search(/\d/) === -1 || psd.length < 8 || psd.search(/[a-z]/) === -1) {
+                showMsgFun('密碼格式不符');
+                return;
+            }
+            if(psd !== checkPsd){
+                showMsgFun('密碼驗證不一致');
+                return;
+            }
+            showMsgFun('修改成功');
+            // 傳送密碼
         }
-        newEditData[i] = !newEditData[i];
-        this.setState({ editData: newEditData });
+        changeState(!editing);
     }
-    typeData = e => {
-        let newData = this.state.temporaryData;
-        if (newData === null) {
-            newData = this.state.data;
-        }
-        newData[e.target.id] = e.target.value;
-        this.setState({ temporaryData: newData });
+    function showMsgFun(text) {
+        showAlertMsg(true);
+        changeMsg(text);
+        setTimeout(() => {
+            showAlertMsg(false);
+        }, 3000);
     }
 
-    render() {
-        return (
-            <>
-                <Header />
-                <div className="layout_main">
-                    <Container className="main_analytic">
-                        <Row>
-                            <NavLeftMember two />
-                            <div className="main_right">
-                                <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/登入與帳號安全</span></h2>
-                                <div className=" mt-20">
-                                    <h4 className="text-primary">變更密碼</h4>
-                                    <hr />
-                                    <label htmlFor="password">密碼</label>
-                                    <input name="password" id="password" type="password" className="input_1 mb-3" defaultValue={this.state.data.password} readOnly={this.state.editData[0]} onChange={this.typeData} />
-                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={(e) => this.changeBtn(0, e)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button>
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         editingData: false,
+    //         temporaryData: "",
+    //         data: ""
 
-                                    <h4 className="text-primary mt-5">邀請帳戶存取權</h4>
+    //     };
+    // }
+
+    // componentDidMount() {
+    //     const addPsd = this.state.data;
+    //     addPsd.password = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+    //     this.setState({ data: addPsd });
+    // }
+
+    // changeBtn = (i, e) => {
+    //     const newEditData = this.state.editData;
+    //     if (newEditData[i] === false) {
+    //         this.setState({ data: this.state.temporaryData, temporaryData: null });
+    //     }
+    //     newEditData[i] = !newEditData[i];
+    //     this.setState({ editData: newEditData });
+    // }
+    // typeData = e => {
+    //     let newData = this.state.temporaryData;
+    //     if (newData === null) {
+    //         newData = this.state.data;
+    //     }
+    //     newData[e.target.id] = e.target.value;
+    //     this.setState({ temporaryData: newData });
+    // }
+
+    // render() {
+    return (
+        <>
+            <AlertMsg
+                text={msg}
+                attr={showMsg ? 'opacity1' : 'opacity0'}
+                close={() => showAlertMsg(false)}
+            />
+            <Header />
+            <div className="layout_main">
+                <Container className="main_analytic">
+                    <Row>
+                        <NavLeftMember two />
+                        <div className="main_right">
+                            <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/登入與帳號安全</span></h2>
+                            <div className=" box radius10 mt-20">
+                                <h4 className="text-primary">變更密碼</h4>
+                                <hr />
+                                <label htmlFor="password">密碼</label>
+                                {editing ?
+                                    <>
+                                        <input
+                                            name="password"
+                                            type="password"
+                                            className="input_1 mb-3"
+                                            defaultValue=""
+                                            placeholder="密碼：8個以上包含半形英文數字"
+                                            onChange={(e) => changePsd(e.target.value)}
+                                        />
+                                        <input
+                                            name="password"
+                                            type="password"
+                                            className="input_1 mb-3"
+                                            defaultValue=""
+                                            placeholder="再次輸入密碼"
+                                            onChange={(e) => changeCheckPsd(e.target.value)}
+                                        />
+                                        {(psd !== checkPsd && checkPsd) && <p className="text-danger">*密碼不一致</p>}
+                                    </>
+                                    :
+                                    <h5>{'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}</h5>
+                                }
+                                <button
+                                    className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20"
+                                    onClick={submit}
+                                >{editing ? '儲存' : '變更'}</button>
+
+                                {/* <h4 className="text-primary mt-5">邀請帳戶存取權</h4>
                                     <hr />
                                     <label htmlFor="email">電子郵件信箱</label>
                                     <input name="email" id="email" type="email" className="input_1 mb-3" defaultValue={this.state.data.email} readOnly={this.state.editData[1]} onChange={this.typeData} />
-                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={(e) => this.changeBtn(1, e)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button>
-                                </div>
-                                {/* <div className=" mt-20 bg-white">
+                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={(e) => this.changeBtn(1, e)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button> */}
+                            </div>
+                            {/* <div className=" mt-20 bg-white">
                                     <table className="w-100 dash_table">
                                         <tbody>
                                             <tr className="d-table-row bg-light">
@@ -150,14 +194,14 @@ class LoginAndSecure extends Component {
                                         </tbody>
                                     </table>
                                 </div> */}
-                            </div>
+                        </div>
 
-                        </Row>
-                    </Container>
-                </div>
-                <Footer />
-            </>
-        )
-    }
+                    </Row>
+                </Container>
+            </div>
+            <Footer />
+        </>
+    )
+    // }
 }
 export default LoginAndSecure;

@@ -3,7 +3,7 @@ import { Container, Row } from "react-bootstrap";
 import Header from "../Header";
 import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
-import { getUserInfo } from '../share/ajax';
+import { getUserInfo, updateUserInfo } from '../share/ajax';
 import EditUserInfoElement from './EditUserInfoElement';
 
 class EditUserInfo extends Component {
@@ -20,12 +20,19 @@ class EditUserInfo extends Component {
             },
             temporaryData: null
         };
-        this.title = ['電子郵件信箱', '暱稱', '公司名稱', '服務類型', '統編']
+        this.title = {
+            "email":'電子郵件信箱',
+            "name": '暱稱',
+            "companyName": '公司名稱',
+            "companyType": '服務類型', 
+            "taxId":'統編'
+        }
     }
     componentDidMount() {
         let postData = { token: localStorage.getItem('token') };
         getUserInfo(postData).then(response => {
             let newData = response;
+            if(newData === undefined) return;
             delete newData.status;
             this.setState({ data: newData })
         })
@@ -44,6 +51,9 @@ class EditUserInfo extends Component {
                 this.setState({ data: this.state.temporaryData });
             } else {
                 // 有輸入，送出資料
+                let postData = { token: localStorage.getItem('token') };
+                // updateUserInfo(postData).then(response)
+
             }
         } else {
             // 檢視模式
@@ -69,12 +79,12 @@ class EditUserInfo extends Component {
                             <NavLeftMember one />
                             <div className="main_right">
                                 <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/編輯使用者資訊</span></h2>
-                                <div className=" mt-20">
+                                <div className="box radius10 mt-20">
                                     <h4 className="text-primary">個人檔案</h4>
                                     <hr />
                                     {Object.keys(this.state.data).map((key, index) =>
                                         <React.Fragment key={index}>
-                                            <label>{this.title[index]}</label>
+                                            <label>{this.title[key]}</label>
                                             <EditUserInfoElement
                                                 name={this.state.data[key]}
                                                 keyElement={key}
