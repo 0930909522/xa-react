@@ -3,42 +3,44 @@ import { Container, Row } from "react-bootstrap";
 import Header from "../Header";
 import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
-import { FaTrashAlt, FaPlusCircle } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import SetTrackingCode from "../install_setting/SetTrackingCode";
 import CheckTrackingCode from '../install_setting/CheckTrackingCode';
 import TableElement from './TableElement';
 import TableElementEdit from './TableElementEdit';
 import { trackingList, modifyTracking } from '../share/ajax';
+import AlertMsg from '../share/AlertMsg';
 
 class EditPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             status: 0,
-            dataOnCheckPage:{
-                url:'happycometrue.com',
-                name: '幸福來敲門'
+            showAlertMsg: false,
+            alertText: '',
+            dataOnCheckPage: {
+                url: '',
+                name: ''
             },
             data: [],
         }
     }
-    // componentDidMount() {
-    //     // let postData = {};
-    //     // postData.token = localStorage.getItem('token');
-    //     trackingList()
-    //         .then(response => {
-    //             let getData = response || [];
-    //             if (getData.length === 0) {
-    //                 this.changeStatus(1);
-    //             }
-    //             getData.forEach(function (val, index, array) {
-    //                 array[index].edit = false;
-    //                 // array[index].choose = false;
-    //             })
-    //             this.setState({ data: getData });
-    //         })
-
-    // }
+    componentDidMount() {
+        // let postData = {};
+        // postData.token = localStorage.getItem('token');
+        trackingList()
+            .then(response => {
+                let getData = response || [];
+                if (getData.length === 0) {
+                    this.changeStatus(1);
+                }
+                getData.forEach(function (val, index, array) {
+                    array[index].edit = false;
+                    // array[index].choose = false;
+                })
+                this.setState({ data: getData });
+            })
+    }
 
     // toggleClickAll = e => {
     //     const newContent = [...this.state.data];
@@ -74,54 +76,66 @@ class EditPage extends Component {
         newData[index].edit = !newData[index].edit;
         this.setState({ data: newData })
     }
+    sendToCheckPage = (index) => {
+        // 傳至驗證頁
+        let project = this.state.data[index];
+        let sendData = { url: project.dn, name: project.sn };
+        this.setState({
+            dataOnCheckPage: sendData,
+            status:2
+        })
+
+    }
     submitEdit = (index, data) => {
         const newData = this.state.data;
         newData[index].sn = data[0];
         newData[index].type = data[1];
-        if(newData[index].verified === false){
+        if (newData[index].verified === false) {
+            // 未認證，可修改網域
             newData[index].dn = data[2];
         }
         this.setState({ data: newData });
-        const postData = {...newData[index]};
+        const postData = { ...newData[index] };
         delete postData.choose;
         delete postData.verified;
         delete postData.edit;
-        if(newData[index].verified === true){
+        if (newData[index].verified === true) {
+            // 已認證，不送網域
             delete postData.dn;
-        }else{
+        } else {
             postData.dn = data[2];
         }
-        postData.token = localStorage.getItem('token');
+        // postData.token = localStorage.getItem('token');
         console.log(postData)
         modifyTracking(postData)
-        .then(response=>{
-            if(response.status === 4){
-                alert('此專案已不存在');
-                window.location.reload();
-                return ;
-            }
-            this.editData(index);
-        })
+            .then(response => {
+                if (response.status === 4) {
+                    this.setState({ showAlertMsg: true, alertText: '此專案已不存在' });
+                    setTimeout(() => {
+                        this.setState({ showAlertMsg: false });
+                        window.location.reload();
+                    }, 5000);
+                    return;
+                }
+                this.editData(index);
+            })
     }
-    // deleteList = () => {
-    //     const postData = {
-    //         token: localStorage.getItem('token'),
-
-    //     };
-        
-
-    // }
 
     render() {
         return (
             <>
+                <AlertMsg
+                    text={this.state.alertText}
+                    attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                    close={() => this.setState({ showAlertMsg: false })}
+                />
                 <Header />
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
                             <NavLeftMember four />
                             <div className="main_right">
-                                <h2 className="btn_like" onClick={() => this.changeStatus(0)}>編輯網站資訊</h2>
+                                <h2><span className="btn_like" onClick={() => this.changeStatus(0)}>編輯網站資訊</span></h2>
                                 {/* <div className={this.state.status === 0 ? 'd-none' : ''}>
                                     <span className={this.state.status > 0 ? 'text-primary' : ''}>選取黑名單項目</span>
                                     <span>&nbsp;｜&nbsp;</span>
@@ -133,11 +147,8 @@ class EditPage extends Component {
                                     <table className="text-center w-100 table_simple" cellPadding="15">
                                         <thead>
                                             <tr>
-                                                <th colSpan="4" className="align-items-center">
+                                                <th colSpan="5" className="align-items-center">
                                                     <h4>追蹤碼清單</h4>
-                                                </th>
-                                                <th>
-                                                    <button className="btn_noborder text-primary" onClick={() => this.changeStatus(1)}><FaPlusCircle /></button>
                                                 </th>
                                             </tr>
                                             <tr>
@@ -160,22 +171,27 @@ class EditPage extends Component {
                                                     val={val}
                                                     index={index}
                                                     key={index}
-                                                    clickCheckbox={this.clickCheckbox}
+                                                    // clickCheckbox={this.clickCheckbox}
                                                     editData={this.editData}
+                                                    toCheckPage={() => this.sendToCheckPage(index)}
                                                 />
                                                     :
                                                     <TableElementEdit
                                                         val={val}
                                                         index={index}
                                                         key={index}
-                                                        clickCheckbox={this.clickCheckbox}
+                                                        // clickCheckbox={this.clickCheckbox}
                                                         editData={this.editData}
                                                         submitData={this.submitEdit}
+                                                        toCheckPage={() => this.sendToCheckPage(index)}
                                                     />
                                             ))}
                                             {(this.state.showBtn) && <tr><td colSpan="4"></td><td className="btn_like" onClick={this.deleteList}><FaTrashAlt /></td></tr>}
                                         </tbody>
                                     </table>
+                                    <div className="text-center">
+                                        <button className="btn btn-primary text-white px-4 mt-2 weight600 font_20" onClick={() => this.changeStatus(1)}>&#43;</button>
+                                    </div>
                                 </div>
                                 {
                                     this.state.status === 1 &&
@@ -184,11 +200,11 @@ class EditPage extends Component {
                                     />
                                 }
                                 {
-                                     this.state.status === 2 &&
-                                     <CheckTrackingCode
-                                         changeStatus={() => this.changeStatus(0)}
-                                         data={this.state.dataOnCheckPage}
-                                     />
+                                    this.state.status === 2 &&
+                                    <CheckTrackingCode
+                                        changeStatus={() => this.changeStatus(0)}
+                                        data={this.state.dataOnCheckPage}
+                                    />
                                 }
                             </div>
 

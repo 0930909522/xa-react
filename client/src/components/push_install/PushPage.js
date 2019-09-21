@@ -69,20 +69,20 @@ class PushPage extends Component {
         });
     }
     submit = () => {
-        let postData = {
-            token: null,
-            acceptType: []
-        };
+        let acceptType = '';
         if (this.state.content[0].choose) {
-            postData.acceptType.push('media');
+            acceptType+='m';
         }
         if (this.state.content[1].choose) {
-            postData.acceptType.push('ecommerce');
+            acceptType+='e';
         }
-        postData.token = localStorage.getItem('token');
-        pushpage(postData)
+        if(acceptType === ''){
+            //不可為空
+            return;
+        }
+        pushpage(acceptType)
             .then(res => {
-                this.props.getResponseData('acceptType', postData.acceptType);
+                this.props.getResponseData('acceptType', acceptType);
                 this.props.getResponseData('step1Data', res);
                 this.props.changeStatus(2);
             })

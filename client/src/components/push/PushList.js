@@ -14,7 +14,7 @@ class PushList extends Component {
             editIndex: null,
             data: [{
                 "title": "畢業季主題專欄",
-                "advertiseType": 1,
+                // "advertiseType": 1,
                 "start": ["2019-08-05", "14:57"],
                 "end": ["2019-08-06", "06:57"],
                 "state": true,
@@ -30,15 +30,15 @@ class PushList extends Component {
                     "id": "2",
                     "name": "畢業",
                     "url": "https://www.businesstoday.com.tw/article/category/",
-                    "title": "資金潮讓投資人「嗨」到高點　樂觀之餘台股要留意這4個重點",
-                    "content": "美股持續往歷史高點邁進...",
+                    "title": "資金潮讓投資人「嗨」到高點　樂觀之餘台股要留意這4個重點１１１１",
+                    "content": "美股持續往歷史高點邁進...ａａａａａａ",
                     "tag": "#111#222",
                     "img": "https://static.jsbin.com/images/dave.min.svg"
                 }
                 ]
             }, {
                 "title": "畢業季主題專欄2",
-                "advertiseType": 1,
+                // "advertiseType": 1,
                 "start": ["2019-08-05", "14:57"],
                 "end": ["2019-08-06", "06:57"],
                 "state": false,

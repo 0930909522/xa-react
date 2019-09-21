@@ -59,7 +59,7 @@ class EditUserInfo extends Component {
                 .then(response=>{
                     if(response.status == 1){
                         alert('修改成功');
-                        localStorage.setItem({name: this.state.data.name});
+                        localStorage.setItem('name', this.state.data.name);
                     }
                 })
 

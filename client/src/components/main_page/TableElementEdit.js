@@ -9,14 +9,21 @@ class TableElementEdit extends Component {
         this.dn = null;
     }
     submit = () =>{
-        this.props.submitData(this.props.index, [this.sn.value, this.type.value, this.dn.value]);
+        if(this.sn.value === '' || this.type.value === '' || this.dn.value === ''){
+            return;
+        }
+        let dn = this.dn.value.replace('https://', '').replace('http://', '').split('/')[0];
+        this.props.submitData(this.props.index, [this.sn.value, this.type.value, dn]);
     }
     render() {
         const { val, index, editData } = this.props;
         return (
             <React.Fragment>
                 <tr>
-                    <td className="align-items-center">
+                    <td 
+                        className="align-items-center"
+                        onClick={this.props.toCheckPage}
+                    >
                         {/* <input type="checkbox" className="table_checkbox" checked={val.choose} onChange={() => clickCheckbox(index)} /> */}
                         {val.verified ? <div className="warning_icon bg-success">已認證</div> : <div className="warning_icon bg-danger">未認證</div>}
                     </td>

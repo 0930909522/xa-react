@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Row, Col } from "react-bootstrap";
-import AdvertiseType from '../share/AdvertiseType';
+// import AdvertiseType from '../share/AdvertiseType';
 // import previw from '../../images/preview.png';
 import Pt from '../../images/menu.png';
 
 const initialData = {
     "title": "",
-    "advertiseType": "",
+    // "advertiseType": "",
     "start": ["", ""],
     "end": ["", ""],
     "state": "",
@@ -22,28 +22,28 @@ const initilaContain = {
     "img": null
 }
 
-const advtiseTypes = [
-    {
-        index: 1,
-        title: '廣告一：網頁側欄',
-        srcs: Pt
-    },
-    {
-        index: 3,
-        title: '廣告三：網頁側欄(最少2則)',
-        srcs: Pt
-    },
-    {
-        index: 2,
-        title: '廣告二：網頁側欄',
-        srcs: Pt
-    },
-    {
-        index: 4,
-        title: '廣告四：網頁下方(最少3則)',
-        srcs: Pt
-    }
-]
+// const advtiseTypes = [
+//     {
+//         index: 1,
+//         title: '廣告一：網頁側欄',
+//         srcs: Pt
+//     },
+//     {
+//         index: 3,
+//         title: '廣告三：網頁側欄(最少2則)',
+//         srcs: Pt
+//     },
+//     {
+//         index: 2,
+//         title: '廣告二：網頁側欄',
+//         srcs: Pt
+//     },
+//     {
+//         index: 4,
+//         title: '廣告四：網頁下方(最少3則)',
+//         srcs: Pt
+//     }
+// ]
 
 class PushInput extends Component {
     constructor(props) {
@@ -51,11 +51,12 @@ class PushInput extends Component {
         this.state = {
             today: null,
             data: Object.assign({}, initialData),
-            editIndex: null
+            editIndex: 0
         }
     }
 
     componentDidMount() {
+        // 設定日期
         const Today = new Date();
         const newToday = { year: null, month: null, date: null };
         newToday.year = Today.getFullYear();
@@ -65,25 +66,31 @@ class PushInput extends Component {
             today: newToday.year + '-' + newToday.month + '-' + newToday.date
         })
 
+        // 初始化資料，端看是新增或修改
         let newData = Object.assign({}, initialData);
         let newEditIndex = 0;
         if (this.props.data === undefined) {
+            // 新增
             newData.contain = [];
             newData.action = 'add';
             newData.contain[0] = Object.assign({}, initilaContain);
         } else {
+            // 修改
             newData = this.props.data;
             newData.action = 'modify';
         }
         newData.type = this.props.type;
         this.setState({ editIndex: newEditIndex, data: newData })
     }
+    //輸入資料（選）
     addingTopic = (e, type, index) => {
         const content = e.target.value;
         const newData = this.state.data;
         (index === undefined) ? newData[type] = content : newData[type][index] = content;
         this.setState({ data: newData });
     }
+
+    //輸入資料（寫）
     addingContent = (e, type) => {
         const content = e.target.value;
         const newData = this.state.data;
@@ -91,23 +98,26 @@ class PushInput extends Component {
         this.setState({ data: newData });
     }
 
+    // 在此主題下新增一筆
     addOne = () => {
-        const index = (this.state.data.contain.length === 0) ? 0 : this.state.editIndex + 1;
+        const index = this.state.data.contain.length + 1;
         const newData = this.state.data;
         newData.contain[index] = Object.assign({}, initilaContain);
         this.setState({ data: newData, editIndex: index });
     }
+    //切換為主題下的另一筆
     selectContent = id => {
         this.setState({ editIndex: parseInt(id) });
     }
-    submit = () =>{
+    // 送出
+    submit = () => {
         console.log(this.state.data)
     }
 
     render() {
         return (
             <div>
-                <h4 className="mt-4">選擇廣告格式</h4>
+                {/* <h4 className="mt-4">選擇廣告格式</h4>
                 <div className="cards">
                     {advtiseTypes.map(val => {
                         return (
@@ -121,7 +131,7 @@ class PushInput extends Component {
                             />
                         )
                     })}
-                </div>
+                </div> */}
                 <div className="box radius10">
                     <h4 className="my-3">新增廣告推播</h4>
                     <input
@@ -176,10 +186,23 @@ class PushInput extends Component {
                         <div className="box srollX">
                             <ul>
                                 {
-                                    this.state.data.contain.length > 0 && this.state.data.contain.map((val, index) => <li key={index} className="btn_like" onClick={() => this.selectContent(index)}>{val.title}</li>)
+                                    this.state.data.contain.length > 0 && this.state.data.contain.map((val, index) => (
+                                        <li
+                                            key={index}
+                                            className="btn_like"
+                                            onClick={() => this.selectContent(index)}
+                                        >
+                                            {val.title}
+                                        </li>
+                                    ))
                                 }
                                 <li className="add_li_content">
-                                    <button className=" btn_noborder" onClick={this.addOne}>&#10010;</button>
+                                    <button
+                                        className=" btn_noborder"
+                                        onClick={this.addOne}
+                                    >
+                                        &#10010;
+                                    </button>
                                 </li>
                             </ul>
                         </div>

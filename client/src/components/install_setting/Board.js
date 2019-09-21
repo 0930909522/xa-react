@@ -11,10 +11,10 @@ import { getBoard, deleteBoard } from '../share/ajax';
 // import PushTitle from '../share/PushTitle';
 
 const initialUserAddingData = {
-    acceptType: null,
-    step1Data: null, //收到要放進step2的
-    blacklist: null,
-    boardId: null
+    acceptType: [], //
+    step1Data: [], //收到要放進step2的
+    blacklist: [],
+    boardId: ''
 }
 
 class Board extends Component {
@@ -27,14 +27,16 @@ class Board extends Component {
         }
     }
     componentDidMount() {
+        //載入以設定好的widget
         let postData = {};
-        // postData.token = localStorage.getItem('token');
         postData.view = localStorage.getItem('view');
-        getBoard(postData) //載入資訊
+        getBoard(postData) 
             .then(response => {
                 let getData = response || [];
                 if (getData.length === 0) {
+                    // 如果沒有widget
                     this.changeStatus(1);
+                    return;
                 }
                 getData.forEach(function (val, index, array) {
                     array[index].show = false;
@@ -43,9 +45,10 @@ class Board extends Component {
                 this.setState({ data: getData });
                 console.log(getData)
             })
-        this.setState({ userAddingData: Object.assign({}, initialUserAddingData) }); //初始化
+        // this.setState({ userAddingData: Object.assign({}, initialUserAddingData) }); //初始化
 
     }
+    //全選
     toggleClickAll = e => {
         const newContent = [...this.state.data];
         newContent.forEach(function (val) {
@@ -56,6 +59,7 @@ class Board extends Component {
             showBtn: e.target.checked
         });
     }
+    //單選
     clickCheckbox = index => {
         const newContent = [...this.state.data];
         let booleanBtn = false;
@@ -76,8 +80,8 @@ class Board extends Component {
         newContent[index].show = !newContent[index].show;
         this.setState({ content: newContent });
     }
+    //切換步驟用
     changeStatus = num => {
-
         if (num === 0) {
             this.setState({ status: num, userAddingData: Object.assign({}, initialUserAddingData) })
         } else {
@@ -85,11 +89,13 @@ class Board extends Component {
         }
         console.log(num)
     }
+    //儲存
     saveData = (text, data) => {
         const newData = this.state.userAddingData;
         newData[text] = data;
         this.setState({ userAddingData: newData });
     }
+    //修改
     editData = (index) => {
         const newData = this.state.userAddingData;
         const sourceData = this.state.data[index];
@@ -99,9 +105,10 @@ class Board extends Component {
         this.setState({ userAddingData: newData });
         this.changeStatus(1);
     }
+    // 刪除
     deleteList = () => {
-        let postData = { token: null, boardIdList: [] };
-        postData.token = localStorage.getItem('token');
+        let postData = { boardIdList: [] };
+        // postData.token = localStorage.getItem('token');
         this.state.data.forEach((val) => {
             if (val.choose) {
                 postData.boardIdList.push(val.boardId);
@@ -128,7 +135,7 @@ class Board extends Component {
                                     <span>&nbsp;｜&nbsp;</span>
                                     <span className={this.state.status > 1 ? 'text-primary' : ''}>設定黑名單</span>
                                     <span>&nbsp;｜&nbsp;</span>
-                                    <span className={this.state.status > 2 ? 'text-primary' : this.state.userAddingData.boardId === null ? '' : 'text-secondary'}>安裝教學</span>
+                                    <span className={this.state.status > 2 ? 'text-primary' : this.state.userAddingData.boardId === '' ? '' : 'text-secondary'}>安裝教學</span>
                                 </div>
                                 <div className={this.state.status === 0 ? 'box' : 'd-none'}>
                                     <table className="pushTable_r w-100" cellPadding="15">

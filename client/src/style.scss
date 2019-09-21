@@ -188,6 +188,9 @@ button.radius20 {
     outline: none;
 }
 
+.translateY{
+    transform: translateY(-100%);
+}
 
 /* The switch - the box around the slider */
 
@@ -631,7 +634,7 @@ button.radius20 {
     position: relative;
     &:hover {
         .person_sign {
-            max-height: 200px;
+            max-height: 300px;
             overflow: visible;
             z-index: 2;
             &::before {
