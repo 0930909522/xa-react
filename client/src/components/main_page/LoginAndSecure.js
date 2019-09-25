@@ -4,10 +4,12 @@ import Header from "../Header";
 import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
 import AlertMsg from '../share/AlertMsg';
+import {updatePsd} from '../share/ajax';
 
 const LoginAndSecure = () => {
     const [psd, changePsd] = useState('');
     const [checkPsd, changeCheckPsd] = useState('');
+    const [oldPsd, changeOldPsd] = useState('');
     const [editing, changeState] = useState(false);
     const [msg, changeMsg] = useState('');
     const [showMsg, showAlertMsg] = useState(false);
@@ -19,12 +21,24 @@ const LoginAndSecure = () => {
                 showMsgFun('密碼格式不符');
                 return;
             }
-            if(psd !== checkPsd){
+            if (psd !== checkPsd) {
                 showMsgFun('密碼驗證不一致');
                 return;
             }
-            showMsgFun('修改成功');
+            const postData = {
+                old: oldPsd,
+                new: psd
+            }
             // 傳送密碼
+            updatePsd(postData)
+            .then(res=>{
+                if(res === 1){
+                    showMsgFun('修改成功');
+                }else{
+                    showMsgFun('舊密碼輸入錯誤');
+                    return;
+                }
+            })
         }
         changeState(!editing);
     }
@@ -90,6 +104,16 @@ const LoginAndSecure = () => {
                                 <label htmlFor="password">密碼</label>
                                 {editing ?
                                     <>
+                                        <label htmlFor="oldpassword">請輸入舊密碼</label>
+                                        <input
+                                            name="oldpassword"
+                                            type="password"
+                                            className="input_1 mb-3"
+                                            defaultValue=""
+                                            placeholder="密碼：8個以上包含半形英文數字"
+                                            onChange={(e) => changeOldPsd(e.target.value)}
+                                        />
+                                        <label htmlFor="password">請輸入新密碼</label>
                                         <input
                                             name="password"
                                             type="password"

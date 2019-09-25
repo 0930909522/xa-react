@@ -17,7 +17,7 @@ class SetBlackList extends Component {
     componentDidMount() {
         let newData = this.props.sendData.step1Data || [];
         const getData = this.props.sendData;
-        if (getData.boardId === null) { //新增資料狀態
+        if (getData.boardId === '') { //新增資料狀態
             newData.forEach(function (val, index, array) {
                 array[index] = { choose: false, name: val }
             })
@@ -47,9 +47,9 @@ class SetBlackList extends Component {
     submit = () => {
         let postData = {
             // token: null,
-            view: null,
+            view: '',
             blacklist: [],
-            acceptType: []
+            acceptType: ""
         };
         for (let i of this.state.data) {
             if (i.choose === true) {
@@ -60,10 +60,12 @@ class SetBlackList extends Component {
         // postData.token = localStorage.getItem('token');
         postData.view = localStorage.getItem('view');
         if (this.state.modified) {
+            // 是更新放進來
             postData.boardId = this.props.sendData.boardId;
             modifyBoard(postData);
             window.location.reload();
         } else {
+            // 是新增放進來
             setblacklist(postData)
                 .then((res) => {
                     this.props.getResponseData('boardId', res);

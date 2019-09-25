@@ -89,7 +89,7 @@ class Board extends Component {
         }
         console.log(num)
     }
-    //儲存
+    //儲存其他頁面的資料到此元件
     saveData = (text, data) => {
         const newData = this.state.userAddingData;
         newData[text] = data;
@@ -167,7 +167,7 @@ class Board extends Component {
                                                             <td colSpan="2">
                                                                 <strong>類別</strong>
                                                                 {
-                                                                    val.acceptType.map((val, index) => (
+                                                                    Array.from(val.acceptType).map((val, index) => (
                                                                         <h6 key={index}>{val}</h6>
                                                                     ))
                                                                 }

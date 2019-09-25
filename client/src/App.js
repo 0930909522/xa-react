@@ -1,9 +1,9 @@
 // /client/App.js
 import React, { Component } from 'react';
-import './App.scss'; 
+import './App.scss';
 import './style.scss';
 // import axios from 'axios';
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './components/Main';
 import AnalyticGeneral from './components/analytic/AnalyticGeneral';
 import AnalyticRealTime from './components/analytic/AnalyticRealTime';
@@ -56,25 +56,27 @@ import Receipt from './components/report/Receipt';
 
 class App extends Component {
   state = {}
+
+
   render() {
     return (
       <div className="all">
         <Router>
-          <Route exact path="/" component={AnalyticPortrait} /> 
+          <Route exact path="/" component={AnalyticPortrait} />
           {/* 訪客總覽 */}
-          <Route path="/general" component={AnalyticGeneral} /> 
+          <Route path="/general" component={AnalyticGeneral} />
           {/* 即時資訊 */}
-          <Route path="/realtime" component={AnalyticRealTime} /> 
+          <Route path="/realtime" component={AnalyticRealTime} />
           {/* 基礎數據分析 */}
-          <Route path="/basis" component={AnalyticBasis} /> 
+          <Route path="/basis" component={AnalyticBasis} />
           {/*  */}
-          <Route path="/check" component={AnalyticCheck} /> 
+          <Route path="/check" component={AnalyticCheck} />
           {/* 流料來源 */}
-          <Route path="/source" component={AnalyticSource} /> 
+          <Route path="/source" component={AnalyticSource} />
           {/* 熱門頁面 */}
-          <Route path="/hot" component={AnalyticHot} /> 
+          <Route path="/hot" component={AnalyticHot} />
           {/* 互動指標 */}
-          <Route path="/interaction" component={AnalyticInteraction} /> 
+          <Route path="/interaction" component={AnalyticInteraction} />
           {/* 資產價值 */}
           <Route path="/asset_rise" component={AnalyticAsset} />
           {/* 用戶畫像 */}
@@ -84,7 +86,7 @@ class App extends Component {
 
           {/* 測試用 */}
           <Route path="/test" component={Test} />
-          
+
           {/* 推播 主題活動-新增 */}
           {/* <Route path="/push/add" component={ActivityNew} /> */}
           {/* 推播 主題活動-修改廣告 */}
@@ -116,13 +118,13 @@ class App extends Component {
           {/* 推播 選擇媒體平台 */}
           {/* <Route path="/push/mediaPlaform" component={MediaPlaform} /> */}
           {/* 安裝追蹤碼(設定追蹤碼) */}
-          <Route path="/trackingCode/setting" component={SetTrackingCode} />
+          {/* <Route path="/trackingCode/setting" component={SetTrackingCode} /> */}
           {/* 安裝追蹤碼(修改設定) */}
           <Route path="/trackingCode/modify" component={ModifySetting} />
           {/* 安裝追蹤碼*/}
           <Route path="/trackingCode/install" component={InstallTrackingCode} />
           {/* 安裝追蹤碼(測試安裝是否成功) */}
-          <Route path="/trackingCode/check" component={CheckSuccess} />
+          {/* <Route path="/trackingCode/check" component={CheckSuccess} /> */}
           {/* sign up(建立帳號) */}
           <Route path="/signup/register" component={Register} />
           {/* sign up(驗證) */}
@@ -134,7 +136,8 @@ class App extends Component {
           {/* 會員中心 (編輯使用者資訊) */}
           <Route path="/memberCentre/edit" component={EditUserInfo} />
           {/* 會員中心 (編輯網站資訊) */}
-          <Route path="/memberCentre/website" component={EditPage} />
+          {/* <Route path="/memberCentre/website" component={EditPage} /> */}
+          <Route path="/memberCentre/website" render={(props) => <EditPage level={1} {...props} />} />
           {/* 會員中心 (登入與帳號安全) */}
           <Route path="/memberCentre/loginAndSecure" component={LoginAndSecure} />
           {/* 會員中心(帳單與儲值) */}

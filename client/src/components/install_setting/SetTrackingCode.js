@@ -16,8 +16,8 @@ class SetTrackingCode extends Component {
             visited: null,
             guideNum: 0,
             data: {
-                sn: '',
-                dn: '',
+                siteName: '',
+                domainName: '',
                 type: 'newmedia'
             }
         }
@@ -47,7 +47,7 @@ class SetTrackingCode extends Component {
     }
     submit = () => {
         let postData = this.state.data;
-        postData.dn = postData.dn.replace('https://', '').replace('http://', '').split('/')[0];
+        postData.domainName = postData.domainName.replace('https://', '').replace('http://', '').split('/')[0];
         for (let i in postData) {
             if (postData[i] === '') {
                 this.setState({ showAlertMsg: true, alertText: '欄位不可為空' });
@@ -63,17 +63,18 @@ class SetTrackingCode extends Component {
             if (response !== undefined) {
                 localStorage.setItem('view', response.view);
                 this.setState({ showAlertMsg: true, alertText: '資料傳送成功' });
+                this.props.toCheckPage(postData);
                 setTimeout(() => {
-                    this.props.changeStatus();
                     this.setState({ showAlertMsg: false });
+                    this.props.changeStatus();
                 }, 3000);
             }
         })
     }
     cancel = () => {
         const newData = this.state.data;
-        newData.dn = '';
-        newData.sn = '';
+        newData.domainName = '';
+        newData.siteName = '';
         newData.type = 'newmedia';
         this.setState({ data: newData });
     }
@@ -124,7 +125,7 @@ class SetTrackingCode extends Component {
                             <label htmlFor="webpageName" className=" border_left pl-2 font_20">網站名稱</label>
                         </Col>
                         <Col sm={10}>
-                            <input type="text" id="webpageName" className="input_1" value={this.state.data.sn} onChange={(e) => this.addingData(e, 'sn')} />
+                            <input type="text" id="webpageName" className="input_1" value={this.state.data.siteName} onChange={(e) => this.addingData(e, 'siteName')} />
                         </Col>
                     </Row>
                     <Row className="my-3">
@@ -138,7 +139,7 @@ class SetTrackingCode extends Component {
                             </select>
                         </Col>
                         <Col sm={7}>
-                            <input type="text" id="webpageURL" className="w-100 input_1" placeholder="網域名稱，如：www.google.com.tw" value={this.state.data.dn} onChange={(e) => this.addingData(e, 'dn')} />
+                            <input type="text" id="webpageURL" className="w-100 input_1" placeholder="網域名稱，如：www.google.com.tw" value={this.state.data.domainName} onChange={(e) => this.addingData(e, 'domainName')} />
                         </Col>
                     </Row>
                     <Row className="my-3">

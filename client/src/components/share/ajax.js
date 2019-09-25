@@ -33,7 +33,7 @@ export const register = async (postData) => {
 
 export const login = postData => {
     fetch('https://node.aiday.org/sbir/signin', {
-    // fetch('http://192.168.50.103/sbir/signin', {
+        // fetch('http://192.168.50.103/sbir/signin', {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -75,7 +75,7 @@ export const login = postData => {
 
 export const logout = postData => {
     fetch('https://node.aiday.org/sbir/signout', {
-    // fetch('http://192.168.50.103/sbir/signout', {
+        // fetch('http://192.168.50.103/sbir/signout', {
         method: 'DELETE',
         mode: 'cors',
         credentials: 'include',
@@ -90,19 +90,42 @@ export const logout = postData => {
         })
 }
 
+//Password
+export const updatePsd = async (postData) => {
+    let data;
+    await fetch('https://node.aiday.org/sbir/password', {
+    // await fetch('http://192.168.50.103/sbir/password', {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    })
+        .then(response => response.json())
+        .then(response => {
+            data = forAjax(response).status;
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    return data;
+}
+
 
 // Website - 查詢追蹤網站
 export const trackingList = async () => {
     let data;
     await fetch('https://node.aiday.org/sbir/website', {
-    // await fetch('http://192.168.50.103/sbir/website', {
+        // await fetch('http://192.168.50.103/sbir/website', {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            
+
         }
     })
         .then(response => response.json())
@@ -118,8 +141,8 @@ export const trackingList = async () => {
 // Website - 新增追蹤網站
 export const addTracking = async (postData) => {
     let data;
-    await fetch('https://node.aiday.org/sbir/website', {
-    // await fetch('http://192.168.50.103/sbir/website', {
+    // await fetch('https://node.aiday.org/sbir/website', {
+        await fetch('http://192.168.50.103/sbir/website', {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -143,7 +166,7 @@ export const addTracking = async (postData) => {
 export const modifyTracking = async (postData) => {
     let data;
     await fetch('https://node.aiday.org/sbir/website', {
-    // await fetch('http://192.168.50.103/sbir/website', {
+        // await fetch('http://192.168.50.103/sbir/website', {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -187,7 +210,7 @@ export const modifyTracking = async (postData) => {
 // 第二階段選擇黑名單項目和接收
 export const pushpage = async postData => {
     let data;
-    await fetch('https://node.aiday.org/sbir/brand/'+postData, {
+    await fetch('https://node.aiday.org/sbir/brand/' + postData, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -196,7 +219,7 @@ export const pushpage = async postData => {
         }
     }).then(response => response.json()
     ).then(response => {
-        data = forAjax(response).brandlist;
+        data = forAjax(response);
     }).catch(err => {
         console.log(err);
     })
@@ -239,7 +262,7 @@ export const getBoard = async postData => {
         // body: JSON.stringify(postData)
     }).then(response => response.json()
     ).then(response => {
-        data = forAjax(response).boardlist;
+        data = forAjax(response);
     }).catch(err => {
         console.log(err);
     })
@@ -290,7 +313,7 @@ export const deleteBoard = async postData => {
 export const getUserInfo = async postData => {
     let data;
     await fetch('https://node.aiday.org/sbir/user', {
-    // await fetch('http://192.168.50.103/sbir/user', {
+        // await fetch('http://192.168.50.103/sbir/user', {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
@@ -312,7 +335,7 @@ export const getUserInfo = async postData => {
 export const updateUserInfo = async postData => {
     let data;
     await fetch('https://node.aiday.org/sbir/user', {
-    // await fetch('http://192.168.50.103/sbir/user', {
+        // await fetch('http://192.168.50.103/sbir/user', {
         method: 'PUT',
         mode: 'cors',
         credentials: 'include',
@@ -338,7 +361,7 @@ function forAjax(response) {
         //     break;
         case 2:
         case 3:
-            alert('待機時間過長');
+            alert('此筆資料已註冊');
             break;
         // case 999:
         //     alert('無法預期的錯誤');

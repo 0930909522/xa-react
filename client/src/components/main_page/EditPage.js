@@ -79,20 +79,29 @@ class EditPage extends Component {
     sendToCheckPage = (index) => {
         // 傳至驗證頁
         let project = this.state.data[index];
-        let sendData = { url: project.dn, name: project.sn };
+        let sendData = { url: project.domainName, name: project.siteName };
         this.setState({
             dataOnCheckPage: sendData,
             status:2
         })
 
     }
+    newDataToCheckPage = (data) =>{
+        //新增的追蹤碼要傳至驗證頁
+        let {siteName,domainName} = data;
+        let sendData = { url: domainName, name: siteName };
+        this.setState({
+            dataOnCheckPage: sendData,
+        })
+
+    }
     submitEdit = (index, data) => {
         const newData = this.state.data;
-        newData[index].sn = data[0];
+        newData[index].siteName = data[0];
         newData[index].type = data[1];
         if (newData[index].verified === false) {
             // 未認證，可修改網域
-            newData[index].dn = data[2];
+            newData[index].domainName = data[2];
         }
         this.setState({ data: newData });
         const postData = { ...newData[index] };
@@ -101,9 +110,9 @@ class EditPage extends Component {
         delete postData.edit;
         if (newData[index].verified === true) {
             // 已認證，不送網域
-            delete postData.dn;
+            delete postData.domainName;
         } else {
-            postData.dn = data[2];
+            postData.domainName = data[2];
         }
         // postData.token = localStorage.getItem('token');
         console.log(postData)
@@ -197,12 +206,12 @@ class EditPage extends Component {
                                     this.state.status === 1 &&
                                     <SetTrackingCode
                                         changeStatus={() => this.changeStatus(2)}
+                                        toCheckPage={this.newDataToCheckPage}
                                     />
                                 }
                                 {
                                     this.state.status === 2 &&
                                     <CheckTrackingCode
-                                        changeStatus={() => this.changeStatus(0)}
                                         data={this.state.dataOnCheckPage}
                                     />
                                 }

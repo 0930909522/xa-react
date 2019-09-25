@@ -27,19 +27,21 @@ class PushPage extends Component {
         const getData = this.props.sendData;
         if (getData.acceptType !== null) {
             const newData = this.state.content;
-            getData.acceptType.forEach(val => {
-                switch (val) {
-                    case 'media':
-                        newData[0].choose = true;
-                        break;
-                    case 'ecommerce':
-                        newData[1].choose = true;
-                        break;
-                    default:
-                        break;
-                }
-            })
-            this.setState({content: newData, showBtn: true});
+            switch (getData.acceptType) {
+                case 'm':
+                    newData[0].choose = true;
+                    break;
+                case 'e':
+                    newData[1].choose = true;
+                    break;
+                case 'me':
+                    newData[0].choose = true;
+                    newData[1].choose = true;
+                    break;
+                default:
+                    break;
+            }
+            this.setState({ content: newData, showBtn: true });
         }
     }
 
@@ -71,12 +73,12 @@ class PushPage extends Component {
     submit = () => {
         let acceptType = '';
         if (this.state.content[0].choose) {
-            acceptType+='m';
+            acceptType += 'm';
         }
         if (this.state.content[1].choose) {
-            acceptType+='e';
+            acceptType += 'e';
         }
-        if(acceptType === ''){
+        if (acceptType === '') {
             //不可為空
             return;
         }
