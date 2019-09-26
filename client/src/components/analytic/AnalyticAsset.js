@@ -53,39 +53,40 @@ class AnalyticAsset extends Component {
 
   apiOverview = (response) =>{
       let res = response.data;
-        if( res.status === 1){
-          res.data = res.data.filter( item => {
-            return item.lineChart !== null && item.id !== "mean"
-          });
+      // if( this.state.listIndex === 2 || this.state.listIndex === 3 ){
+      //   res.data = res.data.filter( item => {
+      //     return item.lineChart !== null && item.name !== "平均"
+      //   });
+      // } 
+      console.log(response);
+      let category = [];
+      res.data.map( (item, index) => {
+        if(!item.name){
+          res.data[index].name = item.id
         }
-        let category = [];
-        res.data.map( (item, index) => {
-          if(!item.name){
-            res.data[index].name = item.id
-          }
-          category.push({
-            id: item.id,
-            name: item.name,
-          });
+        category.push({
+          id: item.id,
+          name: item.name,
         });
+      });
 
-        let noData = false;
-        noData = res.data.length ? false : true;
-        this.setState({
-          basic: res,
-          isLoading: false,
-          noData: noData,
-          category: category,
-          subCategory: [],
-          articles: "",
-        });
+      let noData = false;
+      noData = res.data.length ? false : true;
+      this.setState({
+        basic: res,
+        isLoading: false,
+        noData: noData,
+        category: category,
+        subCategory: [],
+        articles: "",
+      });
   }
 
   apiSummary = (response) => {
     let res = response.data;
-    if( res.status === 1){
+    if( this.state.listIndex === 2 || this.state.listIndex === 3 ){
       res.data = res.data.filter( item => {
-        return item.lineChart !== null && item.id !== "mean"
+        return item.lineChart !== null && item.name !== "平均"
       });
     }
     let subCategory = [];
@@ -111,46 +112,77 @@ class AnalyticAsset extends Component {
 
   apiDetail = (response) => {
     let res = response.data;
-    if( res.status === 1){
+    if( this.state.listIndex === 2 || this.state.listIndex === 3 ){
       res.data = res.data.filter( item => {
-        return item.lineChart !== null && item.id !== "mean"
+        return item.lineChart !== null && item.name !== "平均"
       });
     }
     this.setState({ articles: res }, () => {
       //console.log(this.state.articles);
     });
   }
-
   getApiFromDb = (apiIndex) => {
-      axios.post(this.state.getApi[apiIndex], {
+    axios.get(this.state.getApi[apiIndex], {
+      params: {
         type: this.state.listIndex + 1,
         interval: this.state.listInterval,
-        owner: "foodnext",
-        token: "123",
+        view: "foodnext",
         id1: this.state.categoryId,
         id2: this.state.subCategoryId,
-      }, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      }})
-      .then(response => {
-        switch (apiIndex) {
-          case 0 :
-            this.apiOverview(response);
-            break;
-          case 1 :
-            this.apiSummary(response);
-            break;
-          case 2 :
-            this.apiDetail(response);
-            break;
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
+      }
+    })
+    .then(response => {
+      console.log("ttt",response);
+      switch(apiIndex) {
+        case 0 :
+          this.apiOverview(response);
+          break;
+        case 1 :
+          this.apiSummary(response);
+          break;
+        case 2 :
+          this.apiDetail(response);
+          break;
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+
+
+  // getApiFromDb = (apiIndex) => {
+  //     axios.post(this.state.getApi[apiIndex], {
+  //       type: this.state.listIndex + 1,
+  //       interval: this.state.listInterval,
+  //       owner: "foodnext",
+  //       token: "123",
+  //       id1: this.state.categoryId,
+  //       id2: this.state.subCategoryId,
+  //     }, {
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json'
+  //     }})
+  //     .then(response => {
+  //       console.log(response);
+  //       switch (apiIndex) {
+  //         case 0 :
+  //           this.apiOverview(response);
+  //           break;
+  //         case 1 :
+  //           this.apiSummary(response);
+  //           break;
+  //         case 2 :
+  //           this.apiDetail(response);
+  //           break;
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }
 
   // getDataFromDb = () => {
   //   // axios.get('/datas/analyticAsset.json')
@@ -168,7 +200,7 @@ class AnalyticAsset extends Component {
 
   //點選大標題（上升...）
   listClick(i) {
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     this.setState({
       //newData: this.state.basic.type[i],
       listIndex: i,
@@ -214,12 +246,13 @@ class AnalyticAsset extends Component {
       isLoading: true,
       categoryName: name,
       subCategoryId: "",
-      categoryId: id}, ()=>{
-        if(id === "all"){
-          this.getApiFromDb(0);
-        } else {
-          this.getApiFromDb(1);
-        }
+      categoryId: id
+    }, ()=> {
+      if(id === "all"){
+        this.getApiFromDb(0);
+      } else {
+        this.getApiFromDb(1);
+      }
     });
   }
   setSubCategory = (id, name) => {
@@ -235,21 +268,23 @@ class AnalyticAsset extends Component {
     let sum = 0;
     this.state.basic ? this.state.basic.data.map( item => {
       sum += item.pv
-    }): console.log("Error");
+    }): console.log();
     if(sum !== 0){
       let now = this;
       this.state.basic.data.map( item => {
-        let y = item.pv;
-        let p = Math.round((item.pv / sum) * 10000) / 100;
-        let label = item.name;
-        let id = item.id;
-        result.push({ y: y, p: p, label: label, id: id, 
-          click: (e) => {
-            this.state.categoryId !== "all" ? 
-              now.setSubCategory(e.dataPoint.id, e.dataPoint.label) :
-              now.setCategory(e.dataPoint.id, e.dataPoint.label);
-          }
-        });
+        if( item.name !== "平均" ){
+          let y = item.pv;
+          let p = Math.round((item.pv / sum) * 10000) / 100;
+          let label = item.name;
+          let id = item.id;
+          result.push({ y: y, p: p, label: label, id: id, 
+            click: (e) => {
+              this.state.categoryId !== "all" ? 
+                now.setSubCategory(e.dataPoint.id, e.dataPoint.label) :
+                now.setCategory(e.dataPoint.id, e.dataPoint.label);
+            }
+          });
+        }
       });
     }
     return result
@@ -257,7 +292,10 @@ class AnalyticAsset extends Component {
 
   addLineData = () => {
     let result = [];
-    this.state.basic ? this.state.basic.data.map( (item, index) => {
+    console.log("item", this.state.basic);
+    this.state.basic ? this.state.basic.data.map((item, index) => {
+      
+
       let subResult = [];
       item.lineChart ? item.lineChart.map((subItem)=>{
         let _y = subItem.date.split("-")[0],
@@ -267,7 +305,7 @@ class AnalyticAsset extends Component {
           x: new Date(_y, _m, _d),
           y: subItem.pv,
         })
-      }): console.log("Error");
+      }): console.log();
       let info = {
         type: "line",
         showInLegend: true,
@@ -278,7 +316,7 @@ class AnalyticAsset extends Component {
         dataPoints: subResult
       }
       result.push(info);
-    }): console.log("Error");
+    }): console.log();
     return result
   }
 
@@ -294,7 +332,7 @@ class AnalyticAsset extends Component {
           x: new Date(_y, _m, _d),
           y: subItem.pv,
         })
-      }): console.log("Error");
+      }): console.log();
       let info = {
         type: "line",
         showInLegend: true,
@@ -304,9 +342,9 @@ class AnalyticAsset extends Component {
         color: "#"+this.state.color[index],
         dataPoints: subResult
       }
-      console.log("info", info);
+      //console.log("info", info);
       result.push(info);
-    }): console.log("Error");
+    }): console.log();
     return result
   }
 
@@ -327,6 +365,7 @@ class AnalyticAsset extends Component {
         verticalAlign	:"top",
         horizontalAlign	:"center",
         itemclick: (e) => {
+          console.log(e);
           this.state.categoryId !== "all" ? 
             this.setSubCategory(e.dataPoint.id, e.dataPoint.label) :
             this.setCategory(e.dataPoint.id, e.dataPoint.label);
@@ -444,7 +483,7 @@ class AnalyticAsset extends Component {
                       {/* {renderProportion} */}
                       {this.state.isLoading ? 
                         <div style={{lineHeight: "300px"}}><img src={Loading} alt="Loading" /></div> : 
-                        !this.state.noData ? <CanvasJSChart options = {pieData} /> : <div style={{lineHeight: "300px"}}>該區間無資料</div>
+                        !this.state.noData ? <CanvasJSChart options = {pieData} /> : <div style={{lineHeight: "300px"}}>該分類區間下無顯著資料</div>
                       }
                     </div>
                   </div>

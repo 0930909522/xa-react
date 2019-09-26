@@ -6,6 +6,7 @@ import './style.scss';
 import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Home from './components/Main';
 import AnalyticGeneral from './components/analytic/AnalyticGeneral';
+import AnalyticReports from './components/analytic/AnalyticReports';
 import AnalyticRealTime from './components/analytic/AnalyticRealTime';
 import AnalyticBasis from './components/analytic/AnalyticBasis';
 import AnalyticCheck from './components/analytic/AnalyticCheck';
@@ -67,10 +68,12 @@ class App extends Component {
           <Route path="/realtime" component={AnalyticRealTime} /> 
           {/* 基礎數據分析 */}
           <Route path="/basis" component={AnalyticBasis} /> 
-          {/*  */}
+          {/* 網站健檢 */}
           <Route path="/check" component={AnalyticCheck} /> 
-          {/* 流料來源 */}
+          {/* 流量來源 */}
           <Route path="/source" component={AnalyticSource} /> 
+          {/* 流量報告 */}
+          <Route path="/reports" component={AnalyticReports} /> 
           {/* 熱門頁面 */}
           <Route path="/hot" component={AnalyticHot} /> 
           {/* 互動指標 */}
@@ -81,7 +84,6 @@ class App extends Component {
           <Route path="/portrait" component={AnalyticPortrait} />
           {/* 用戶分群 */}
           <Route path="/group" component={AnalyticGroup} />
-
           {/* 測試用 */}
           <Route path="/test" component={Test} />
           
@@ -115,6 +117,7 @@ class App extends Component {
           {/* <Route path="/push/popularArticleBuilt" component={PopularArticleBuilt} /> */}
           {/* 推播 選擇媒體平台 */}
           {/* <Route path="/push/mediaPlaform" component={MediaPlaform} /> */}
+          
           {/* 安裝追蹤碼(設定追蹤碼) */}
           <Route path="/trackingCode/setting" component={SetTrackingCode} />
           {/* 安裝追蹤碼(修改設定) */}

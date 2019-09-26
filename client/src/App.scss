@@ -2,6 +2,7 @@
 $blue1:#112e50;
 $blue2:#3472ff;
 $red: #dc3545;
+$yel: #eba31e;
 $glay: #f3f3f3;
 $dark: #263238;
 $dark1: #999;
@@ -10,6 +11,21 @@ $dark3: #efefef;
 
 $chartBlue1: #3299bb;
 $chartBlue2: #15e5f8;
+
+.text_red { color: $red }
+.text_yellow { color: $yel }
+
+.btn.blue {
+    background-color: $blue2;
+    border: 0;
+}
+.btn.red {
+    background-color: $red;
+    border: 0;
+    &:hober {
+        background-color: $red;
+    }
+}
 .value-text {
     margin: 10px;
 }
@@ -20,9 +36,54 @@ $chartBlue2: #15e5f8;
 }
 ul {padding: 0;}
 li {list-style: none;}
+
+
+.tableDetail {
+    margin: 15px;
+    overflow:auto;
+            height:  calc( 100% - 30px);
+    table {
+        width: 100%;
+        thead {
+            border-bottom: 2px solid $dark1;
+            th {
+                padding: 15px 0 10px;
+            }
+        }
+        td {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            img {
+                width: 100px;
+            }
+        }
+        tbody {
+            
+        }
+
+    }
+}
+
 .main_analytic {
     margin-top: 30px;
     margin-bottom: 30px;
+    
+    .mytable {
+        h3 {
+            border: 0;
+            font-size: 18px;
+            padding-bottom: 5px;
+        }
+        td {
+            &.ss {
+                font-size: 13px;
+                span {
+                    border-bottom: 1px dotted #ccc;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
     .main_right {
         width: calc( 100% - 215px );
         margin-left: 30px;
@@ -43,12 +104,14 @@ li {list-style: none;}
             display: inline-block;
         }         
     }
-    
     .box, .box2 {
         margin: 20px 0 0;
         padding: 15px;
         background-color: #fff;
         overflow: auto;
+        .center {
+            text-align: center;
+        }
         .select {
             float: right;
             font-size: 14px;
@@ -65,6 +128,106 @@ li {list-style: none;}
                 font-weight: normal;
                 font-size: 15px;
             }
+            .Collapse {
+                float:right;
+                margin: 15px 5px 0 0;
+                cursor: pointer;
+            }
+        }
+        .realtime {
+            text-align: center;
+            .active {
+                font-weight: bold;
+            }
+            .icon {
+                margin: 10px auto 5px;
+                color: $blue1;
+                img {
+                    max-width: 100%;
+                }
+            }
+            .value {
+                font-size: 36px;
+                line-height: 42px;
+                &.key {
+                    font-size: 24px;
+                    span {
+                        font-size: 15px;
+                    }
+                }
+                &.hot {
+                    max-width: 100%;
+                    font-size: 18px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    span {
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+        .check {
+            text-align: center;
+            .cont {
+                margin-top: 8px;
+                border-bottom: 1px solid $dark2;
+            }
+            
+            .active {
+                // font-weight: bold;
+            }
+            .icon {
+                margin: 22px auto 5px;
+                float: left;
+                img {
+                    max-width: 100%;
+                }
+            }
+            .more {
+                margin-top: 5px;
+                span {
+                    border: 1px solid $dark2;
+                    border-radius: 2px;
+                    color: $blue2;
+                    font-size: 15px;
+                    padding: 1px 10px;
+                    cursor: pointer;
+                }
+            }
+            .value {
+                float: right;
+                font-size: 80px;
+                line-height: 80px;
+                margin-left: 10px;
+                font-weight: 200;
+                color: $blue1;
+                span {
+                    font-size: 15px;
+                    float: right;
+                    line-height: 20px;
+                    margin:50px 0 0 5px;   
+                    min-width: 30px; 
+                    text-align: left;                 
+                }
+            }
+            &.small {
+                margin-top: 27px;
+                .value {
+                    font-size: 50px;
+                    line-height: 50px;
+                    span {
+                        margin:28px 0 0 2px; 
+                        min-width: 10px; 
+                    }
+                }
+                .icon {
+                    margin: 5px auto 5px;
+                    
+                }
+            }
+
+            
         }
         .articles {
             margin-top: 15px;
@@ -181,6 +344,10 @@ li {list-style: none;}
         }
         .info {
             float: left;
+            p {
+                font-size: 13px;
+                color: $dark1
+            }
             .small {
                 font-size: 12px;
                 color: $dark1;
@@ -304,6 +471,28 @@ li {list-style: none;}
                 }
             }
         }
+        .toplist {
+            text-align: center;
+            ul {
+                display: inline-block;
+            }
+            li {
+                float: left;
+                padding-right: 15px;
+                span {
+                    display: inline-block;
+                    width: 25px;
+                    height: 12px;
+                    background-color: $blue2;
+                }
+                &:last-child {
+                    span {
+                        background-color: $red;
+                    } 
+                }
+            }
+
+        }
         .chart_box {
             text-align: center;
             position: relative;
@@ -376,11 +565,31 @@ li {list-style: none;}
         width: calc( 50% - 15px );
         float: left;
         margin-right: 15px;
+        .info {
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            .value {
+                font-size: 24px;
+                font-style: italic;
+            }
+            p {
+                font-size: 13px;
+                color: $dark1
+            }
+        }
+        h3 {
+            span {
+                font-size: 20px;                
+            }
+        }
         &.right{
             margin-left: 15px;
             margin-right: 0;
         }
     }
+    
     .hot {
         .detail {
             margin-top: 8px;
