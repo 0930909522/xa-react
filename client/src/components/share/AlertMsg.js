@@ -12,6 +12,11 @@ export default class AlertMsg extends Component {
                     <p>{this.props.text}</p>
                 </div>
             </div>
+    // <AlertMsg
+    //     text={this.state.alertText}
+    //     attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+    //     close={() => this.setState({ showAlertMsg: false })}
+    //  />
         )
     }
 }

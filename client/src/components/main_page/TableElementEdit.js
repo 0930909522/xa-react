@@ -4,27 +4,34 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 class TableElementEdit extends Component {
     constructor(props){
         super(props);
-        this.sn = null;
+        this.siteName = null;
         this.type = null;
-        this.dn = null;
+        this.domainName = null;
     }
     submit = () =>{
-        this.props.submitData(this.props.index, [this.sn.value, this.type.value, this.dn.value]);
+        if(this.siteName.value === '' || this.type.value === '' || this.domainName.value === ''){
+            return;
+        }
+        let domainName = this.domainName.value.replace('https://', '').replace('http://', '').split('/')[0];
+        this.props.submitData(this.props.index, [this.siteName.value, this.type.value, domainName]);
     }
     render() {
         const { val, index, editData } = this.props;
         return (
             <React.Fragment>
                 <tr>
-                    <td className="align-items-center">
+                    <td 
+                        className="align-items-center"
+                        onClick={this.props.toCheckPage}
+                    >
                         {/* <input type="checkbox" className="table_checkbox" checked={val.choose} onChange={() => clickCheckbox(index)} /> */}
                         {val.verified ? <div className="warning_icon bg-success">已認證</div> : <div className="warning_icon bg-danger">未認證</div>}
                     </td>
                     <td>
-                        <input type="text" className="pl-1" defaultValue={val.sn} ref={(e)=>this.sn = e} />
+                        <input type="text" className="pl-1" defaultValue={val.siteName} ref={(e)=>this.siteName = e} />
                     </td>
                     <td>
-                        <input type="text" className="pl-1" defaultValue={val.dn} disabled={val.verified} ref={(e)=>this.dn = e} />
+                        <input type="text" className="pl-1" defaultValue={val.domainName} disabled={val.verified} ref={(e)=>this.domainName = e} />
                     </td>
                     <td>
                         <select defaultValue={val.type} ref={(e)=>this.type = e} >

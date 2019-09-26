@@ -1,5 +1,6 @@
 export const register = async (postData) => {
-    fetch('https://node.aiday.org/sbir/user/signup', {
+    // fetch('https://node.aiday.org/sbir/signup', {
+    fetch('http://192.168.50.103/sbir/signup', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -17,9 +18,9 @@ export const register = async (postData) => {
                 case 2:
                     alert('電子信箱重覆');
                     break;
-                case 999:
-                    alert('網路繁忙，請稍後再試');
-                    break;
+                // case 999:
+                //     alert('網路繁忙，請稍後再試');
+                //     break;
                 default:
                     console.log(response);
                     break;
@@ -31,42 +32,39 @@ export const register = async (postData) => {
 }
 
 export const login = postData => {
-    fetch('https://node.aiday.org/sbir/user/signin', {
+    fetch('https://node.aiday.org/sbir/signin', {
+        // fetch('http://192.168.50.103/sbir/signin', {
         method: 'POST',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
+
         },
         body: JSON.stringify(postData)
     })
         .then(response => response.json())
         .then(response => {
             switch (response.status) {
-                case 1:
-                    localStorage.setItem('token', response.token);
-                    localStorage.setItem('name', response.name);
-                    if (!response.hasOwnProperty('view')) {
-                        // 如果第一次登入
-                        localStorage.setItem('visited', '1');
-                        window.location.href = '/trackingCode/setting';
-                    } else {
-                        localStorage.setItem('visited', '0');
-                        localStorage.setItem('view', response.view);
-                        window.location.href = '/memberCentre/edit';
-                    }
-                    break;
                 case 2:
                     alert('帳號不正確');
                     break;
                 case 3:
                     alert('密碼不正確');
                     break;
-                case 999:
-                    alert('網路繁忙，請稍後再試');
-                    break;
                 default:
-                    console.log(response);
+                    // localStorage.setItem('token', response.token);
+                    localStorage.setItem('name', response.name);
+                    if (!response.hasOwnProperty('view')) {
+                        // 如果第一次登入
+                        localStorage.setItem('visited', '1');
+                        window.location.href = '/memberCentre/edit';
+                    } else {
+                        localStorage.setItem('visited', '0');
+                        localStorage.setItem('view', response.view);
+                        window.location.href = '/memberCentre/edit';
+                    }
                     break;
             }
         })
@@ -75,10 +73,29 @@ export const login = postData => {
         })
 }
 
-export const trackingList = async (postData) => {
+export const logout = postData => {
+    fetch('https://node.aiday.org/sbir/signout', {
+        // fetch('http://192.168.50.103/sbir/signout', {
+        method: 'DELETE',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+
+        }
+    })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+//Password
+export const updatePsd = async (postData) => {
     let data;
-    await fetch('https://node.aiday.org/sbir/website/list', {
-        method: 'POST',
+    await fetch('https://node.aiday.org/sbir/password', {
+    // await fetch('http://192.168.50.103/sbir/password', {
+        method: 'PUT',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
@@ -88,7 +105,7 @@ export const trackingList = async (postData) => {
     })
         .then(response => response.json())
         .then(response => {
-            data = forAjax(response).websitelist;
+            data = forAjax(response).status;
         })
         .catch(err => {
             console.log(err);
@@ -96,11 +113,39 @@ export const trackingList = async (postData) => {
     return data;
 }
 
-export const addTracking = async (postData) => {
+
+// Website - 查詢追蹤網站
+export const trackingList = async () => {
     let data;
     await fetch('https://node.aiday.org/sbir/website', {
+        // await fetch('http://192.168.50.103/sbir/website', {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+
+        }
+    })
+        .then(response => response.json())
+        .then(response => {
+            data = forAjax(response);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    return data;
+}
+
+// Website - 新增追蹤網站
+export const addTracking = async (postData) => {
+    let data;
+    // await fetch('https://node.aiday.org/sbir/website', {
+        await fetch('http://192.168.50.103/sbir/website', {
         method: 'POST',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -117,9 +162,11 @@ export const addTracking = async (postData) => {
     return data;
 }
 
+// Website - 修改追蹤網站
 export const modifyTracking = async (postData) => {
     let data;
     await fetch('https://node.aiday.org/sbir/website', {
+        // await fetch('http://192.168.50.103/sbir/website', {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -159,27 +206,28 @@ export const modifyTracking = async (postData) => {
 //     return data;
 // }
 
-// 第一階段選擇後送出
+// Brand - 查詢品牌
+// 第二階段選擇黑名單項目和接收
 export const pushpage = async postData => {
     let data;
-    await fetch('https://node.aiday.org/sbir/brand/list', {
-        method: 'POST',
+    await fetch('https://node.aiday.org/sbir/brand/' + postData, {
+        method: 'GET',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-        },
-        body: JSON.stringify(postData)
+        }
     }).then(response => response.json()
     ).then(response => {
-        data = forAjax(response).brandlist;
+        data = forAjax(response);
     }).catch(err => {
         console.log(err);
     })
     return data;
 }
 
-// 選擇黑名單送出
+// Board - 新增放進來
+// 選擇黑名單後送出
 export const setblacklist = async postData => {
     let data;
     await fetch('https://node.aiday.org/sbir/board', {
@@ -201,17 +249,20 @@ export const setblacklist = async postData => {
 
 export const getBoard = async postData => {
     let data;
-    await fetch('https://node.aiday.org/sbir/board/list', {
-        method: 'POST',
+    let esc = encodeURIComponent;
+    let query = Object.keys(postData).map(val => esc(val) + '=' + esc(postData[val])).join('&');
+    await fetch('https://node.aiday.org/sbir/board?' + query, {
+        method: 'GET',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'credentials': 'include'
         },
-        body: JSON.stringify(postData)
+        // body: JSON.stringify(postData)
     }).then(response => response.json()
     ).then(response => {
-        data = forAjax(response).boardlist;
+        data = forAjax(response);
     }).catch(err => {
         console.log(err);
     })
@@ -249,7 +300,7 @@ export const deleteBoard = async postData => {
         body: JSON.stringify(postData)
     }).then(response => response.json()
     ).then(response => {
-        response.forEach(val=>{
+        response.forEach(val => {
             forAjax(val);
         })
     }).catch(err => {
@@ -258,16 +309,19 @@ export const deleteBoard = async postData => {
     return data;
 }
 
+// User - 查詢用戶資訊
 export const getUserInfo = async postData => {
     let data;
-    await fetch('https://node.aiday.org/sbir/user/info', {
-        method: 'POST',
+    await fetch('https://node.aiday.org/sbir/user', {
+        // await fetch('http://192.168.50.103/sbir/user', {
+        method: 'GET',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-        },
-        body: JSON.stringify(postData)
+        }
+        // body: JSON.stringify(postData)
     }).then(response => response.json()
     ).then(response => {
         data = forAjax(response);
@@ -277,11 +331,14 @@ export const getUserInfo = async postData => {
     return data;
 }
 
+// User - 修改用戶資訊
 export const updateUserInfo = async postData => {
     let data;
-    await fetch('https://node.aiday.org/sbir/user/info', {
-        method: 'POST',
+    await fetch('https://node.aiday.org/sbir/user', {
+        // await fetch('http://192.168.50.103/sbir/user', {
+        method: 'PUT',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -296,22 +353,21 @@ export const updateUserInfo = async postData => {
     return data;
 }
 
-function forAjax(response){
+function forAjax(response) {
     let newData;
     switch (response.status) {
-        case 1:
-            newData = response;
-            break;
+        // case 1:
+        //     newData = response;
+        //     break;
         case 2:
         case 3:
-            alert('待機時間過長');
+            alert('此筆資料已註冊');
             break;
-        case 999:
-            alert('無法預期的錯誤');
-            break;
+        // case 999:
+        //     alert('無法預期的錯誤');
+        //     break;
         default:
             newData = response;
-            console.log(response);
             break;
     }
     return newData;

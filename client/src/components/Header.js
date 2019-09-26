@@ -2,23 +2,24 @@ import React, { Component } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { FaBell, FaUser } from 'react-icons/fa';
 import AlertMsg from './share/AlertMsg';
+import { logout } from './share/ajax';
 
 class Header extends Component {
   state = { showAlertMsg: false };
   logout = () => {
-    if(!localStorage.getItem('name')){
-      window.location.href = '/sbir/user/signin';
-      return;
-    }
-    this.setState({ showAlertMsg: true });
-    setTimeout(() => {
-      this.setState({ showAlertMsg: false });
+    if (localStorage.getItem('name')) {
+      this.setState({ showAlertMsg: true });
       localStorage.removeItem('name');
       localStorage.removeItem('view');
       localStorage.removeItem('visited');
-      localStorage.removeItem('token');
+      logout();
+      setTimeout(() => {
+        this.setState({ showAlertMsg: false });
+        window.location.href = '/signup/signin';
+      }, 4000);
+    } else {
       window.location.href = '/signup/signin';
-    }, 4000);
+    }
   }
   render() {
     const cIndex = this.props.cateIndex;
@@ -45,11 +46,20 @@ class Header extends Component {
             <div className="person_btn">
               <div ref={(e) => this.person_sign = e} className="btn_like"><FaUser className="header_svg" />
               </div>
-              <ul className="person_sign">
+              {/* <ul className="person_sign">
                 <li>{localStorage.getItem('name') || '訪客'}</li>
                 <li><Nav.Link href="/memberCentre/edit">進入會員中心</Nav.Link></li>
-                <li className="btn_like" onClick={this.logout}>{localStorage.getItem('name')?'登出':'登入'}</li>
-              </ul>
+                <li><Nav.Link href="/memberCentre/website">編輯網站資訊</Nav.Link></li>
+                <li className="btn_like" onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li>
+              </ul> */}
+              <div className="person_sign">
+                <ul className="project_list">
+                  <li>幸福來敲門</li>
+                  <li>幸福來敲門</li>
+                  <li>幸福來敲門</li>
+                </ul>
+                <div></div>
+              </div>
             </div>
             {/* <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-2" />

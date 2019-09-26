@@ -21,18 +21,18 @@ class EditUserInfo extends Component {
             temporaryData: null
         };
         this.title = {
-            "email":'電子郵件信箱',
+            "email": '電子郵件信箱',
             "name": '暱稱',
             "companyName": '公司名稱',
-            "companyType": '服務類型', 
-            "taxId":'統編'
+            "companyType": '服務類型',
+            "taxId": '統編'
         }
     }
     componentDidMount() {
-        let postData = { token: localStorage.getItem('token') };
-        getUserInfo(postData).then(response => {
+        // let postData = { token: localStorage.getItem('token') };
+        getUserInfo().then(response => {
             let newData = response;
-            if(newData === undefined) return;
+            if (newData === undefined) return;
             delete newData.status;
             this.setState({ data: newData })
         })
@@ -51,8 +51,17 @@ class EditUserInfo extends Component {
                 this.setState({ data: this.state.temporaryData });
             } else {
                 // 有輸入，送出資料
-                let postData = { token: localStorage.getItem('token') };
-                // updateUserInfo(postData).then(response)
+                let postData = {
+                    companyType: this.state.data.companyType,
+                    name: this.state.data.name
+                };
+                updateUserInfo(postData)
+                .then(response=>{
+                    if(response.status == 1){
+                        alert('修改成功');
+                        localStorage.setItem('name', this.state.data.name);
+                    }
+                })
 
             }
         } else {
@@ -63,9 +72,6 @@ class EditUserInfo extends Component {
     }
     typeData = e => {
         let newData = this.state.data;
-        if(e.target.id === 'eamil' || e.target.id === 'taxId'){
-            return ;
-        }
         newData[e.target.id] = e.target.value;
         this.setState({ data: newData });
     }
@@ -90,7 +96,7 @@ class EditUserInfo extends Component {
                                                 keyElement={key}
                                                 editData={this.state.editData}
                                                 inputWord={this.typeData}
-                                                readOnly={(this.title[index] !== '電子郵件信箱' && this.title[index] !== '統編') ? false : true}
+                                                readOnly={(this.title[key] === '暱稱' || this.title[key] === '服務類型') ? false : true}
                                             />
                                         </React.Fragment>
                                     )}

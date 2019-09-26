@@ -53,11 +53,12 @@ button.font_20 {
     font-size: 20px;
 }
 
-.text_ellipsis{
+.text_ellipsis {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
 .selected_text {
     color: $blue;
     a {
@@ -94,7 +95,7 @@ button.radius20 {
     border-radius: 100%;
 }
 
-.bg_gray1{
+.bg_gray1 {
     background: #DADADA;
 }
 
@@ -132,9 +133,10 @@ button.radius20 {
     width: 10%;
 }
 
-.w-45{
+.w-45 {
     width: 45%;
 }
+
 .w-90 {
     width: 90%;
 }
@@ -186,6 +188,10 @@ button.radius20 {
     border: none;
     border-bottom: 1px solid;
     outline: none;
+}
+
+.translateY {
+    transform: translateY(-100%);
 }
 
 
@@ -360,8 +366,9 @@ button.radius20 {
         vertical-align: middle;
     }
 }
-.even{
-    tr:nth-child(even){
+
+.even {
+    tr:nth-child(even) {
         background: #F2F2F2;
     }
 }
@@ -443,9 +450,9 @@ button.radius20 {
     font-weight: 600;
 }
 
-.a_hover{
+.a_hover {
     color: #21A6BB;
-    &:hover{
+    &:hover {
         @extend .btn_like;
     }
 }
@@ -631,7 +638,7 @@ button.radius20 {
     position: relative;
     &:hover {
         .person_sign {
-            max-height: 200px;
+            max-height: 300px;
             overflow: visible;
             z-index: 2;
             &::before {
@@ -651,19 +658,24 @@ button.radius20 {
         color: white;
         max-height: 0;
         overflow: hidden;
-        list-style: none;
         position: absolute;
         transform: translate(-55px, 20px);
         transition: all .2s ease;
         width: 150px;
-        li {
-            padding: 10px 0;
-            text-align: center;
-            &:not(:last-child) {
-                border-bottom: 0.5px solid white;
-            }
-            &:hover {
-                background: #163D69;
+        ul {
+            list-style: none;
+            padding: 15px;
+            li {
+                padding: 10px 0;
+                background: #F3F3F3;
+                color: #1D4E87;
+                text-align: center;
+                &:not(:last-child) {
+                    border-bottom: 0.5px solid $gray2;
+                }
+                &:hover {
+                    background: #163D69;
+                }
             }
         }
     }
@@ -699,7 +711,8 @@ button.radius20 {
             font-size: 25px;
             position: absolute;
             top: -25px;
-            left: 47.5%;;
+            left: 47.5%;
+            ;
         }
     }
 }
@@ -724,13 +737,13 @@ button.radius20 {
     }
 }
 
-.alertMsg{
+.alertMsg {
     position: fixed;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
-    .content{
+    .content {
         @extend .radius10;
         border: 3px solid $gray2;
         background: #FFFFFF;
@@ -741,7 +754,7 @@ button.radius20 {
         padding: 7px 10px 15px;
         width: 300px;
         word-break: break-all;
-        .close_btn{
+        .close_btn {
             @extend .btn_like;
             border-radius: 100%;
             border: none;
@@ -749,11 +762,10 @@ button.radius20 {
             background: #F45D5D;
             outline: none;
         }
-        p{
+        p {
             display: inline-block;
             margin: 0;
             text-align: left;
         }
     }
 }
-

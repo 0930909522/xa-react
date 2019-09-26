@@ -5,38 +5,41 @@ import { Row, Col } from "react-bootstrap";
 // import SettingTitle from '../share/SettingTitle';
 // import Footer from '../Footer';
 import { addTracking } from '../share/ajax';
+import AlertMsg from '../share/AlertMsg';
 
 class SetTrackingCode extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            showAlertMsg: false,
+            alertText: '',
             visited: null,
             guideNum: 0,
             data: {
-                sn: '',
-                dn: '',
+                siteName: '',
+                domainName: '',
                 type: 'newmedia'
             }
         }
-        this.guide = [<div><h2 className="my-5">歡迎使用智媒推推</h2><h4 className="my-5">智媒推推讓您更有效的流量提升，針對媒體與電商的需求設計，讓您更簡便的投放操作。</h4>
-        </div>, <div><p>AAAAAAA</p></div>, <div><p>BBBBB</p></div>];
+        // this.guide = [<div><h2 className="my-5">歡迎使用智媒推推</h2><h4 className="my-5">智媒推推讓您更有效的流量提升，針對媒體與電商的需求設計，讓您更簡便的投放操作。</h4>
+        // </div>, <div><p>AAAAAAA</p></div>, <div><p>BBBBB</p></div>];
     }
-    componentDidMount() {
-        let status = localStorage.getItem('visited');
-        if (status === '1') {
-            // 第一次登入
-            this.setState({ visited: 1 });
-        } else {
-            this.setState({ visited: 0 });
-        }
-    }
-    closeGuide = () => {
-        this.setState({ visited: 0 });
-        localStorage.setItem('visited', '0');
-    }
-    handleChange = e => {
-        this.setState({ guideNum: e.target.value })
-    }
+    // componentDidMount() {
+    //     let status = localStorage.getItem('visited');
+    //     if (status === '1') {
+    //         // 第一次登入
+    //         this.setState({ visited: 1 });
+    //     } else {
+    //         this.setState({ visited: 0 });
+    //     }
+    // }
+    // closeGuide = () => {
+    //     this.setState({ visited: 0 });
+    //     localStorage.setItem('visited', '0');
+    // }
+    // handleChange = e => {
+    //     this.setState({ guideNum: e.target.value })
+    // }
     addingData = (e, text) => {
         const newData = this.state.data;
         newData[text] = e.target.value;
@@ -44,26 +47,34 @@ class SetTrackingCode extends Component {
     }
     submit = () => {
         let postData = this.state.data;
-        postData.dn = postData.dn.replace('https://', '').replace('http://', '');   
+        postData.domainName = postData.domainName.replace('https://', '').replace('http://', '').split('/')[0];
         for (let i in postData) {
             if (postData[i] === '') {
-                alert('欄位不可為空');
+                this.setState({ showAlertMsg: true, alertText: '欄位不可為空' });
+                setTimeout(() => {
+                    this.setState({ showAlertMsg: false });
+                    window.location.reload();
+                }, 3000);
                 return;
             }
         }
-        postData.token = localStorage.getItem('token');
+
         addTracking(postData).then(response => {
             if (response !== undefined) {
                 localStorage.setItem('view', response.view);
-                alert('資料傳送成功，前往新專案');
-                window.location.reload();
+                this.setState({ showAlertMsg: true, alertText: '資料傳送成功' });
+                this.props.toCheckPage(postData);
+                setTimeout(() => {
+                    this.setState({ showAlertMsg: false });
+                    this.props.changeStatus();
+                }, 3000);
             }
         })
     }
     cancel = () => {
         const newData = this.state.data;
-        newData.dn = '';
-        newData.sn = '';
+        newData.domainName = '';
+        newData.siteName = '';
         newData.type = 'newmedia';
         this.setState({ data: newData });
     }
@@ -98,6 +109,11 @@ class SetTrackingCode extends Component {
                                         <h5 style={{ 'fontWeight': '600' }}>建立新的「追蹤 ID」</h5>
                                         <p>在您建立第一項資源時，我們也會同時建立一個預設資料檢視，用來收集追蹤程式碼的所有相關資料。如果您只想收集這個程式碼的一部分資料，可以建立第二個報表資料檢視，然後為這些資料建立並套用一或多個資料檢視篩選器。</p>
                                     </div> */}
+                <AlertMsg
+                    text={this.state.alertText}
+                    attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                    close={() => this.setState({ showAlertMsg: false })}
+                />
                 <div className="box mb-2 bg-white radius10">
                     <h5 style={{ 'fontWeight': '600' }}>追蹤方式</h5>
                     <p>這項資源需要通用 Analytics (分析) 才能運作。只要按一下 [取得追蹤 ID] 並導入通用 Analytics (分析) 追蹤程式碼片段，即可完成設定。</p>
@@ -109,15 +125,21 @@ class SetTrackingCode extends Component {
                             <label htmlFor="webpageName" className=" border_left pl-2 font_20">網站名稱</label>
                         </Col>
                         <Col sm={10}>
-                            <input type="text" id="webpageName" className="input_1" value={this.state.data.sn} onChange={(e) => this.addingData(e, 'sn')} />
+                            <input type="text" id="webpageName" className="input_1" value={this.state.data.siteName} onChange={(e) => this.addingData(e, 'siteName')} />
                         </Col>
                     </Row>
                     <Row className="my-3">
                         <Col sm={2}>
                             <label htmlFor="webpageURL" className=" border_left pl-2 font_20">網站網址</label>
                         </Col>
-                        <Col sm={10}>
-                            <input type="text" id="webpageURL" className="w-100 input_1" value={this.state.data.dn} onChange={(e) => this.addingData(e, 'dn')} />
+                        <Col sm={3}>
+                            <select className="w-100 input_1">
+                                <option>http://</option>
+                                <option>https://</option>
+                            </select>
+                        </Col>
+                        <Col sm={7}>
+                            <input type="text" id="webpageURL" className="w-100 input_1" placeholder="網域名稱，如：www.google.com.tw" value={this.state.data.domainName} onChange={(e) => this.addingData(e, 'domainName')} />
                         </Col>
                     </Row>
                     <Row className="my-3">
@@ -137,7 +159,7 @@ class SetTrackingCode extends Component {
                     </Row>
                     <div className="d-flex justify-content-center">
                         <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={this.submit}>新增</button>
-                        <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={this.props.changeStatus}>取消</button>
+                        <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={() => window.location.reload()}>取消</button>
                     </div>
                 </div>
                 {/* </div>

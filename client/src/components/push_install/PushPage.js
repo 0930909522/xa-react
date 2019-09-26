@@ -27,19 +27,21 @@ class PushPage extends Component {
         const getData = this.props.sendData;
         if (getData.acceptType !== null) {
             const newData = this.state.content;
-            getData.acceptType.forEach(val => {
-                switch (val) {
-                    case 'media':
-                        newData[0].choose = true;
-                        break;
-                    case 'ecommerce':
-                        newData[1].choose = true;
-                        break;
-                    default:
-                        break;
-                }
-            })
-            this.setState({content: newData, showBtn: true});
+            switch (getData.acceptType) {
+                case 'm':
+                    newData[0].choose = true;
+                    break;
+                case 'e':
+                    newData[1].choose = true;
+                    break;
+                case 'me':
+                    newData[0].choose = true;
+                    newData[1].choose = true;
+                    break;
+                default:
+                    break;
+            }
+            this.setState({ content: newData, showBtn: true });
         }
     }
 
@@ -69,20 +71,20 @@ class PushPage extends Component {
         });
     }
     submit = () => {
-        let postData = {
-            token: null,
-            acceptType: []
-        };
+        let acceptType = '';
         if (this.state.content[0].choose) {
-            postData.acceptType.push('media');
+            acceptType += 'm';
         }
         if (this.state.content[1].choose) {
-            postData.acceptType.push('ecommerce');
+            acceptType += 'e';
         }
-        postData.token = localStorage.getItem('token');
-        pushpage(postData)
+        if (acceptType === '') {
+            //不可為空
+            return;
+        }
+        pushpage(acceptType)
             .then(res => {
-                this.props.getResponseData('acceptType', postData.acceptType);
+                this.props.getResponseData('acceptType', acceptType);
                 this.props.getResponseData('step1Data', res);
                 this.props.changeStatus(2);
             })

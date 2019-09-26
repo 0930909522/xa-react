@@ -2,19 +2,22 @@ import React from 'react';
 import { FaEdit } from "react-icons/fa";
 
 const TableElement = (props) => {
-    const { val, index, editData } = props;
+    const { val, index, editData, toCheckPage } = props;
     return (
         <React.Fragment>
             <tr>
-                <td className="align-items-center">
+                <td
+                    className="align-items-center"
+                    onClick={toCheckPage}
+                >
                     {/* <input type="checkbox" className="table_checkbox" checked={val.choose} onChange={() => clickCheckbox(index)} /> */}
                     {val.verified ? <div className="warning_icon bg-success">已認證</div> : <div className="warning_icon bg-danger">未認證</div>}
                 </td>
                 <td>
-                    {val.sn}
+                    {val.siteName}
                 </td>
                 <td>
-                    {val.dn}
+                    {val.domainName}
                 </td>
                 <td>
                     {val.type}
