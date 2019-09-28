@@ -8,7 +8,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import asyncComponent from './AsyncComponent';
 import { pieOption, barOption, lineOption, scatterOption, mapOption, radarOption, candlestickOption } from './optionConfig/options';
-import {IoMdPeople, IoMdEye, IoMdKey, IoMdDocument} from "react-icons/io";
+import { IoMdPeople, IoMdEye, IoMdKey, IoMdDocument } from "react-icons/io";
 
 import Detail from './AnalyticAssetDetail';
 import Loading from '../../images/loading.svg';
@@ -26,12 +26,13 @@ class AnalyticBasis extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      view: "foodnext",
       realtime: "",
     }
   }
   componentDidMount() {
-    this.getData('foodnext', 'realtime');
-    this.getData('foodnext', 'ga');
+    this.getData('realtime');
+    this.getData('ga');
   }
   openPopup = () => {
     this.setState(prev => ({ isDetail: !prev.isDetail }));
@@ -73,8 +74,8 @@ class AnalyticBasis extends Component {
               {
                 name: '访问来源',
                 type: 'gauge',
-                data: [{ 
-                  name: "停留率", 
+                data: [{
+                  name: "停留率",
                   value: ga[item]
                 }],
               }
@@ -83,30 +84,19 @@ class AnalyticBasis extends Component {
         });
       }
     });
-
   }
 
-  getData = (view_project, type) => {
-    let postData = JSON.stringify({ view_project: view_project });
-    let postOption = {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: postData
-    };
-    fetch('http://localhost/xa/' + type, postOption)
-    // fetch('https://node.aiday.org/xa/' + type, postOption)
-      .then(response => {
-        return response.json();
+  getData = (type) => {
+      axios.get('https://node.aiday.org/sbir/basic/' + type, {
+        params: {
+          view: this.state.view,
+        }
       })
       .then(response => {
         console.log(response);
         type === "realtime" ?
-          this.setState({ realtime: response }) :
-          this.setGA(response);
+          this.setState({ realtime: response.data }) :
+          this.setGA(response.data);
       })
       .catch((err) => {
         console.log(err);
@@ -114,7 +104,7 @@ class AnalyticBasis extends Component {
   }
 
   render() {
-    const {  realtime, userType, userAgeBracket, pageviewCate, pageviewCity, pageviewHot, pageviewMedium, pageviewShare, pageviewSource, userBranding, userGender, userInterest, pageStayRate } = this.state;
+    const { realtime, userType, userAgeBracket, pageviewCate, pageviewCity, pageviewHot, pageviewMedium, pageviewShare, pageviewSource, userBranding, userGender, userInterest, pageStayRate } = this.state;
     return (
       <>
         <Header cateIndex={1} />
@@ -126,24 +116,26 @@ class AnalyticBasis extends Component {
               <div className="main_right">
                 <h2>基礎數據分析</h2>
                 <div className="box">
-                  <h3> 即時資訊 <span style={{float: "right", marginTop: "10px"}}>即時數據最後更新時間：{realtime.timestamp} (十分鐘更新一次)</span></h3>
+                  <h3> 即時資訊 <span style={{ float: "right", marginTop: "10px" }}>即時數據最後更新時間：{realtime.timestamp} (十分鐘更新一次)</span></h3>
                   <Row>
-                    <div className="col-md-3 realtime">
+                    
+                    <div className="col-md-4 realtime">
                       <OverlayTrigger overlay={<BSTooltip>目前網站上的活躍人數!</BSTooltip>}>
                         <span className="d-inline-block">
-                          <div className="icon"> <IoMdPeople style={{fontSize: "60px"}} /></div>
+                          <div className="icon"> <IoMdPeople style={{ fontSize: "60px" }} /></div>
                           {/* <div className="icon"> <img src={icon01} alt="" /></div> */}
                           <div className="active">即時活躍人數</div>
                           <div className="value">{this.state.realtime.activeUsers}</div>
                         </span>
                       </OverlayTrigger>
                     </div>
-                    <div className="col-md-3 realtime">
+                    
+                    <div className="col-md-4 realtime">
                       <OverlayTrigger overlay={<BSTooltip>近30分鐘內累積的瀏覽量</BSTooltip>}>
                         <span className="d-inline-block">
-                          <div className="icon"> 
+                          <div className="icon">
                             {/* <img src={icon02} alt="" /> */}
-                            <IoMdEye style={{fontSize: "60px"}}/>
+                            <IoMdEye style={{ fontSize: "60px" }} />
                           </div>
                           <div className="active">即時瀏覽量</div>
                           <div className="value">{this.state.realtime.activePageviews}</div>
@@ -151,29 +143,12 @@ class AnalyticBasis extends Component {
                       </OverlayTrigger>
                     </div>
 
-
-                    <div className="col-md-3 realtime">
-                      <OverlayTrigger overlay={<BSTooltip>近30分鐘內累積的活躍使用者最關注的關鍵字</BSTooltip>}>
-                        <span className="d-inline-block">
-                          <div className="icon"> 
-                            {/* <img src={icon03} alt="" /> */}
-                            <IoMdKey style={{fontSize: "60px"}}/>
-                          </div>
-                          <div className="active">即時熱門關鍵字</div>
-                          <div className="value key">
-                            {this.state.realtime.hotKeywords ? this.state.realtime.hotKeywords.char : ""}
-                            <span>(33次)</span>
-                          </div>
-                        </span>
-                      </OverlayTrigger>
-                    </div>
-
-                    <div className="col-md-3 realtime">
+                    <div className="col-md-4 realtime">
                       <OverlayTrigger overlay={<BSTooltip>目前正在您網站上的擁有最多活躍使用者的頁面</BSTooltip>}>
                         <span className="d-block">
                           <div className="icon">
                             {/* <img src={icon04} alt="" /> */}
-                            <IoMdDocument style={{fontSize: "60px"}}/>
+                            <IoMdDocument style={{ fontSize: "60px" }} />
                           </div>
                           <div className="active">即時熱門頁面</div>
                           <div className="value hot">

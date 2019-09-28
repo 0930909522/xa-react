@@ -113,7 +113,10 @@ li {list-style: none;}
             text-align: center;
         }
         .select {
-            float: right;
+            &.inlne {
+                float: right;
+            }
+            text-align: center;
             font-size: 14px;
             select {
                 outline: none;
@@ -157,7 +160,7 @@ li {list-style: none;}
                 }
                 &.hot {
                     max-width: 100%;
-                    font-size: 18px;
+                    font-size: 15px;
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
@@ -324,6 +327,14 @@ li {list-style: none;}
                 &.g7 {
                     background-color: #3e95de;
                     background-image: url(./images/group7.png);
+                }
+                &.g8 {
+                    background-color: #3e95de;
+                    background-image: url(./images/group8.png);
+                }
+                &.g9 {
+                    background-color: #3e95de;
+                    background-image: url(./images/group9.png);
                 }
             }
         }
@@ -566,6 +577,7 @@ li {list-style: none;}
         float: left;
         margin-right: 15px;
         .info {
+            font-family: "微軟正黑體";
             margin-top: 10px;
             width: 100%;
             text-align: center;

@@ -18,6 +18,7 @@ class AnalyticCheck extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      view: "foodnext",
       isOpen: false,
       isOpenDesktop: true,
       isOpenMobile: true,
@@ -34,7 +35,7 @@ class AnalyticCheck extends Component {
     }
   }
   componentDidMount() {
-    this.getData('foodnext', 'healthExam');
+    this.getData('healthExam');
     this.getColor();
   }
 
@@ -163,33 +164,24 @@ class AnalyticCheck extends Component {
     return allDays;
   }
 
-  getData = (view_project, type) => {
-    let postData = JSON.stringify({ view_project: view_project });
-    let postOption = {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: postData
-    };
-    fetch('http://localhost/xa/' + type, postOption)
-      // fetch('https://node.aiday.org/xa/' + type, postOption)
+  getData = (type) => {
+    axios.get('https://node.aiday.org/sbir/basic/' + type, {
+      params: {
+        view: this.state.view,
+      }
+    })
       .then(response => {
-        return response.json();
-      })
-      .then(response => {
-        type === "healthExam" ? this.setHealth(response) : console.log();
+        type === "healthExam" ? this.setHealth(response.data) : console.log();
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
+
   getColor = () => {
-    fetch('http://localhost:3000/datas/tagColor.json')
-      // fetch('https://node.aiday.org/xa/' + type, postOption)
+    //fetch('http://localhost:3000/datas/tagColor.json')
+    fetch('./datas/tagColor.json')
       .then(response => {
         return response.json();
       })
@@ -233,12 +225,12 @@ class AnalyticCheck extends Component {
       </h3>
 
       {this.state.scoreDetailInfo[0].url ?
-        <div style={{borderTop: "1px solid #dee2e6", paddingTop: "10px", textAlign: "center"}}>
+        <div style={{ borderTop: "1px solid #dee2e6", paddingTop: "10px", textAlign: "center" }}>
           <p>
-            <span style={{paddingRight: "15px"}}> 
-            <span className="text_yellow">警告項目 {this.state.scoreSeo.warningCount} 個</span>
-            </span>  
-            <span className="text_red">錯誤項目 {this.state.scoreSeo.errorCount} 個</span> 
+            <span style={{ paddingRight: "15px" }}>
+              <span className="text_yellow">警告項目 {this.state.scoreSeo.warningCount} 個</span>
+            </span>
+            <span className="text_red">錯誤項目 {this.state.scoreSeo.errorCount} 個</span>
           </p>
         </div> : <></>}
 
@@ -319,7 +311,7 @@ class AnalyticCheck extends Component {
               <NavLeft />
 
               <div className="main_right">
-                <h2>網站評測</h2>
+                <h2>網站健檢</h2>
                 <div className="box">
                   <h3>網站體驗評分</h3>
                   <Row>
@@ -519,13 +511,13 @@ class AnalyticCheck extends Component {
 
                 <div className="box">
                   <h3><IoMdToday /> 改進建議書</h3>
-                  <div style={{textAlign:"center"}}>
-                    <button className="btn btn-success" onClick={ ()=>{
+                  <div style={{ textAlign: "center" }}>
+                    <button className="btn btn-success" onClick={() => {
                       let dd = this.state.interval;
-                      window.location.href="https://r.xnet.world/xa/foodnext/"+ dd +".xlsx"
+                      window.location.href = "https://r.xnet.world/xa/foodnext/" + dd + ".xlsx"
                     }}> 下載報告</button>
                   </div>
-                
+
                 </div>
 
               </div>

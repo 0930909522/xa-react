@@ -440,7 +440,7 @@ class AnalyticAsset extends Component {
                 </div>
                 <div className="box">
                   <h3>分類占比
-                    <div className="select">
+                    <div className="select inlne">
                       <label>
                         主分類：
                         <select value={this.state.categoryId} onChange={this.clickCategorylist}>
