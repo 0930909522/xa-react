@@ -24,7 +24,7 @@ class DebitCard extends Component {
     render() {
         return (
             <div>
-                <Header />
+                <Header cateIndex={4}/>
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>

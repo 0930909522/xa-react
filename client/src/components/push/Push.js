@@ -37,7 +37,7 @@ class Push extends Component {
   render() {
     return (
       <>
-        <Header />
+        <Header cateIndex={2}/>
         <div className="layout_main">
           <Container className="main_analytic">
             <Row>

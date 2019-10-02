@@ -10,11 +10,11 @@ class Header extends Component {
   state = {
     showAlertMsg: false,
     websites: [],
-    viewIndex: ''
+    viewIndex: []
   };
   componentDidMount() {
-    const getWebsites = JSON.parse(localStorage.getItem('website'));
-    const currentView = localStorage.getItem('view');
+    const getWebsites = JSON.parse(localStorage.getItem('website')) || [];
+    const currentView = localStorage.getItem('view') || "";
     // 設定websites
     this.setState({'websites': getWebsites});
     //設定viewIndex

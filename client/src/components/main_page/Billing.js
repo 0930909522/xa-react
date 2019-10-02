@@ -52,7 +52,7 @@ class Billing extends Component {
     render() {
         return (
             <>
-                <Header />
+                <Header cateIndex={4}/>
                 <PushBill
                     showPushPay={this.state.showPushPay}
                     close={() => this.toggleClose('showPushPay')}
