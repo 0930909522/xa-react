@@ -43,6 +43,7 @@ li,
 th,
 td {
     font-family: '微軟正黑體' !important;
+    word-break: break-all;
 }
 
 .font_20 {
@@ -491,6 +492,9 @@ button.radius20 {
             white-space: initial;
             text-align: center;
         }
+        #focus{
+            border: solid 1.5px $orange;
+        }
     }
 }
 
@@ -640,6 +644,8 @@ button.radius20 {
         .person_sign {
             max-height: 300px;
             overflow: visible;
+            padding-top: 10px;
+            padding-bottom: 10px;
             z-index: 2;
             &::before {
                 content: '\25B2';
@@ -649,6 +655,14 @@ button.radius20 {
                 top: -25px;
                 left: 60px;
                 margin: auto;
+            }
+            li,
+            a {
+                cursor: pointer;
+                &:hover {
+                    background: #163D69;
+                    color: white;
+                }
             }
         }
     }
@@ -664,17 +678,27 @@ button.radius20 {
         width: 150px;
         ul {
             list-style: none;
-            padding: 15px;
-            li {
-                padding: 10px 0;
+            padding: 10px 10px;
+            margin-bottom: 0;
+            &.project_list:first-child {
+                max-height: 100px;
+                overflow-y: auto;
+                 &::-webkit-scrollbar {
+                    display: none;
+                }
+            }
+            li,
+            a {
+                padding: 5px;
                 background: #F3F3F3;
                 color: #1D4E87;
                 text-align: center;
                 &:not(:last-child) {
                     border-bottom: 0.5px solid $gray2;
                 }
-                &:hover {
-                    background: #163D69;
+                &#focus {
+                    background: #1D4E87;
+                    color: white;
                 }
             }
         }

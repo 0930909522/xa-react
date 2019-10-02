@@ -55,8 +55,10 @@ import EditPage from './components/main_page/EditPage';
 import Receipt from './components/report/Receipt';
 
 class App extends Component {
-  state = {}
-
+  state = {level: '', name:'',verified:''}
+// level: 1以上才有追蹤的網站
+// name:用戶名稱
+// verified: 是否驗證過
 
   render() {
     return (

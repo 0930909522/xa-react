@@ -2,24 +2,23 @@ import React, { Component } from 'react';
 import { Row, Col } from "react-bootstrap";
 // import AdvertiseType from '../share/AdvertiseType';
 // import previw from '../../images/preview.png';
-import Pt from '../../images/menu.png';
+import { getPushPt, sendPush } from '../share/ajax';
 
 const initialData = {
+    "adId": "",
     "title": "",
-    // "advertiseType": "",
-    "start": ["", ""],
-    "end": ["", ""],
-    "state": "",
-    "contain": []
+    "start": "",
+    "end": "",
+    "usable": true,
+    "tags": [],
+    "ads": []
 }
 
 const initilaContain = {
-    "name": "",
-    "url": "",
+    "description": "",
+    "img": "",
     "title": "",
-    "content": "",
-    "tag": "",
-    "img": null
+    "url": ""
 }
 
 // const advtiseTypes = [
@@ -71,9 +70,9 @@ class PushInput extends Component {
         let newEditIndex = 0;
         if (this.props.data === undefined) {
             // 新增
-            newData.contain = [];
+            newData.ads = [];
             newData.action = 'add';
-            newData.contain[0] = Object.assign({}, initilaContain);
+            newData.ads[0] = Object.assign({}, initilaContain);
         } else {
             // 修改
             newData = this.props.data;
@@ -83,35 +82,96 @@ class PushInput extends Component {
         this.setState({ editIndex: newEditIndex, data: newData })
     }
     //輸入資料（選）
-    addingTopic = (e, type, index) => {
-        const content = e.target.value;
+    addingTopic = (e, type) => {
+        let content = e.target.value;
+        if (type === 'tags') {
+            content = content.split(',');
+        }
         const newData = this.state.data;
-        (index === undefined) ? newData[type] = content : newData[type][index] = content;
+        newData[type] = content;
         this.setState({ data: newData });
     }
 
     //輸入資料（寫）
-    addingContent = (e, type) => {
+    addingContent = async (e, type) => {
         const content = e.target.value;
         const newData = this.state.data;
-        newData.contain[this.state.editIndex][type] = content;
+        newData.ads[this.state.editIndex][type] = content;
+        if (type === 'url') {
+            // 貼上來源，取得圖片
+            if (content) {
+                await getPushPt(content).then(res => {
+                    newData.ads[this.state.editIndex]['img'] = res;
+                })
+            } else {
+                newData.ads[this.state.editIndex]['img'] = "";
+            }
+        }
         this.setState({ data: newData });
+    }
+    // 取得tags數
+    tagsAmount = () => {
+        let tags = this.state.data.tags;
+        if (!tags[tags.length - 1]) {
+            // 如果最後一個為空
+            tags.pop();
+        }
+        return tags.length;
     }
 
     // 在此主題下新增一筆
     addOne = () => {
-        const index = this.state.data.contain.length + 1;
+        const index = this.state.data.ads.length;
         const newData = this.state.data;
-        newData.contain[index] = Object.assign({}, initilaContain);
+        newData.ads[index] = Object.assign({}, initilaContain);
         this.setState({ data: newData, editIndex: index });
     }
-    //切換為主題下的另一筆
+    //切換至下一筆
     selectContent = id => {
         this.setState({ editIndex: parseInt(id) });
     }
     // 送出
     submit = () => {
-        console.log(this.state.data)
+        // 修改或送出
+
+        // 確認皆為必填
+        const postData = this.state.data;
+        delete postData.adId;
+        delete postData.usable;
+        for (let i in postData) {
+            if (!postData[i]) {
+                console.log("內容皆為必填", i)
+                return;
+            }
+        }
+        postData.ads.forEach(val => {
+            for (let i in val) {
+                if (!val[i]) {
+                    console.log("內容皆為必填", i)
+                    return;
+                }
+            }
+        })
+
+        // 判斷時間邏輯
+        if (postData.start >= postData.end) {
+            console.log("開始時間不可等於或晚於結束時間")
+            return;
+        }
+
+        //tags檢查
+        if (!postData.tags[postData.tags.length - 1]) {
+            // 如果最後一個為空則清除
+            postData.tags.pop();
+        }
+
+        //加入brand、view
+        let view = localStorage.getItem('view');
+        let brand = JSON.parse(localStorage.getItem('website')).filter(val => val.websiteId === view);
+        postData.brand = brand[0].siteName;
+        postData.view = view;
+        console.log(postData)
+        sendPush(postData);
     }
 
     render() {
@@ -126,7 +186,7 @@ class PushInput extends Component {
                                 title={val.title}
                                 srcs={val.srcs}
                                 value={val.index}
-                                check={this.state.data.contain.length > 0 ? (val.index === parseInt(this.state.data.advertiseType) ? true : false) : false}
+                                check={this.state.data.ads.length > 0 ? (val.index === parseInt(this.state.data.advertiseType) ? true : false) : false}
                                 changeType={this.addingTopic}
                             />
                         )
@@ -139,37 +199,38 @@ class PushInput extends Component {
                         className="input_r"
                         id="activity_name"
                         placeholder="活動名稱"
-                        value={this.state.data.contain.length > 0 ? this.state.data.title : ''}
+                        value={this.state.data.ads.length > 0 ? this.state.data.title : ''}
                         onChange={(e) => this.addingTopic(e, 'title')}
                     />
 
                     <Row className="mt-4">
-                        <Col sm="9">
+                        <Col sm="6">
                             <input
                                 type="date"
                                 className="input_r"
                                 id="start-time"
                                 min={this.state.today}
-                                value={this.state.data.contain.length > 0 ? this.state.data.start[0] : ''}
-                                onChange={(e) => this.addingTopic(e, 'start', 0)}
+                                // value={this.state.data.ads.length > 0 ? this.state.data.start[0] : ''}
+                                onChange={(e) => this.addingTopic(e, 'start')}
                             />
                         </Col>
-                        <Col sm="3">
-                            <input
-                                type="time"
-                                className="input_r"
-                                value={this.state.data.contain.length > 0 ? this.state.data.start[1] : ''}
-                                onChange={(e) => this.addingTopic(e, 'start', 1)}
-                            />
-                        </Col>
-                    </Row>
-                    <Row className="mt-4">
-                        <Col sm="9">
+                        <Col sm="6">
                             <input
                                 type="date"
                                 className="input_r"
                                 id="end-time"
-                                value={this.state.data.contain.length > 0 ? this.state.data.end[0] : ''}
+                                // value={this.state.data.ads.length > 0 ? this.state.data.end[0] : ''}
+                                onChange={(e) => this.addingTopic(e, 'end')}
+                            />
+                        </Col>
+                    </Row>
+                    {/* <Row className="mt-4">
+                        <Col sm="6">
+                            <input
+                                type="date"
+                                className="input_r"
+                                id="end-time"
+                                // value={this.state.data.ads.length > 0 ? this.state.data.end[0] : ''}
                                 onChange={(e) => this.addingTopic(e, 'end', 0)}
                             />
                         </Col>
@@ -177,18 +238,19 @@ class PushInput extends Component {
                             <input
                                 type="time"
                                 className="input_r"
-                                value={this.state.data.contain.length > 0 ? this.state.data.end[1] : ''}
+                                // value={this.state.data.ads.length > 0 ? this.state.data.end[1] : ''}
                                 onChange={(e) => this.addingTopic(e, 'end', 1)}
                             />
                         </Col>
-                    </Row>
+                    </Row> */}
                     <div className="mt-3">
                         <div className="box srollX">
                             <ul>
                                 {
-                                    this.state.data.contain.length > 0 && this.state.data.contain.map((val, index) => (
+                                    this.state.data.ads.length > 0 && this.state.data.ads.map((val, index) => (
                                         <li
                                             key={index}
+                                            id={this.state.editIndex === index ? 'focus' : ''}
                                             className="btn_like"
                                             onClick={() => this.selectContent(index)}
                                         >
@@ -213,7 +275,7 @@ class PushInput extends Component {
                         className="input_r mt-4"
                         type="text"
                         placeholder="輸入你想推播的連結"
-                        value={this.state.data.contain.length > 0 ? this.state.data.contain[this.state.editIndex].url : ''}
+                        value={this.state.data.ads.length > 0 ? this.state.data.ads[this.state.editIndex].url : ''}
                         onChange={(e) => this.addingContent(e, 'url')}
                     />
                     <input
@@ -221,7 +283,7 @@ class PushInput extends Component {
                         className="input_r mt-4"
                         type="text"
                         placeholder="標題（字數限制為15字最佳）"
-                        value={this.state.data.contain.length > 0 ? this.state.data.contain[this.state.editIndex].title : ''}
+                        value={this.state.data.ads.length > 0 ? this.state.data.ads[this.state.editIndex].title : ''}
                         onChange={(e) => this.addingContent(e, 'title')}
                     />
                     <textarea
@@ -229,25 +291,26 @@ class PushInput extends Component {
                         className="input_r mt-4"
                         placeholder="文字（字數限制為30字最佳）"
                         rows="5"
-                        value={this.state.data.contain.length > 0 ? this.state.data.contain[this.state.editIndex].content : ''}
-                        onChange={(e) => this.addingContent(e, 'content')}
+                        value={this.state.data.ads.length > 0 ? this.state.data.ads[this.state.editIndex].description : ''}
+                        onChange={(e) => this.addingContent(e, 'description')}
                     />
                     <input
                         id="tag"
                         className="input_r mt-4"
                         type="text"
-                        placeholder="標籤（最多只會出現兩個）"
-                        value={this.state.data.contain.length > 0 ? this.state.data.contain[this.state.editIndex].tag : ''}
-                        onChange={(e) => this.addingContent(e, 'tag')}
+                        placeholder="標籤（請用逗號分隔）"
+                        value={this.state.data.ads.length > 0 ? String(this.state.data.tags) : ''}
+                        onChange={(e) => this.addingTopic(e, 'tags')}
                     />
+                    <p className="ml-2 mt-2">目前有 {this.tagsAmount()} 個標籤</p>
                     <div className="box_border text-left radius10">
                         <h3>預覽</h3>
-                        <h4 className="text-center mt-4">{this.state.data.contain.length > 0 && this.state.data.title}</h4>
+                        <h4 className="text-center mt-4">{this.state.data.ads.length > 0 && this.state.data.title}</h4>
                         <div className="cards">
                             {
-                                this.state.data.contain.length > 0 && this.state.data.contain.map((val, index) => (
+                                this.state.data.ads.length > 0 && this.state.data.ads.map((val, index) => (
                                     <div className="box card-item" key={index}>
-                                        <img src={val.img} alt={val.id} className="radius10" />
+                                        <img src={val.img} alt={"pt"} className="radius10" />
                                         <h6>{val.title}</h6>
                                     </div>
                                 ))

@@ -9,15 +9,17 @@ import PushList from './PushList';
 import PushList2 from './PushList2';
 import { FaRegCalendar, FaRegNewspaper, FaRegThumbsUp } from "react-icons/fa";
 
+
 class Push extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openList1: false,
+      openList1: true,
       openList2: false,
-      title: ''
+      title: ' / 專題報導'
     }
   }
+
   chooseType = type => {
     let newTitle = '';
     newTitle += '<strong className="font_20 btn_like"> / ' + type + '</strong>';

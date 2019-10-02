@@ -4,82 +4,65 @@ import PushInput from './PushInput';
 // import Switch from './share/Switch';
 import { FaPlusCircle, FaPencilAlt } from "react-icons/fa";
 // import { type } from 'os';
+import { getPush } from '../share/ajax';
 
 class PushList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: null,
+            type: 'report',
             open: false,
             editIndex: null,
             data: [{
-                "title": "畢業季主題專欄",
+                "adId": "",
+                "title": "",
                 // "advertiseType": 1,
-                "start": ["2019-08-05", "14:57"],
-                "end": ["2019-08-06", "06:57"],
-                "state": true,
-                "contain": [{
-                    "id": "1",
-                    "name": "畢業季",
-                    "url": "https://www.businesstoday.com.tw/article/category/",
-                    "title": "資金潮讓投資人「嗨」到高點　樂觀之餘台股要留意這4個重點",
-                    "content": "美股持續往歷史高點邁進...",
-                    "tag": "#111#222",
-                    "img": "https://static.jsbin.com/images/dave.min.svg"
-                }, {
-                    "id": "2",
-                    "name": "畢業",
-                    "url": "https://www.businesstoday.com.tw/article/category/",
-                    "title": "資金潮讓投資人「嗨」到高點　樂觀之餘台股要留意這4個重點１１１１",
-                    "content": "美股持續往歷史高點邁進...ａａａａａａ",
-                    "tag": "#111#222",
-                    "img": "https://static.jsbin.com/images/dave.min.svg"
-                }
-                ]
-            }, {
-                "title": "畢業季主題專欄2",
-                // "advertiseType": 1,
-                "start": ["2019-08-05", "14:57"],
-                "end": ["2019-08-06", "06:57"],
-                "state": false,
-                "contain": [{
-                    "id": "1",
-                    "activityName": "畢業季",
-                    "url": "https://www.businesstoday.com.tw/article/category/",
-                    "title": "資金潮讓投資人「嗨」到高點　樂觀之餘台股要留意這4個重點",
-                    "content": "美股持續往歷史高點邁進...",
-                    "tag": "#111#222",
-                    "img": "https://static.jsbin.com/images/dave.min.svg"
-                }, {
-                    "id": "2",
-                    "activityName": "畢業",
-                    "url": "https://www.businesstoday.com.tw/article/category/",
-                    "title": "資金潮讓投資人「嗨」到高點　樂觀之餘台股要留意這4個重點",
-                    "content": "美股持續往歷史高點邁進...",
-                    "tag": "#111#222",
-                    "img": "https://static.jsbin.com/images/dave.min.svg"
-                }
-                ]
+                "start": "",
+                "end": "",
+                "usable": true,
+                "tag": [],
+                "ads": [{
+                    "description": "",
+                    "img": "",
+                    "title": "",
+                    "url": ""
+                    // "id": "1",
+                    // "name": "畢業季",
+                    // "url": "https://www.businesstoday.com.tw/article/category/",
+                    // "title": "資金潮讓投資人「嗨」到高點　樂觀之餘台股要留意這4個重點",
+                    // "content": "美股持續往歷史高點邁進...",
+                    // "tag": "#111#222",
+                    // "img": "https://static.jsbin.com/images/dave.min.svg"
+                }]
             }
             ]
         }
-
+        this.currentTIme = new Date();
     }
     componentDidMount() {
-        let newType = this.props.type.split('/');
-        newType = newType[newType.length - 2].replace('<', '').trim();
-        switch (newType) {
-            case '主題活動':
-                newType = 'activity';
-                break;
+        // let newType = this.props.type.split('/');
+        // newType = newType[newType.length - 2].replace('<', '').trim();
+        // switch (newType) {
+        //     case '主題活動':
+        //         newType = 'theme';
+        //         break;
 
-            case '專題報導':
-                newType = 'article';
-                break;
-            default:
-                break;
+        //     case '專題報導':
+        let newType = 'report';
+        //         break;
+        //     default:
+        //         break;
+        // }
+        // this.setState({ type: newType });
+
+        let postData = {
+            view: localStorage.getItem('view'),
+            // view: 'culturelaunch',
+            type: newType
         }
-        this.setState({ type: newType });
+        getPush(postData).then(res => {
+            this.setState({ data: res });
+        })
     }
     openEdit = index => {
         this.setState({ open: !this.state.open, editIndex: index })
@@ -109,11 +92,11 @@ class PushList extends Component {
                         <tbody>
                             {this.state.data.map((val, index) => {
                                 return (
-                                    <tr key={val.title}>
+                                    <tr key={index}>
                                         {/* <td><Switch /></td> */}
                                         <td>{val.title}</td>
-                                        <td>{val.end[0]}</td>
-                                        <td>{val.state === true ? '刊登中' : '已結束'}</td>
+                                        <td>{val.endTime}</td>
+                                        <td>{val.state ? '刊登中' : Date.parse(val.startTime) > new Date() ? '未刊登' : '已結束'}</td>
                                         <td><button className='btn_noborder_r' onClick={() => this.openEdit(index)}>編輯 <FaPencilAlt /></button></td>
                                     </tr>
                                 )
