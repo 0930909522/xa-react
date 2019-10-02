@@ -157,14 +157,11 @@ class Billing extends Component {
                                     {/* <MemberCard title="您的餘額" buttonName="儲值已付款">
                                         <h1>$7,640.00</h1>
                                     </MemberCard> */}
-                                    <MemberCard title="您的推播餘額" buttonName="儲值付款" handleClick={()=>this.setState({showPushPay: true})}>
-                                        <h1>$0</h1>
-                                    </MemberCard>
-                                    <MemberCard title="服務與用量" buttonName="查看更多內容" handleClick={() => window.location = '/memberCentre/service'}>
+                                    <MemberCard title="數據服務與用量" buttonName="查看更多內容" handleClick={() => window.location = '/memberCentre/service'}>
                                         <h6 className="my-2">會員資格：付費會員 - 月繳</h6>
                                         <h6 className="my-2">會員方案期限：2019年3月3日 ~ 2019年4月3日</h6>
                                     </MemberCard>
-                                    <MemberCard title="付款方式" buttonName="管理付款方式" handleClick={this.togglePayData}>
+                                    <MemberCard title="數據服務儲值" buttonName="數據儲值" handleClick={() => window.location = '/memberCentre/billing/three'}>
                                         <Row>
                                             <Col sm="4">
                                                 <FaRegCreditCard className="img_fluid1 pl-2" />
@@ -175,7 +172,16 @@ class Billing extends Component {
                                             </Col>
                                         </Row>
                                     </MemberCard>
-                                    <MemberCard title="交易明細" buttonName="查看更多內容">
+                                    <MemberCard title="您的推播餘額" buttonName="推播儲值" handleClick={() => this.setState({ showPushPay: true })}>
+                                        <p>儲值後開始推廣您的網站</p>
+                                        <h1>$0</h1>
+                                    </MemberCard>
+                                    <MemberCard title="您的推播收入" buttonName="安裝追蹤碼">
+                                        <p>在您的網站安裝推推立即可開始收錢</p>
+                                        <h1>$0</h1>
+                                    </MemberCard>
+                                    
+                                    {/* <MemberCard title="交易明細" buttonName="查看更多內容">
                                         <div className="d-flex justify-content-between my-2">
                                             <span>2019年2月1日 -2019年2月28日</span>
                                             <span>$8,000</span>
@@ -184,11 +190,11 @@ class Billing extends Component {
                                             <span>2019年1月1日 - 2019年1月31日</span>
                                             <span>$9,460</span>
                                         </div>
-                                    </MemberCard>
+                                    </MemberCard>*/}
                                     <MemberCard title="帳號設定" buttonName="管理設定" handleClick={() => window.location = '/memberCentre/edit'}>
                                         <h6 className="my-2">統一編號：27311180</h6>
                                         <h6 className="my-2">今周刊出版社股份有限公司</h6>
-                                    </MemberCard>
+                                    </MemberCard> 
                                 </div>
                             </div>
                         </Row>
