@@ -187,6 +187,8 @@ class Receipt extends Component {
                                 <div className="box radius10">
                                     <span><Link to="/push" className={(this.props.one ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}>推播明細</Link></span>
                                     <span>&nbsp;｜&nbsp;</span>
+                                    <span><Link to="/" className={(this.props.one ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}>月報表</Link></span>
+
                                 </div>
                                 <div className="box radius10">
                                     <Container className="p-3">
@@ -207,6 +209,11 @@ class Receipt extends Component {
                                     <select className="my-4">
                                         <option value="1">日期由舊到新</option>
                                         <option value="-1">日期由新到舊</option>
+                                    </select>
+                                    <select className="my-4">
+                                        <option value="1">全部</option>
+                                        <option value="-1">今周刊</option>
+                                        <option value="-1">食力</option>
                                     </select>
                                     <table className="w-100 text-center pushTable_r even" cellPadding="10">
                                         <thead>

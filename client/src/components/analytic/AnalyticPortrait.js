@@ -209,7 +209,7 @@ class AnalyticPortrait extends Component {
                                     <div>
                                         {/* <hr /> */}
                                         <h3>分布範例</h3>
-                                        <img src="./fish_example.jpg" alt="" style={{maxWidth: "100%"}} />
+                                        {/* <img src="./fish_example.jpg" alt="" style={{maxWidth: "100%"}} /> */}
                                         <img src="./fish_example1.jpg" alt="" style={{maxWidth: "100%"}} />
                                     </div> : <span />
                                 }

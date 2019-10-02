@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { FaBell, FaUser } from 'react-icons/fa';
+import { IoMdSwap } from 'react-icons/io';
 import AlertMsg from './share/AlertMsg';
 import { logout } from './share/ajax';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 class Header extends Component {
   state = {
@@ -60,13 +62,13 @@ class Header extends Component {
               <img src="/logo.jpg" alt="pt" /> Xnet Analytics <span>     </span>
             </Navbar.Brand>
             <Nav className="mr-auto">
-              <Nav.Link href="#home">回首頁</Nav.Link>
-              <Nav.Link href="/" className={cIndex === 1 ? "active" : ""}>數據分析</Nav.Link>
-              <Nav.Link href="/board" className={cIndex === 2 ? "active" : ""}>推播管理</Nav.Link>
-              <Nav.Link href="/report/push" className={cIndex === 3 ? "active" : ""}>帳務報表</Nav.Link>
-              <Nav.Link href="#buy" className={cIndex === 4 ? "active" : ""}>功能購買</Nav.Link>
+              <Link to="/" className="nav-link">回首頁</Link>
+              <Link to="/" className={cIndex === 1 ? "nav-link active" : "nav-link"}>數據分析</Link>
+              <Link to="/board" className={cIndex === 2 ? "nav-link active" : "nav-link"}>推播管理</Link>
+              <Link to="/report/push" className={cIndex === 3 ? "nav-link active" : "nav-link"}>帳務報表</Link>
+              <Link to="/memberCentre/billing/:type" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
             </Nav>
-            <Nav.Link href=""><FaBell className="header_svg" /></Nav.Link>
+            <Nav.Link href=""><IoMdSwap title="切換平台" className="header_svg" /></Nav.Link>
             <div className="person_btn">
               <div ref={(e) => this.person_sign = e} className="btn_like"><FaUser className="header_svg" />
               </div>

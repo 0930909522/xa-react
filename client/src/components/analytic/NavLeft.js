@@ -16,11 +16,11 @@ class NavLeft extends Component {
         <h2><span style={{fontSize:"20px"}}>食力</span> 數據分析 </h2>
         <ul className="nav_left">
           {/* <li> <FaFileAlt /> <Link to="/general">訪客總覽</Link></li> */}
-          <li> <IoIosTime /> <Link to="/realtime">即時資訊</Link></li>
-          <li> <IoMdPie /> <Link to="/basis">基礎數據</Link></li>
-          <li> <GoDesktopDownload /> <Link to="/source">流量來源</Link></li>
-          <li> <GoBookmark /> <Link to="/hot">熱門頁面</Link></li>
+          <li> <IoMdPie /> <Link to="/basis">基礎分析</Link></li>
+          <li> <GoDesktopDownload /> <Link to="/reports">流量報表</Link></li>
+          {/* <li> <GoDesktopDownload /> <Link to="/source">流量來源</Link></li> */}
           <li> <IoIosCheckmarkCircle /> <Link to="/check">網站健檢</Link></li>
+          <li> <GoBookmark /> <Link to="/hot">熱門頁面</Link></li>
           <li> <GoRuby /> <Link to="/asset_rise">資產價值</Link></li>
           <li> <IoMdContact /> <Link to="/portrait">用戶畫像</Link></li>
           <li> <IoIosCode /> <Link to="/trackingCode/modify">安裝追蹤碼</Link></li>
