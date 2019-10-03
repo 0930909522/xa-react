@@ -2,24 +2,10 @@ import React, { Component } from 'react';
 import { Row, Col } from "react-bootstrap";
 // import AdvertiseType from '../share/AdvertiseType';
 // import previw from '../../images/preview.png';
-import { getPushPt, sendPush } from '../share/ajax';
-
-const initialData = {
-    "adId": "",
-    "title": "",
-    "start": "",
-    "end": "",
-    "usable": true,
-    "tags": [],
-    "ads": []
-}
-
-const initilaContain = {
-    "description": "",
-    "img": "",
-    "title": "",
-    "url": ""
-}
+import { getPushPt, sendPush, modifyPush, deletePush } from '../share/ajax';
+import AlertMsg from '../share/AlertMsg';
+import PopMsg from '../share/PopMsg';
+import { FaTrashAlt } from 'react-icons/fa';
 
 // const advtiseTypes = [
 //     {
@@ -43,6 +29,23 @@ const initilaContain = {
 //         srcs: Pt
 //     }
 // ]
+const initialData = {
+    "adId": "",
+    "title": "",
+    "start": "",
+    "end": "",
+    "usable": true,
+    "tags": [],
+    "ads": []
+}
+
+const initilaContain = {
+    "description": "",
+    "img": "",
+    "title": "",
+    "url": ""
+}
+
 
 class PushInput extends Component {
     constructor(props) {
@@ -50,7 +53,10 @@ class PushInput extends Component {
         this.state = {
             today: null,
             data: Object.assign({}, initialData),
-            editIndex: 0
+            editIndex: 0,
+            showAlertMsg: false,
+            alertText: '',
+            showDeleteMsg: false
         }
     }
 
@@ -66,7 +72,8 @@ class PushInput extends Component {
         })
 
         // 初始化資料，端看是新增或修改
-        let newData = Object.assign({}, initialData);
+        // let newData = Object.assign({}, initialData);
+        let newData = this.forInitial(this.props.data);
         let newEditIndex = 0;
         if (this.props.data === undefined) {
             // 新增
@@ -75,12 +82,36 @@ class PushInput extends Component {
             newData.ads[0] = Object.assign({}, initilaContain);
         } else {
             // 修改
-            newData = this.props.data;
+            // newData = this.props.data;
             newData.action = 'modify';
         }
         newData.type = this.props.type;
         this.setState({ editIndex: newEditIndex, data: newData })
     }
+
+    //初始化資料函式，避免多餘method
+    forInitial = (data = {}) => {
+        let {
+            adId = "",
+            title = "",
+            start = "",
+            end = "",
+            usable = true,
+            tags = [],
+            ads = []
+        } = data;
+        const initData = { adId, title, start, end, usable, tags, ads };
+        return initData;
+    }
+
+    //彈出視窗
+    alertMsg = (text) => {
+        this.setState({ showAlertMsg: true, alertText: text });
+        setTimeout(() => {
+            this.setState({ showAlertMsg: false });
+        }, 4000);
+    }
+
     //輸入資料（選）
     addingTopic = (e, type) => {
         let content = e.target.value;
@@ -109,6 +140,7 @@ class PushInput extends Component {
         }
         this.setState({ data: newData });
     }
+
     // 取得tags數
     tagsAmount = () => {
         let tags = this.state.data.tags;
@@ -126,28 +158,39 @@ class PushInput extends Component {
         newData.ads[index] = Object.assign({}, initilaContain);
         this.setState({ data: newData, editIndex: index });
     }
+
     //切換至下一筆
     selectContent = id => {
         this.setState({ editIndex: parseInt(id) });
     }
+
+    // 刪除一筆
+    deleteELement = (e, index) => {
+        e.stopPropagation();
+        const newData = this.state.data;
+        newData.ads.splice(index, 1);
+        this.setState({ data: newData });
+    }
+
     // 送出
     submit = () => {
-        // 修改或送出
+        const postData = this.state.data;
+        if (postData.action === 'add') {
+            delete postData.adId;
+            delete postData.usable;
+        }
 
         // 確認皆為必填
-        const postData = this.state.data;
-        delete postData.adId;
-        delete postData.usable;
         for (let i in postData) {
-            if (!postData[i]) {
-                console.log("內容皆為必填", i)
+            if (!postData[i] && i !== 'usable') {
+                this.alertMsg('內容皆為必填');
                 return;
             }
         }
         postData.ads.forEach(val => {
             for (let i in val) {
                 if (!val[i]) {
-                    console.log("內容皆為必填", i)
+                    this.alertMsg('內容皆為必填');
                     return;
                 }
             }
@@ -155,7 +198,7 @@ class PushInput extends Component {
 
         // 判斷時間邏輯
         if (postData.start >= postData.end) {
-            console.log("開始時間不可等於或晚於結束時間")
+            this.alertMsg('開始時間不可等於或晚於結束時間');
             return;
         }
 
@@ -171,7 +214,48 @@ class PushInput extends Component {
         postData.brand = brand[0].siteName;
         postData.view = view;
         console.log(postData)
-        sendPush(postData);
+        if (postData.action === 'add') {
+            // 新增
+            sendPush(postData).then(res => {
+                if (res === 1) {
+                    //成功
+                    this.alertMsg('資料傳送成功');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 4500);
+                } else {
+                    this.alertMsg('資料傳送失敗');
+                }
+            })
+        } else {
+            //修改
+            modifyPush(postData).then(res => {
+                if (res === 1) {
+                    //成功
+                    this.alertMsg('資料修改成功');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 4500);
+                } else {
+                    this.alertMsg('資料修改失敗');
+                }
+            })
+        }
+    }
+    delete = () => {
+        deletePush({ adId: this.state.data.adId }).then(res => {
+            this.setState({ showDeleteMsg: false }, () => {
+                if (res === 1) {
+                    //成功
+                    this.alertMsg('資料刪除成功');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 4500);
+                } else {
+                    this.alertMsg('資料刪除失敗');
+                }
+            })
+        })
     }
 
     render() {
@@ -192,6 +276,30 @@ class PushInput extends Component {
                         )
                     })}
                 </div> */}
+                <AlertMsg
+                    text={this.state.alertText}
+                    attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                    close={() => this.setState({ showAlertMsg: false })}
+                />
+                <PopMsg
+                    show={this.state.showDeleteMsg}
+                    title={'刪除資料'}
+                    close={() => this.setState({ showDeleteMsg: false })}
+                >
+                    <h4 className="my-2">您確定要刪除此筆推播?</h4>
+                    <div className="d-flex mt-3">
+                        <button
+                            className="btn btn-outline-primary w-100 m-3 radius20 font_20"
+                            onClick={this.delete}
+                        >確認
+                        </button>
+                        <button
+                            className="btn btn-outline-primary w-100 m-3 radius20 font_20"
+                            onClick={() => this.setState({ showDeleteMsg: false })}
+                        >取消
+                        </button>
+                    </div>
+                </PopMsg>
                 <div className="box radius10">
                     <h4 className="my-3">新增廣告推播</h4>
                     <input
@@ -210,7 +318,7 @@ class PushInput extends Component {
                                 className="input_r"
                                 id="start-time"
                                 min={this.state.today}
-                                // value={this.state.data.ads.length > 0 ? this.state.data.start[0] : ''}
+                                value={this.state.data.start}
                                 onChange={(e) => this.addingTopic(e, 'start')}
                             />
                         </Col>
@@ -219,30 +327,11 @@ class PushInput extends Component {
                                 type="date"
                                 className="input_r"
                                 id="end-time"
-                                // value={this.state.data.ads.length > 0 ? this.state.data.end[0] : ''}
+                                value={this.state.data.end}
                                 onChange={(e) => this.addingTopic(e, 'end')}
                             />
                         </Col>
                     </Row>
-                    {/* <Row className="mt-4">
-                        <Col sm="6">
-                            <input
-                                type="date"
-                                className="input_r"
-                                id="end-time"
-                                // value={this.state.data.ads.length > 0 ? this.state.data.end[0] : ''}
-                                onChange={(e) => this.addingTopic(e, 'end', 0)}
-                            />
-                        </Col>
-                        <Col sm="3">
-                            <input
-                                type="time"
-                                className="input_r"
-                                // value={this.state.data.ads.length > 0 ? this.state.data.end[1] : ''}
-                                onChange={(e) => this.addingTopic(e, 'end', 1)}
-                            />
-                        </Col>
-                    </Row> */}
                     <div className="mt-3">
                         <div className="box srollX">
                             <ul>
@@ -254,6 +343,10 @@ class PushInput extends Component {
                                             className="btn_like"
                                             onClick={() => this.selectContent(index)}
                                         >
+                                            <FaTrashAlt
+                                                className="delete"
+                                                onClick={(e) => this.deleteELement(e, index)}
+                                            />
                                             {val.title}
                                         </li>
                                     ))
@@ -317,7 +410,12 @@ class PushInput extends Component {
                             }
                         </div>
                     </div>
-
+                    {this.props.data &&
+                        <div className="pl-1 mt-3">
+                            <FaTrashAlt className="font_30 btn_like" onClick={() => this.setState({ showDeleteMsg: true })} />
+                            <span className="d-inline-block ml-2">刪除此推播</span>
+                        </div>
+                    }
                     <div className="d-flex mt-3">
                         <button className="btn btn-outline-primary w-100 m-3 radius20 font_20" onClick={this.submit}>確認</button>
                         <button className="btn btn-outline-primary w-100 m-3 radius20 font_20" onClick={this.props.handleOpen}>取消</button>
