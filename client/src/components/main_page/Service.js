@@ -4,12 +4,15 @@ import Header from "../Header";
 import Footer from '../Footer';
 import MemberCentreTitle from '../share/MemberCentreTitle';
 import NavLeftMember from '../share/NavLeftMember';
+import Payment from '../share/Payment';
 
 class Service extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showData: false
+            showData: false,
+            chosenProject: '',
+            sent: false
         }
         this.title = [
             // '智媒推推系統',
@@ -61,9 +64,26 @@ class Service extends Component {
             '1. 無限智能配對推播曝光次數\n2. 保證點擊1,000次/月',
             '曝光數: 12元 / 百次\n點擊數: 8元 / 次'];
     }
+
     toggleShowData = () => {
         this.setState({ showData: !this.state.showData });
     }
+
+    // 選擇方案
+    chooseProject = (num) => {
+        this.setState({ chosenProject: num })
+    }
+
+    // 填寫資料
+    writeInfo = (e, type) => {
+
+    }
+
+    //送出資料
+    submit = () => {
+        this.setState({ sent: true })
+    }
+
     render() {
         return (
             <>
@@ -74,35 +94,66 @@ class Service extends Component {
                             更改你的會員方案
                             <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.toggleShowData}>&#10006;</button>
                         </h4>
-                        <div className="p-3 mx-auto w-100 scrollY h-65v ">
+                        <div className={this.state.chosenProject ? "d-none" : "p-3 mx-auto w-100 scrollY h-65v "}>
                             <Row>
                                 <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">資產分析</h2></Col>
                                 <Col sm={6}>
-                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">月繳</button><span className="ml-3">8000 ~ 1.5萬 / 月</span></div>
-                                    {/* <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div> */}
-                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">年繳</button><span className="ml-3">36萬 / 年</span></div>
+                                    <div className="my-3">
+                                        <button
+                                            className="btn btn-outline-warning px-5 py-2"
+                                            onClick={() => this.chooseProject(1)}
+                                        >月繳
+                                        </button>
+                                        <span className="ml-3">8000 ~ 1.5萬 / 月</span>
+                                    </div>
+                                    <div className="my-3">
+                                        <button
+                                            className="btn btn-outline-warning px-5 py-2"
+                                            onClick={() => this.chooseProject(1)}
+                                        >年繳
+                                        </button>
+                                        <span className="ml-3">36萬 / 年</span>
+                                    </div>
                                 </Col>
-
                             </Row>
-                            {/* <div className="mt-2 text-secondary text-center">
-                                <h5>廣告推播付費功能：曝光數：30元/百次點擊數：25元/次</h5>
-                                <h5>廣告曝光收益：曝光數：6元/百次點擊數：5元/次</h5>
-                            </div> */}
                             <hr className="dash_line" />
                             <Row>
                                 <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">用戶分析</h2></Col>
                                 <Col sm={6}>
-                                    {/* <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">季繳</button><span className="ml-3">5 ~ 6萬 / 季</span></div> */}
-                                    <div className="my-3"><button className="btn btn-outline-warning px-5 py-2">年繳</button><span className="ml-3">96萬 / 年</span></div>
+                                    <div className="my-3">
+                                        <button
+                                            className="btn btn-outline-warning px-5 py-2"
+                                            onClick={() => this.chooseProject(1)}
+                                        >年繳
+                                        </button>
+                                        <span className="ml-3">96萬 / 年</span>
+                                    </div>
                                 </Col>
                             </Row>
-                            {/* <div className="mt-2 text-secondary text-center">
-                                <h5>廣告推播付費功能：<br /><span>1.無限智能配對推播曝光次數<br />2.保證點擊1000次/月</span></h5><h5>廣告曝光收益：曝光數：6元/百次點擊數：5元/次</h5>
-                            </div> */}
+                            <hr className="dash_line" />
+                            <Row>
+                                <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">網站健檢</h2></Col>
+                                <Col sm={6}>
+                                    <div className="my-3">
+                                        <button
+                                            className="btn btn-outline-warning px-5 py-2"
+                                            onClick={() => this.chooseProject(1)}
+                                        >年繳</button>
+                                        <span className="ml-3">96萬 / 年</span>
+                                    </div>
+                                </Col>
+                            </Row>
                             <div className="text-center my-4">
                                 <button className="btn btn-outline-primary w-75 p-2 font_20 radius20">我要更改方案，請聯絡我</button>
                             </div>
                         </div>
+                        {
+                            this.state.chosenProject &&
+                            <Payment 
+                            sent={this.state.sent}
+                            sendMsg={this.submit}
+                             />
+                        }
                     </div>
                 </div>
                 <div className="layout_main">

@@ -95,7 +95,7 @@ class Header extends Component {
               <div className="person_sign">
                 <ul className="project_list">
                   <li id="name">{`${localStorage.getItem('name') || '訪客'}，您好`}</li>
-                  <li><Nav.Link href="memberCentre/billing/two">進入會員中心</Nav.Link></li>
+                  <li><Nav.Link href="/memberCentre/billing/two">進入會員中心</Nav.Link></li>
                   <li onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li>
                 </ul>
               </div>

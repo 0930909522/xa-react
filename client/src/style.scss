@@ -50,7 +50,7 @@ td {
     font-size: 20px;
 }
 
-.font_30{
+.font_30 {
     font-size: 30px;
 }
 
@@ -77,6 +77,10 @@ button.font_20 {
 
 .hashtag {
     color: $blue;
+}
+
+.no_outline{
+    outline: none;
 }
 
 .dec_none,
@@ -128,6 +132,10 @@ button.radius20 {
 
 .vertical_top {
     vertical-align: top;
+}
+
+.vertical_base{
+    vertical-align: baseline;
 }
 
 .weight600 {
@@ -501,7 +509,7 @@ button.radius20 {
                 top: 10px;
                 right: 10px;
                 opacity: 0.5;
-                &:hover{
+                &:hover {
                     opacity: 0.8;
                 }
             }
@@ -656,6 +664,9 @@ button.radius20 {
     position: relative;
     &:hover {
         .person_sign {
+            border-left: $black 1px solid;
+            border-right: $black 1px solid;
+            border-bottom: $black 1px solid;
             max-height: 300px;
             overflow: visible;
             padding-top: 10px;
@@ -682,9 +693,6 @@ button.radius20 {
     .person_sign {
         background: #FFFFFF;
         box-sizing: border-box;
-        border-left: $black 1px solid;
-        border-right: $black 1px solid;
-        border-bottom: $black 1px solid;
         color: $black;
         max-height: 0;
         overflow: hidden;

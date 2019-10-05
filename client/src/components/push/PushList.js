@@ -10,7 +10,7 @@ class PushList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: 'report',
+            type: '',
             open: false,
             editIndex: null,
             ajaxSleep: false,
@@ -33,20 +33,20 @@ class PushList extends Component {
         this.currentTIme = new Date();
     }
     componentDidMount() {
-        // let newType = this.props.type.split('/');
-        // newType = newType[newType.length - 2].replace('<', '').trim();
-        // switch (newType) {
-        //     case '主題活動':
-        //         newType = 'theme';
-        //         break;
+        let newType = this.props.type.split('/');
+        newType = newType[newType.length - 2].replace('<', '').trim();
+        switch (newType) {
+            case '主題活動':
+                newType = 'theme';
+                break;
 
-        //     case '專題報導':
-        let newType = 'report';
-        //         break;
-        //     default:
-        //         break;
-        // }
-        // this.setState({ type: newType });
+            case '專題報導':
+                newType = 'report';
+                break;
+            default:
+                break;
+        }
+        this.setState({ type: newType });
 
         let postData = {
             view: localStorage.getItem('view'),
@@ -75,8 +75,8 @@ class PushList extends Component {
                         data: postData,
                         ajaxSleep: true
                     })
-                    setTimeout(()=>{
-                        this.setState({ajaxSleep: false});
+                    setTimeout(() => {
+                        this.setState({ ajaxSleep: false });
                         // 休息三秒方可繼續調整
                     }, 3000);
                 }
@@ -122,6 +122,7 @@ class PushList extends Component {
                         type={this.state.type}
                         handleOpen={this.closeEdit}
                         data={this.state.data[this.state.editIndex]}
+                        goback={this.props.goback}
                     />
                 }
             </>

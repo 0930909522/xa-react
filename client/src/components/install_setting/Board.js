@@ -9,6 +9,7 @@ import SetBlackList from '../push_install/SetBlackList';
 import InstallationGuide from '../push_install/InstallationGuide';
 import { getBoard, deleteBoard } from '../share/ajax';
 // import PushTitle from '../share/PushTitle';
+import { FaArrowRight } from 'react-icons/fa';
 
 const initialUserAddingData = {
     acceptType: [], //
@@ -30,7 +31,7 @@ class Board extends Component {
         //載入以設定好的widget
         let postData = {};
         postData.view = localStorage.getItem('view');
-        getBoard(postData) 
+        getBoard(postData)
             .then(response => {
                 let getData = response || [];
                 if (getData.length === 0) {
@@ -123,7 +124,7 @@ class Board extends Component {
     render() {
         return (
             <>
-                <Header cateIndex={2}/>
+                <Header cateIndex={2} />
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
@@ -131,10 +132,14 @@ class Board extends Component {
                             <div className="main_right">
                                 <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">放進來</span></h2>
                                 <div className={this.state.status === 0 ? 'd-none' : ''}>
-                                    <span className={this.state.status > 0 ? 'text-primary' : ''}>選取黑名單項目</span>
-                                    <span>&nbsp;｜&nbsp;</span>
-                                    <span className={this.state.status > 1 ? 'text-primary' : ''}>設定黑名單</span>
-                                    <span>&nbsp;｜&nbsp;</span>
+                                    <span className={this.state.status > 0 ? 'text-primary' : ''}>
+                                        選取黑名單項目
+                                        <FaArrowRight className="vertical_base mx-2" />
+                                    </span>
+                                    <span className={this.state.status > 1 ? 'text-primary' : ''}>
+                                        設定黑名單
+                                        <FaArrowRight className="vertical_base mx-2" />
+                                    </span>
                                     <span className={this.state.status > 2 ? 'text-primary' : this.state.userAddingData.boardId === '' ? '' : 'text-secondary'}>安裝教學</span>
                                 </div>
                                 <div className={this.state.status === 0 ? 'box' : 'd-none'}>

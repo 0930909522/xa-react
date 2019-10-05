@@ -486,6 +486,47 @@ export const getPushPt = async postData => {
     return data;
 }
 
+// 查詢推出去狀態
+export const pushStatus = async () => {
+    let data;
+    let view = localStorage.getItem('view');
+    // await fetch('http://node.aiday.org/sbir/ad/status?view='+view, {
+    await fetch('http://192.168.50.103/sbir/ad/status?view=' + view, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+    }).then(response => response.json()
+    ).then(response => {
+        data = response;
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
+
+// 修改推出去狀態
+export const modifyPushStatus = async postData => {
+    let data;
+    // await fetch('http://node.aiday.org/sbir/ad/status', {
+    await fetch('http://192.168.50.103/sbir/ad/status', {
+        method: 'PUT',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    }).then(response => response.json()
+    ).then(response => {
+        data = response.status;
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
+
+
 function forAjax(response) {
     let newData;
     switch (response.status) {

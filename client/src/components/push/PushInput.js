@@ -85,6 +85,7 @@ class PushInput extends Component {
             // newData = this.props.data;
             newData.action = 'modify';
         }
+        // 將類別加入
         newData.type = this.props.type;
         this.setState({ editIndex: newEditIndex, data: newData })
     }
@@ -213,15 +214,17 @@ class PushInput extends Component {
         let brand = JSON.parse(localStorage.getItem('website')).filter(val => val.websiteId === view);
         postData.brand = brand[0].siteName;
         postData.view = view;
-        console.log(postData)
+        // console.log(postData)
         if (postData.action === 'add') {
             // 新增
+            delete postData.action;
             sendPush(postData).then(res => {
                 if (res === 1) {
                     //成功
                     this.alertMsg('資料傳送成功');
                     setTimeout(() => {
-                        window.location.reload();
+                        let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
+                        this.props.goback(param);
                     }, 4500);
                 } else {
                     this.alertMsg('資料傳送失敗');
@@ -229,12 +232,14 @@ class PushInput extends Component {
             })
         } else {
             //修改
+            delete postData.action;
             modifyPush(postData).then(res => {
                 if (res === 1) {
                     //成功
                     this.alertMsg('資料修改成功');
                     setTimeout(() => {
-                        window.location.reload();
+                        let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
+                        this.props.goback(param);
                     }, 4500);
                 } else {
                     this.alertMsg('資料修改失敗');
@@ -242,6 +247,7 @@ class PushInput extends Component {
             })
         }
     }
+
     delete = () => {
         deletePush({ adId: this.state.data.adId }).then(res => {
             this.setState({ showDeleteMsg: false }, () => {
@@ -249,7 +255,8 @@ class PushInput extends Component {
                     //成功
                     this.alertMsg('資料刪除成功');
                     setTimeout(() => {
-                        window.location.reload();
+                        let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
+                        this.props.goback(param);
                     }, 4500);
                 } else {
                     this.alertMsg('資料刪除失敗');
