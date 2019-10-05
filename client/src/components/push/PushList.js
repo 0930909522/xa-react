@@ -1,22 +1,22 @@
 import React, { Component } from 'react';
 import PushInput from './PushInput';
 // import {FaTrashAlt} from 'react-icons/fa';
-// import Switch from './share/Switch';
+import Switch from './share/Switch';
 import { FaPlusCircle, FaPencilAlt } from "react-icons/fa";
 // import { type } from 'os';
-import { getPush } from '../share/ajax';
+import { getPush, modifyPush } from '../share/ajax';
 
 class PushList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: 'report',
+            type: '',
             open: false,
             editIndex: null,
+            ajaxSleep: false,
             data: [{
                 "adId": "",
                 "title": "",
-                // "advertiseType": 1,
                 "start": "",
                 "end": "",
                 "usable": true,
@@ -26,13 +26,6 @@ class PushList extends Component {
                     "img": "",
                     "title": "",
                     "url": ""
-                    // "id": "1",
-                    // "name": "畢業季",
-                    // "url": "https://www.businesstoday.com.tw/article/category/",
-                    // "title": "資金潮讓投資人「嗨」到高點　樂觀之餘台股要留意這4個重點",
-                    // "content": "美股持續往歷史高點邁進...",
-                    // "tag": "#111#222",
-                    // "img": "https://static.jsbin.com/images/dave.min.svg"
                 }]
             }
             ]
@@ -40,20 +33,20 @@ class PushList extends Component {
         this.currentTIme = new Date();
     }
     componentDidMount() {
-        // let newType = this.props.type.split('/');
-        // newType = newType[newType.length - 2].replace('<', '').trim();
-        // switch (newType) {
-        //     case '主題活動':
-        //         newType = 'theme';
-        //         break;
+        let newType = this.props.type.split('/');
+        newType = newType[newType.length - 2].replace('<', '').trim();
+        switch (newType) {
+            case '主題活動':
+                newType = 'theme';
+                break;
 
-        //     case '專題報導':
-        let newType = 'report';
-        //         break;
-        //     default:
-        //         break;
-        // }
-        // this.setState({ type: newType });
+            case '專題報導':
+                newType = 'report';
+                break;
+            default:
+                break;
+        }
+        this.setState({ type: newType });
 
         let postData = {
             view: localStorage.getItem('view'),
@@ -70,6 +63,26 @@ class PushList extends Component {
     closeEdit = index => {
         this.setState({ open: !this.state.open })
     }
+    // 改變刊登狀態
+    changeStatus = index => {
+        if (Date.parse(this.state.data[index].end) >= new Date() && Date.parse(this.state.data[index].start) <= new Date() && !this.state.ajaxSleep) {
+            // 如果尚未結束，且於刊登期間
+            const postData = this.state.data;
+            postData[index].usable = !postData[index].usable;
+            modifyPush(postData[index]).then(res => {
+                if (res === 1) {
+                    this.setState({
+                        data: postData,
+                        ajaxSleep: true
+                    })
+                    setTimeout(() => {
+                        this.setState({ ajaxSleep: false });
+                        // 休息三秒方可繼續調整
+                    }, 3000);
+                }
+            })
+        }
+    }
     render() {
         return (
             <>
@@ -82,7 +95,7 @@ class PushList extends Component {
                     <table className="pushTable w-100 text-center radius20" cellPadding="15">
                         <thead>
                             <tr>
-                                {/* <th></th> */}
+                                <th></th>
                                 <th>廣告活動</th>
                                 <th>結束時間</th>
                                 <th>狀態</th>
@@ -93,10 +106,10 @@ class PushList extends Component {
                             {this.state.data.map((val, index) => {
                                 return (
                                     <tr key={index}>
-                                        {/* <td><Switch /></td> */}
+                                        <td><Switch value={val.usable} changeStatus={() => this.changeStatus(index)} /></td>
                                         <td>{val.title}</td>
-                                        <td>{val.endTime}</td>
-                                        <td>{val.state ? '刊登中' : Date.parse(val.startTime) > new Date() ? '未刊登' : '已結束'}</td>
+                                        <td>{val.end}</td>
+                                        <td>{val.usable ? '刊登中' : Date.parse(val.start) > new Date() ? '未刊登' : '已結束'}</td>
                                         <td><button className='btn_noborder_r' onClick={() => this.openEdit(index)}>編輯 <FaPencilAlt /></button></td>
                                     </tr>
                                 )
@@ -109,6 +122,7 @@ class PushList extends Component {
                         type={this.state.type}
                         handleOpen={this.closeEdit}
                         data={this.state.data[this.state.editIndex]}
+                        goback={this.props.goback}
                     />
                 }
             </>

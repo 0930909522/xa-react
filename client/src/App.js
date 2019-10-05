@@ -6,7 +6,6 @@ import './style.scss';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './components/Main';
 import AnalyticGeneral from './components/analytic/AnalyticGeneral';
-import AnalyticReports from './components/analytic/AnalyticReports';
 import AnalyticRealTime from './components/analytic/AnalyticRealTime';
 import AnalyticBasis from './components/analytic/AnalyticBasis';
 import AnalyticCheck from './components/analytic/AnalyticCheck';
@@ -34,14 +33,14 @@ import Push from './components/push/Push';
 // import PopularArticle from './components/push/PopularArticle';
 // import PopularArticleBuilt from './components/push/PopularArticleBuilt';
 // import MediaPlaform from './components/push/MediaPlaform';
-import BlackList from './components/push/BlackList';
+// import BlackList from './components/push/BlackList';
 // import PushPage from './components/push_install/PushPage';
 // import SetBlacklist from './components/push_install/SetBlackList'; 
 // import InstallationGuide from './components/push_install/InstallationGuide';
-import SetTrackingCode from './components/install_setting/SetTrackingCode';
+// import SetTrackingCode from './components/install_setting/SetTrackingCode';
 import ModifySetting from './components/install_setting/ModifySetting';
 import InstallTrackingCode from './components/install_setting/InstallTrackingCode';
-import CheckSuccess from './components/install_setting/CheckSuccess';
+// import CheckSuccess from './components/install_setting/CheckSuccess';
 import Register from './components/main_page/Register';
 import Verification from './components/main_page/Verification';
 import VerifySuccess from './components/main_page/VerifySuccess';
@@ -56,29 +55,41 @@ import EditPage from './components/main_page/EditPage';
 import Receipt from './components/report/Receipt';
 
 class App extends Component {
-  state = {level: '', name:'',verified:''}
-// level: 1以上才有追蹤的網站
-// name:用戶名稱
-// verified: 是否驗證過
+  state = {
+    permissionData: {
+      level: '',
+      name: '',
+      verified: ''
+    }
+  }
+  // level: 1以上才有追蹤的網站
+  // name:用戶名稱
+  // verified: 是否驗證過
+  componentDidMount(){
+    let storageData = localStorage.getItem('permission');
+    if(storageData){
+      this.setState({permissionData: JSON.parse(storageData)});
+    }
+  }
+  permission = (data) => {
+    this.setState({ permissionData: data })
+  }
 
   render() {
     return (
       <div className="all">
         <Router>
-          <Route exact path="/" component={AnalyticBasis} />
+          <Route exact path="/" component={AnalyticPortrait} />
           {/* 訪客總覽 */}
           <Route path="/general" component={AnalyticGeneral} />
           {/* 即時資訊 */}
           <Route path="/realtime" component={AnalyticRealTime} />
           {/* 基礎數據分析 */}
-          <Route path="/basis" component={AnalyticBasis} /> 
-          {/* 網站健檢 */}
-          <Route path="/check" component={AnalyticCheck} /> 
-          {/* 流量來源 */}
-          <Route path="/source" component={AnalyticSource} /> 
-          {/* 流量報告 */}
-          <Route path="/reports" component={AnalyticReports} /> 
-
+          <Route path="/basis" component={AnalyticBasis} />
+          {/*  */}
+          <Route path="/check" component={AnalyticCheck} />
+          {/* 流料來源 */}
+          <Route path="/source" component={AnalyticSource} />
           {/* 熱門頁面 */}
           <Route path="/hot" component={AnalyticHot} />
           {/* 互動指標 */}
@@ -89,6 +100,7 @@ class App extends Component {
           <Route path="/portrait" component={AnalyticPortrait} />
           {/* 用戶分群 */}
           <Route path="/group" component={AnalyticGroup} />
+
           {/* 測試用 */}
           <Route path="/test" component={Test} />
 
@@ -122,7 +134,6 @@ class App extends Component {
           {/* <Route path="/push/popularArticleBuilt" component={PopularArticleBuilt} /> */}
           {/* 推播 選擇媒體平台 */}
           {/* <Route path="/push/mediaPlaform" component={MediaPlaform} /> */}
-          
           {/* 安裝追蹤碼(設定追蹤碼) */}
           {/* <Route path="/trackingCode/setting" component={SetTrackingCode} /> */}
           {/* 安裝追蹤碼(修改設定) */}
@@ -138,12 +149,12 @@ class App extends Component {
           {/* sign up(驗證成功) */}
           <Route path="/signup/success" component={VerifySuccess} />
           {/* sign in*/}
-          <Route path="/signup/signin" component={SignIn} />
+          <Route path="/signup/signin" render={(props) => <SignIn getPermission={this.permission} {...props} />} />
           {/* 會員中心 (編輯使用者資訊) */}
           <Route path="/memberCentre/edit" component={EditUserInfo} />
           {/* 會員中心 (編輯網站資訊) */}
           {/* <Route path="/memberCentre/website" component={EditPage} /> */}
-          <Route path="/memberCentre/website" render={(props) => <EditPage level={1} {...props} />} />
+          <Route path="/memberCentre/website" component={EditPage} />
           {/* 會員中心 (登入與帳號安全) */}
           <Route path="/memberCentre/loginAndSecure" component={LoginAndSecure} />
           {/* 會員中心(帳單與儲值) */}
@@ -155,7 +166,7 @@ class App extends Component {
           {/* 推播 */}
           <Route exact path="/push" component={Push} />
           {/* 推播 黑名單 */}
-          <Route path="/push/blacklist" component={BlackList} />
+          {/* <Route path="/push/blacklist" component={BlackList} /> */}
           {/* 布告欄（清單） */}
           <Route path="/board" component={Board} />
           {/* 財務報表 */}

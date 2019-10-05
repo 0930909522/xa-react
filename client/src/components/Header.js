@@ -16,11 +16,11 @@ class Header extends Component {
     const getWebsites = JSON.parse(localStorage.getItem('website')) || [];
     const currentView = localStorage.getItem('view') || "";
     // 設定websites
-    this.setState({'websites': getWebsites});
+    this.setState({ 'websites': getWebsites });
     //設定viewIndex
     getWebsites.forEach((val, index) => {
       if (val.websiteId === currentView) {
-        this.setState({'viewIndex': index});
+        this.setState({ 'viewIndex': index });
       }
     });
 
@@ -32,6 +32,7 @@ class Header extends Component {
       localStorage.removeItem('view');
       localStorage.removeItem('visited');
       localStorage.removeItem('website');
+      localStorage.removeItem('permission');
 
       logout();
       setTimeout(() => {
@@ -44,7 +45,8 @@ class Header extends Component {
   }
   switchWebsite = (index) => {
     localStorage.setItem('view', this.state.websites[index].websiteId);
-    this.setState({'viewIndex': index});
+    this.setState({ 'viewIndex': index });
+    window.location.reload();
   }
 
   render() {
@@ -68,17 +70,12 @@ class Header extends Component {
               <Link to="/report/push" className={cIndex === 3 ? "nav-link active" : "nav-link"}>帳務報表</Link>
               <Link to="/memberCentre/billing/:type" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
             </Nav>
-            <Nav.Link href=""><IoMdSwap title="切換平台" className="header_svg" /></Nav.Link>
+
             <div className="person_btn">
-              <div ref={(e) => this.person_sign = e} className="btn_like"><FaUser className="header_svg" />
+              <div className="btn_like"><IoMdSwap title="切換平台" className="header_svg" />
               </div>
-              {/* <ul className="person_sign">
-                <li>{localStorage.getItem('name') || '訪客'}</li>
-                <li><Nav.Link href="/memberCentre/edit">進入會員中心</Nav.Link></li>
-                <li><Nav.Link href="/memberCentre/website">編輯網站資訊</Nav.Link></li>
-                <li className="btn_like" onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li>
-              </ul> */}
               <div className="person_sign">
+                <small>選擇分析平台</small>
                 <ul className="project_list">
                   {
                     this.state.websites.map((val, index) => (
@@ -90,19 +87,19 @@ class Header extends Component {
                     ))
                   }
                 </ul>
-                <ul className="project_list icon">
-                  <li><Nav.Link href="/memberCentre/edit">進入會員中心</Nav.Link></li>
-                </ul>
-                <ul className="project_list icon">
+              </div>
+            </div>
+            <div className="person_btn">
+              <div className="btn_like"><FaUser className="header_svg" />
+              </div>
+              <div className="person_sign">
+                <ul className="project_list">
+                  <li id="name">{`${localStorage.getItem('name') || '訪客'}，您好`}</li>
+                  <li><Nav.Link href="/memberCentre/billing/two">進入會員中心</Nav.Link></li>
                   <li onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li>
                 </ul>
               </div>
             </div>
-            <Nav.Link>{localStorage.getItem('name') || '訪客'}</Nav.Link>
-            {/* <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <Button variant="outline-primary">Search</Button>
-            </Form> */}
           </Container>
         </Navbar>
       </>

@@ -5,7 +5,10 @@ export default class Switch extends Component {
         return (
             <>
                 <label className="switch">
-                    <input type="checkbox" />
+                    <input type="checkbox"
+                        checked={this.props.value}
+                        onChange={this.props.changeStatus}
+                    />
                     <span className="slider round"></span>
                 </label>
             </>

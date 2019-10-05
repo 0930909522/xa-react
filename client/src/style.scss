@@ -50,6 +50,10 @@ td {
     font-size: 20px;
 }
 
+.font_30 {
+    font-size: 30px;
+}
+
 button.font_20 {
     font-size: 20px;
 }
@@ -73,6 +77,10 @@ button.font_20 {
 
 .hashtag {
     color: $blue;
+}
+
+.no_outline{
+    outline: none;
 }
 
 .dec_none,
@@ -124,6 +132,10 @@ button.radius20 {
 
 .vertical_top {
     vertical-align: top;
+}
+
+.vertical_base{
+    vertical-align: baseline;
 }
 
 .weight600 {
@@ -481,18 +493,28 @@ button.radius20 {
         padding: 0;
         display: inline-flex;
         li {
-            display: flex;
             align-items: center;
-            min-height: 5em;
-            width: 200px;
-            margin: 0.5em 1em;
-            padding: 20px;
             border: solid 1.5px $gray;
             border-radius: 10px;
+            display: flex;
+            min-height: 5em;
+            margin: 0.5em 1em;
+            padding: 20px;
+            position: relative;
             white-space: initial;
             text-align: center;
+            width: 200px;
+            .delete {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                opacity: 0.5;
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
         }
-        #focus{
+        #focus {
             border: solid 1.5px $orange;
         }
     }
@@ -642,6 +664,9 @@ button.radius20 {
     position: relative;
     &:hover {
         .person_sign {
+            border-left: $black 1px solid;
+            border-right: $black 1px solid;
+            border-bottom: $black 1px solid;
             max-height: 300px;
             overflow: visible;
             padding-top: 10px;
@@ -649,7 +674,7 @@ button.radius20 {
             z-index: 2;
             &::before {
                 content: '\25B2';
-                color: #1D4E87;
+                color: #FFFFFF;
                 font-size: 25px;
                 position: absolute;
                 top: -25px;
@@ -658,47 +683,45 @@ button.radius20 {
             }
             li,
             a {
-                cursor: pointer;
-                &:hover {
-                    background: #163D69;
-                    color: white;
+                &:hover:not(#name) {
+                    cursor: pointer;
+                    opacity: 0.8;
                 }
             }
         }
     }
     .person_sign {
-        background: #1D4E87;
+        background: #FFFFFF;
         box-sizing: border-box;
-        color: white;
+        color: $black;
         max-height: 0;
         overflow: hidden;
         position: absolute;
         transform: translate(-55px, 20px);
         transition: all .2s ease;
         width: 150px;
+        small {
+            border-bottom: 1px solid $gray;
+            color: $gray;
+            display: block;
+            margin: 0px 10px;
+            padding: 5px 0;
+            text-align: center;
+        }
         ul {
             list-style: none;
-            padding: 10px 10px;
+            padding: 10px 15px 0;
             margin-bottom: 0;
-            &.project_list:first-child {
-                max-height: 100px;
-                overflow-y: auto;
-                 &::-webkit-scrollbar {
-                    display: none;
-                }
-            }
             li,
             a {
                 padding: 5px;
-                background: #F3F3F3;
-                color: #1D4E87;
+                color: $black;
                 text-align: center;
                 &:not(:last-child) {
                     border-bottom: 0.5px solid $gray2;
                 }
                 &#focus {
-                    background: #1D4E87;
-                    color: white;
+                    font-weight: 600;
                 }
             }
         }

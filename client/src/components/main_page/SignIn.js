@@ -21,7 +21,15 @@ class SignIn extends Component {
     }
     submit = () =>{
         let postData = this.state.data;
-        login(postData);
+        login(postData).then((res)=>{
+            this.props.getPermission(res);
+            localStorage.setItem('permission',JSON.parse(res));
+            if(res.level < 1){
+                window.location.href = '/memberCentre/edit';
+            }else{
+                window.location.href = '/basis';
+            }
+        })
     }
     render() {
         return (
