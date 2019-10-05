@@ -9,7 +9,8 @@ import AnalyticGeneral from './components/analytic/AnalyticGeneral';
 import AnalyticRealTime from './components/analytic/AnalyticRealTime';
 import AnalyticBasis from './components/analytic/AnalyticBasis';
 import AnalyticCheck from './components/analytic/AnalyticCheck';
-import AnalyticSource from './components/analytic/AnalyticSource';
+//import AnalyticSource from './components/analytic/AnalyticSource';
+import AnalyticReports from './components/analytic/AnalyticReports';
 import AnalyticHot from './components/analytic/AnalyticHot';
 import AnalyticInteraction from './components/analytic/AnalyticInteraction';
 import AnalyticAsset from './components/analytic/AnalyticAsset';
@@ -79,7 +80,7 @@ class App extends Component {
     return (
       <div className="all">
         <Router>
-          <Route exact path="/" component={AnalyticPortrait} />
+          <Route exact path="/" component={AnalyticBasis} />
           {/* 訪客總覽 */}
           <Route path="/general" component={AnalyticGeneral} />
           {/* 即時資訊 */}
@@ -88,8 +89,8 @@ class App extends Component {
           <Route path="/basis" component={AnalyticBasis} />
           {/*  */}
           <Route path="/check" component={AnalyticCheck} />
-          {/* 流料來源 */}
-          <Route path="/source" component={AnalyticSource} />
+          {/* 流量報表 */}
+          <Route path="/reports" component={AnalyticReports} />
           {/* 熱門頁面 */}
           <Route path="/hot" component={AnalyticHot} />
           {/* 互動指標 */}
