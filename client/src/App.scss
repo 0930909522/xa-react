@@ -14,6 +14,14 @@ $chartBlue2: #15e5f8;
 
 .text_red { color: $red }
 .text_yellow { color: $yel }
+.align_left {text-align: left}
+.align_right {text-align: right}
+.f_z20 {font-size: 20px}
+
+.loading_box {
+    line-height: 300px;
+    text-align: center;
+}
 
 .btn.blue {
     background-color: $blue2;
@@ -123,6 +131,75 @@ li {list-style: none;}
             }
             label {
                 padding-left: 15px;
+            }
+        }
+        .fish_example {
+            text-align: center;
+            .fbg_box {
+                width: 600px;
+                height: 0;
+                max-width: 100%; 
+                margin: 0 auto;
+                padding-bottom: 70%;
+                .fbg {
+                    width: 100%;
+                    height: 0;
+                    padding-bottom: 80%;
+                    background-image: url(./images/fbg.png);
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    position: relative;
+                    .fish {
+                        position: absolute;
+                        display: flex;
+                        align-items: center;
+                        justify-content:center;
+                        width: calc( ( 100% - 16% ) / 3 );
+                        height: calc( ( 100% - 12% ) / 3 );
+                        font-size: 24px;
+                        color: #999;
+                        &.red {
+                            color: $red;
+                        }
+                        &.g1 {
+                            left: 8%;
+                            top: 6%;
+                        }
+                        &.g2 {
+                            left: 8%;
+                            top: 35%;
+                        }
+                        &.g3 {
+                            left: 8%;
+                            top: 61%;
+                        }
+                        &.g4 {
+                            left: 35%;
+                            top: 35%;
+                        }
+                        &.g5 {
+                            left: 35%;
+                            top: 6%;
+                        }
+                        &.g6 {
+                            left: 63%;
+                            top: 61%;
+                        }
+                        &.g7 {
+                            left: 63%;
+                            top: 6%;
+                        }
+                        &.g8 {
+                            left: 63%;
+                            top: 35%;
+                        }
+                        &.g9 {
+                            left: 35%;
+                            top: 61%;
+                        }
+                    }
+                    
+                }
             }
         }
         h3 {
@@ -415,15 +492,15 @@ li {list-style: none;}
                 }
                 .left {
                     float: left;
-                    width: 80%;
-                    overflow: hidden;
-                    white-space: nowrap;
-                
+                    width: 17%;
+                    
                 }
                 .right {
-                    float: right;
-                    width: 20%;
-                    text-align: right;
+                    float: left;
+                    width: 83%;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                 }
             }
         }
