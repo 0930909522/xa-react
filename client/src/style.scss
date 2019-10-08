@@ -792,13 +792,13 @@ button.radius20 {
     z-index: 3;
     .content {
         @extend .radius10;
-        border: 3px solid $gray2;
+        border: 1px solid $gray2;
         background: #FFFFFF;
         display: table-cell;
         font-weight: 600;
         text-align: center;
         min-height: 100px;
-        padding: 7px 10px 15px;
+        padding: 7px 10px 40px;
         width: 300px;
         word-break: break-all;
         .close_btn {

@@ -7,7 +7,9 @@ import NavLeftMember from '../share/NavLeftMember';
 import MemberCard from '../share/MemberCard';
 // import PopMsg from '../share/PopMsg';
 import PushBill from './PushBill';
+import AlertMsg from '../share/AlertMsg';
 import { FaRegCreditCard } from "react-icons/fa";
+import { bill } from '../share/ajax';
 // import Payment from '../share/Payment';
 import { withRouter } from 'react-router-dom'
 
@@ -16,14 +18,23 @@ class Billing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            status: '',     // 數據、推播儲值狀態，''是關閉，'10'推播，'11'是數據
-            paid: false,    //已選擇方案
+            showAlertMsg: false,
+            status: '',     // 數據、推播儲值狀態，''是關閉，'10'推播，'11'是數據，'12'是一般訊息
+            paid: false,    // 已選擇方案
             sent: false,    // 已送出資料
-            type: null
-
+            type: null,
+            bill: []        // 推播花費與支出
         }
     }
     componentDidMount() {
+        bill().then( res => {
+            this.setState({ bill: res });
+        });
+
+        if (this.props.match.params.type === 'welcome') {
+            this.setState({showAlertMsg: true});
+        } 
+
         let newShowPayData = this.state.status;
         if (this.props.match.params.type === 'three') {
             newShowPayData = '11';
@@ -61,6 +72,7 @@ class Billing extends Component {
         // 要將狀態復原
     }
     render() {
+        const { bill } = this.state;
         return (
             <>
                 <Header cateIndex={4} />
@@ -71,6 +83,11 @@ class Billing extends Component {
                     handlePaid={this.toSend}
                     sent={this.state.sent}
                     submit={this.submit}
+                />
+                <AlertMsg
+                    text="註冊成功，感謝您"
+                    attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                    close={() => this.setState({ showAlertMsg: false })}
                 />
                 <div className="layout_main">
                     <Container className="main_analytic">
@@ -86,7 +103,8 @@ class Billing extends Component {
                                     <MemberCard
                                         title="數據服務與用量"
                                         buttonName="查看更多內容"
-                                        // handleClick={() => browserHistory.push('/memberCentre/service')}
+                                         //handleClick={() => browserHistory.push('/memberCentre/service')}
+                                         handleClick={() => this.props.history.push('/memberCentre/service')}
                                     >
                                         <h6 className="my-2">會員資格：付費會員 - 月繳</h6>
                                         <h6 className="my-2">會員方案期限：2019年3月3日 ~ 2019年4月3日</h6>
@@ -112,12 +130,12 @@ class Billing extends Component {
                                         handleClick={() => this.props.history.push('/memberCentre/billing/four')}
                                     >
                                         <p>儲值後開始推廣您的網站</p>
-                                        <h1>$0</h1>
+                                        <h1>${bill[1] ? bill[1].balance : ""}</h1>
                                         {/* push */}
                                     </MemberCard>
                                     <MemberCard title="您的推播收入" buttonName="安裝追蹤碼">
                                         <p>在您的網站安裝推推立即可開始收錢</p>
-                                        <h1>$0</h1>
+                                        <h1>${bill[0] ? bill[0].balance : ""}</h1>
                                         {/* pull */}
                                     </MemberCard>
 

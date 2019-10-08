@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Footer from '../Footer';
 import Navpt from '../share/Navpt';
 import {login} from '../share/ajax';
@@ -46,7 +47,7 @@ class SignIn extends Component {
                             <button className="btn btn-outline-primary radius20 font_20 my-4 p-2 w-100" onClick={this.submit}>登入</button>
                             <div className="text-center">
                                 <p className="d-block mb-2 text-dark">還沒有帳號？</p>
-                                <button className="btn btn-info radius20 px-5 py-2" onClick={()=>window.location.href="/signup/register"}>我要註冊</button>
+                                <Link to="/signup/register" className="btn btn-info radius20 px-5 py-2">我要註冊</Link>
                             </div>
                         </div>
                     </Container>

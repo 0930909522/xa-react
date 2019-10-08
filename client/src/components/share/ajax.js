@@ -1,7 +1,10 @@
 // 註冊
+
+const urlNode = "https://node.aiday.org/sbir/";
+// const urlNode = "http://192.168.50.103/sbir/";
+
 export const register = async (postData) => {
-    // fetch('https://node.aiday.org/sbir/signup', {
-    fetch('http://192.168.50.103/sbir/signup', {
+    fetch( urlNode + 'signup', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -14,7 +17,7 @@ export const register = async (postData) => {
         .then(response => {
             switch (response.status) {
                 case 1:
-                    window.location.href = '/signup/signin';
+                    window.location.href = '/signup/Verification?' + postData.email;
                     break;
                 case 2:
                     alert('電子信箱重覆');
@@ -35,7 +38,7 @@ export const register = async (postData) => {
 // Website - 查詢追蹤網站
 export const trackingList = async () => {
     let data;
-    await fetch('https://node.aiday.org/sbir/website', {
+    await fetch( urlNode + 'website', {
         // await fetch('http://192.168.50.103/sbir/website', {
         method: 'GET',
         mode: 'cors',
@@ -59,7 +62,7 @@ export const trackingList = async () => {
 // 登入
 export const login = async postData => {
     let data;
-    await fetch('https://node.aiday.org/sbir/signin', {
+    await fetch( urlNode + 'signin', {
         // fetch('http://192.168.50.103/sbir/signin', {
         method: 'POST',
         mode: 'cors',
@@ -165,7 +168,7 @@ export const updatePsd = async (postData) => {
 export const addTracking = async (postData) => {
     let data;
     // await fetch('https://node.aiday.org/sbir/website', {
-    await fetch('http://192.168.50.103/sbir/website', {
+    await fetch('http://xa.aiday.org/sbir/website', {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -525,6 +528,23 @@ export const modifyPushStatus = async postData => {
     })
     return data;
 }
+
+//查詢帳戶總收入與支出
+export const bill = async () => {
+    let data;
+    await fetch('https://node.aiday.org/sbir/user/balance', {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+    }).then(response => response.json()
+    ).then(response => {
+        data = response;
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
+
 
 
 function forAjax(response) {

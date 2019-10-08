@@ -26,7 +26,7 @@ class Header extends Component {
 
   }
   logout = () => {
-    if (localStorage.getItem('name')) {
+    // if (localStorage.getItem('name')) {
       this.setState({ showAlertMsg: true });
       localStorage.removeItem('name');
       localStorage.removeItem('view');
@@ -37,11 +37,11 @@ class Header extends Component {
       logout();
       setTimeout(() => {
         this.setState({ showAlertMsg: false });
-        window.location.href = '/signup/signin';
+        // window.location.href = '/signup/signin';
       }, 4000);
-    } else {
-      window.location.href = '/signup/signin';
-    }
+    // } else {
+    //   window.location.href = '/signup/signin';
+    // }
   }
   switchWebsite = (index) => {
     localStorage.setItem('view', this.state.websites[index].websiteId);
@@ -95,8 +95,9 @@ class Header extends Component {
               <div className="person_sign">
                 <ul className="project_list">
                   <li id="name">{`${localStorage.getItem('name') || '訪客'}，您好`}</li>
-                  <li><Nav.Link href="/memberCentre/billing/two">進入會員中心</Nav.Link></li>
-                  <li onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li>
+                  <li><Link to="/memberCentre/billing/two" className="nav-link">進入會員中心</Link></li>
+                  {/* <li onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li> */}
+                  <li><Link onClick={this.logout} to="/signup/signin" className="nav-link">{localStorage.getItem('name') ? '登出' : '登入'}</Link></li>
                 </ul>
               </div>
             </div>
