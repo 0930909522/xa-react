@@ -3,6 +3,8 @@ import axios from 'axios';
 import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
+import Loading from '../../images/loading.svg';
+
 import { Table, Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 
@@ -19,6 +21,8 @@ class AnalyticGroup extends Component {
             wordCloudInterval: 7,
             hotCount: 10,
             hotInterval: 7,
+            isLoadingList: true,
+            isLoadingWordCloud: true,
         }
     }
     componentDidMount() {
@@ -27,6 +31,7 @@ class AnalyticGroup extends Component {
     }
     getWordCloudData = () => {
         // axios.get('/datas/analyticHot.json')
+        this.setState({ isLoadingWordCloud: true });
         axios.get("https://node.aiday.org/sbir/asset/wordCloud", {
             params: {
                 view: this.state.view,
@@ -46,7 +51,7 @@ class AnalyticGroup extends Component {
                 });
                 this.setState({
                     keywords: ary
-                });
+                }, ()=> this.setState({isLoadingWordCloud: false}) );
 
             })
             .catch(function (error) {
@@ -55,6 +60,7 @@ class AnalyticGroup extends Component {
     };
     getHotData = () => {
         // axios.get('/datas/analyticHot.json')
+        this.setState({isLoadingList: true})
         axios.get("https://node.aiday.org/sbir/asset/hot", {
             params: {
                 view: this.state.view,
@@ -67,7 +73,7 @@ class AnalyticGroup extends Component {
                 //console.log(response.data);
                 this.setState({
                     hot: response.data.data
-                });
+                }, ()=> this.setState({isLoadingList: false}));
             })
             .catch(function (error) {
                 console.log(error);
@@ -102,7 +108,7 @@ class AnalyticGroup extends Component {
         });
     }
     render() {
-        const { hot } = this.state
+        const { hot, isLoadingWordCloud, isLoadingList } = this.state
         return (<>
             <Header cateIndex={1} />
             <div className="layout_main">
@@ -134,46 +140,49 @@ class AnalyticGroup extends Component {
                                         </div>
                                     </div>
 
-                                    {this.state.keywords ?
-                                        <div className="chart_box">
-                                            <BubbleChart
-                                                graph={{
-                                                    zoom: 1,
-                                                    offsetX: 0,
-                                                    offsetY: 0,
-                                                }}
-                                                width={650}
-                                                height={660}
-                                                overflow={false}
-                                                padding={0} // optional value, number that set the padding between bubbles
-                                                showLegend={false} // optional value, pass false to disable the legend.
-                                                legendPercentage={20} // number that represent the % of with that legend going to use.
-                                                legendFont={{
-                                                    family: 'Arial',
-                                                    size: 14,
-                                                    color: '#000',
-                                                    weight: 'normal',
-                                                }}
-                                                valueFont={{
-                                                    family: 'Arial',
-                                                    size: 0,
-                                                    color: '#fff',
-                                                    weight: 'normal',
-                                                }}
-                                                labelFont={{
-                                                    family: 'Arial',
-                                                    size: 15,
-                                                    color: '#fff',
-                                                    weight: 'normal',
-                                                    padding: '10px'
-                                                }}
-                                                //Custom bubble/legend click functions such as searching using the label, redirecting to other page
-                                                // bubbleClickFun={this.bubbleClick}
-                                                // legendClickFun={this.legendClick}
-                                                data={this.state.keywords}
-                                            />
-                                        </div>
-                                        : <span />}
+                                    
+                                    { isLoadingWordCloud ?  
+                                        <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
+                                        this.state.keywords ?
+                                            <div className="chart_box">
+                                                    <BubbleChart
+                                                        graph={{
+                                                            zoom: 1,
+                                                            offsetX: 0,
+                                                            offsetY: 0,
+                                                        }}
+                                                        width={650}
+                                                        height={660}
+                                                        overflow={false}
+                                                        padding={0} // optional value, number that set the padding between bubbles
+                                                        showLegend={false} // optional value, pass false to disable the legend.
+                                                        legendPercentage={20} // number that represent the % of with that legend going to use.
+                                                        legendFont={{
+                                                            family: 'Arial',
+                                                            size: 14,
+                                                            color: '#000',
+                                                            weight: 'normal',
+                                                        }}
+                                                        valueFont={{
+                                                            family: 'Arial',
+                                                            size: 0,
+                                                            color: '#fff',
+                                                            weight: 'normal',
+                                                        }}
+                                                        labelFont={{
+                                                            family: 'Arial',
+                                                            size: 15,
+                                                            color: '#fff',
+                                                            weight: 'normal',
+                                                            padding: '10px'
+                                                        }}
+                                                        //Custom bubble/legend click functions such as searching using the label, redirecting to other page
+                                                        // bubbleClickFun={this.bubbleClick}
+                                                        // legendClickFun={this.legendClick}
+                                                        data={this.state.keywords}
+                                                    />
+                                            </div>
+                                            : <span />}
 
                                     <h3>熱門頁面排行 </h3>
                                     <div>
@@ -198,14 +207,15 @@ class AnalyticGroup extends Component {
                                         </div>
                                     </div>
 
-
+                                    { isLoadingList ?
+                                    <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
                                     <Table striped bordered hover>
                                         <thead>
                                             <tr>
                                                 <th width="8%">排名</th>
                                                 <th>文章名稱</th>
                                                 <th width="8%">人數</th>
-                                                <th width="8%">流量</th>
+                                                <th width="10%">瀏覽量</th>
                                                 <th width="10%">新客戶</th>
                                                 <th width="10%">舊客戶</th>
                                             </tr>
@@ -224,7 +234,7 @@ class AnalyticGroup extends Component {
                                             ) : console.log()}
 
                                         </tbody>
-                                    </Table>
+                                    </Table> }
 
 
                                     {/* <ul>

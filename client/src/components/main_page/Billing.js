@@ -113,10 +113,12 @@ class Billing extends Component {
                                     >
                                         <p>儲值後開始推廣您的網站</p>
                                         <h1>$0</h1>
+                                        {/* push */}
                                     </MemberCard>
                                     <MemberCard title="您的推播收入" buttonName="安裝追蹤碼">
                                         <p>在您的網站安裝推推立即可開始收錢</p>
                                         <h1>$0</h1>
+                                        {/* pull */}
                                     </MemberCard>
 
                                     {/* <MemberCard title="交易明細" buttonName="查看更多內容">
