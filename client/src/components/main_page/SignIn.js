@@ -24,7 +24,7 @@ class SignIn extends Component {
         let postData = this.state.data;
         login(postData).then((res)=>{
             this.props.getPermission(res);
-            localStorage.setItem('permission',JSON.parse(res));
+            localStorage.setItem('permission',JSON.stringify(res));
             if(res.level < 1){
                 window.location.href = '/memberCentre/edit';
             }else{

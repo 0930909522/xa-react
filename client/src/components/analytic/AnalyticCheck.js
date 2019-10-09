@@ -430,7 +430,7 @@ class AnalyticCheck extends Component {
                           return <tr key={index}>
                             <td>{item.item}</td>
                             <td>{item.text}</td>
-                            <td>{item.description}</td>
+                            <td>{item.description ? item.description.split("Learn more")[1] === "" ? item.description.replace("Learn more", "") : item.description : ""}</td>
                             <td>
                               {item.extraTable ?
                                 <Button className="red" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
@@ -483,7 +483,7 @@ class AnalyticCheck extends Component {
                           return <tr key={index}>
                             <td>{item.item}</td>
                             <td>{item.text}</td>
-                            <td>{item.description}</td>
+                            <td>{item.description ? item.description.split("Learn more")[1] === "" ? item.description.replace("Learn more", "") : item.description : ""}</td>
                             <td>
                               {item.extraTable ?
                                 <Button className="red" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
@@ -506,7 +506,6 @@ class AnalyticCheck extends Component {
                         }) : console.log()}
                       </tbody>
                     </Table> : <></>}
-
                 </div>
 
                 <div className="box">

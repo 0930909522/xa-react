@@ -46,7 +46,6 @@ export const trackingList = async () => {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-
         }
     })
         .then(response => response.json())
@@ -108,6 +107,7 @@ export const login = async postData => {
     await trackingList()
     // 載入追蹤列表
         .then(response => {
+            
             let storeWebsite = [];
             response.forEach((val, index) => {
                 storeWebsite.push({
