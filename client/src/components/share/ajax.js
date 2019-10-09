@@ -339,7 +339,7 @@ export const deleteBoard = async postData => {
 }
 
 // User - 查詢用戶資訊
-export const getUserInfo = async postData => {
+export const getUserInfo = async () => {
     let data;
     await fetch('https://node.aiday.org/sbir/user', {
         // await fetch('http://192.168.50.103/sbir/user', {
@@ -493,8 +493,8 @@ export const getPushPt = async postData => {
 export const pushStatus = async () => {
     let data;
     let view = localStorage.getItem('view');
-    // await fetch('http://node.aiday.org/sbir/ad/status?view='+view, {
-    await fetch('http://192.168.50.103/sbir/ad/status?view=' + view, {
+    await fetch('http://node.aiday.org/sbir/ad/status?view='+view, {
+    // await fetch('http://192.168.50.103/sbir/ad/status?view=' + view, {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
@@ -510,8 +510,8 @@ export const pushStatus = async () => {
 // 修改推出去狀態
 export const modifyPushStatus = async postData => {
     let data;
-    // await fetch('http://node.aiday.org/sbir/ad/status', {
-    await fetch('http://192.168.50.103/sbir/ad/status', {
+    await fetch('http://node.aiday.org/sbir/ad/status', {
+    // await fetch('http://192.168.50.103/sbir/ad/status', {
         method: 'PUT',
         mode: 'cors',
         credentials: 'include',
@@ -529,6 +529,7 @@ export const modifyPushStatus = async postData => {
     return data;
 }
 
+// 查詢推播收益餘額
 //查詢帳戶總收入與支出
 export const bill = async () => {
     let data;
@@ -545,6 +546,64 @@ export const bill = async () => {
     return data;
 }
 
+//會員儲值
+export const addValueMem = async postData => {
+    let data;
+    await fetch('https://node.aiday.org/sbir/user/deposit/member', {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    }).then(response => response.json()
+    ).then(response => {
+        console.log(response);
+        data = response.status;
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
+
+//推播儲值
+export const addValuePush = async postData => {
+    let data;
+    await fetch('https://node.aiday.org/sbir/user/deposit/push', {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(postData)
+    }).then(response => response.json()
+    ).then(response => {
+        data = response.status;
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
+
+//推播收益
+export const myPush = async (postData) => {
+    let data;
+    await fetch('https://node.aiday.org/sbir/user/paymentFlow/pull?yyyymm='+postData, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+    }).then(response => response.json()
+    ).then(response => {
+        data = response;
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
 
 
 function forAjax(response) {

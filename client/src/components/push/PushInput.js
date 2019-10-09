@@ -183,14 +183,14 @@ class PushInput extends Component {
 
         // 確認皆為必填
         for (let i in postData) {
-            if (!postData[i] && i !== 'usable') {
+            if (!String(postData[i]).trim()) {
                 this.alertMsg('內容皆為必填');
                 return;
             }
         }
         postData.ads.forEach(val => {
             for (let i in val) {
-                if (!val[i]) {
+                if (!String(val[i]).trim()) {
                     this.alertMsg('內容皆為必填');
                     return;
                 }

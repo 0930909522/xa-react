@@ -6,11 +6,11 @@ import Payment from '../share/Payment';
 class PushBill extends Component {
     render() {
         let titleWord;
-        if(this.props.status === '10' && !this.props.paid){
+        if (this.props.status === '10' && !this.props.paid) {
             titleWord = '選擇推播儲值面額';
-        }else if(this.props.status === '11' && !this.props.paid){
+        } else if (this.props.status === '11' && !this.props.paid) {
             titleWord = '選擇推播';
-        }else{
+        } else {
             titleWord = '付款';
         }
         return (
@@ -26,11 +26,15 @@ class PushBill extends Component {
                             <h3 className="text-center">儲值面額</h3>
                         </Col>
                         <Col sm={6}>
-                            <select className="px-4 py-2 radius10 no_outline">
-                                <option>$5000</option>
-                                <option>$10000</option>
-                                <option>$15000</option>
-                                <option>$20000</option>
+                            <select
+                                className="px-4 py-2 radius10 no_outline"
+                                onChange={(e) => this.props.getInput(e.target.value, 'price')}
+                            >
+                                <option value="">---請選擇---</option>
+                                <option value="5000">$5000</option>
+                                <option value="10000">$10000</option>
+                                <option value="15000">$15000</option>
+                                <option value="20000">$20000</option>
                             </select>
                         </Col>
                     </Row>
@@ -53,6 +57,7 @@ class PushBill extends Component {
                         </Col>
                         <Col sm={6}>
                             <select className="px-4 py-2 radius10 no_outline">
+                                <option>---請選擇---</option>
                                 <option>1萬 / 月</option>
                                 <option>2.8萬 / 季</option>
                                 <option>10萬 / 年</option>
@@ -74,6 +79,8 @@ class PushBill extends Component {
                     <Payment
                         sent={this.props.sent}
                         sendMsg={this.props.submit}
+                        getInput={this.props.getInput}
+                        alertText={this.props.alertText}
                     />
                 }
             </PopMsg>
