@@ -5,12 +5,15 @@ import { FaBell } from 'react-icons/fa';
 import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
-import Detail from './AnalyticAssetDetail';
 import Loading from '../../images/loading.svg';
-import { PieChart, Pie, Cell, LineChart, Line, Tooltip, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
+import { Redirect } from 'react-router';
+import { htmlInstallTrack } from '../share/checkPermission';
 
 import CanvasJSReact from './assets/canvasjs.react';
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+const thisLevel = 3; //設定本頁權限 1-4
+
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class AnalyticAsset extends Component {
   constructor(props) {
@@ -151,52 +154,6 @@ class AnalyticAsset extends Component {
 }
 
 
-
-  // getApiFromDb = (apiIndex) => {
-  //     axios.post(this.state.getApi[apiIndex], {
-  //       type: this.state.listIndex + 1,
-  //       interval: this.state.listInterval,
-  //       owner: "foodnext",
-  //       token: "123",
-  //       id1: this.state.categoryId,
-  //       id2: this.state.subCategoryId,
-  //     }, {
-  //       headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json'
-  //     }})
-  //     .then(response => {
-  //       console.log(response);
-  //       switch (apiIndex) {
-  //         case 0 :
-  //           this.apiOverview(response);
-  //           break;
-  //         case 1 :
-  //           this.apiSummary(response);
-  //           break;
-  //         case 2 :
-  //           this.apiDetail(response);
-  //           break;
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }
-
-  // getDataFromDb = () => {
-  //   // axios.get('/datas/analyticAsset.json')
-  //   axios.get('http://r.xnet.world/demo/analyticAsset.json')
-  //     .then(response => {
-  //       this.setState({
-  //         basic: response.data,
-  //         newData: response.data.type[0]
-  //       });
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
 
   //點選大標題（上升...）
   listClick(i) {
@@ -412,114 +369,113 @@ class AnalyticAsset extends Component {
 			},
 			data: this.addLineDetailData()
 		};
+    const { name, level, verified } = this.props.permissionData;
     return (
+      verified !== true ?
+      <Redirect to="/signup/signin" /> :
       <>
         <Header cateIndex={1} />
         <div className="layout_main">
           <Container className="main_analytic">
             <Row>
               <NavLeft />
-              {/* {this.state.isDetail ?
-                <Detail
-                  openPopup={this.openPopup}
-                  assetId={this.state.assetId}
-                  categoryId={this.state.categoryId}
-                /> : <span />} */}
+              
               <div className="main_right">
                 <h2>資產價值</h2>
-                <div className="box">
-                  <div className="list">
-                    <ul>                    
-                      {this.state.assetName.map((item, index) =>
-                          index === this.state.listIndex ?
-                            <li onClick={() => this.listClick(index)} className="act" key={index}>{item}</li> :
-                            <li onClick={() => this.listClick(index)} key={index}>{item}</li>
-                      )}
-                    </ul>
-                  </div>
-                </div>
-                <div className="box">
-                  <h3>分類占比
-                    <div className="select inlne">
-                      <label>
-                        主分類：
-                        <select value={this.state.categoryId} onChange={this.clickCategorylist}>
-                          <option value="all">全部</option>
-                          {this.state.category ? this.state.category.map( (item, index) => 
-                            <option key={index} value={item.id}>{item.name}</option>
-                          ):console.log("Error")}
-                        </select>
-                      </label>
-
-                      {this.state.subCategory.length > 0 ? <label>
-                        次分類：
-                        <select value={this.state.subCategoryId} onChange={this.clickSubCategorylist}>
-                          <option value="all">全部</option>
-                          {this.state.subCategory ? this.state.subCategory.map( (item, index) => 
-                            <option key={index} value={item.id}>{item.name}</option>
-                          ):console.log("Error")}
-                        </select>
-                      </label> : <span/>}
-
-                      {/* subCategory */}
-                      <label>
-                        分析區間：
-                        <select onChange={this.setInterval}>
-                          <option value="7">一週趨勢</option>
-                          <option value="5">5日趨勢</option>
-                          <option value="3">3日趨勢</option>
-                          <option value="1">1日趨勢</option>
-                        </select>
-                      </label>
-                    </div>
-                  </h3>
-                  
-                  
-                  <div className="chart_box">
-                    {this.state.categoryId !== "all" ? 
-                      <div className="subtitle">主分類：<span>{this.state.categoryName}</span></div> : <span />
-                    }
-                    <div className="chart" >
-                      {/* {renderProportion} */}
-                      {this.state.isLoading ? 
-                        <div style={{lineHeight: "300px"}}><img src={Loading} alt="Loading" /></div> : 
-                        !this.state.noData ? <CanvasJSChart options = {pieData} /> : <div style={{lineHeight: "300px"}}>該分類區間下無顯著資料</div>
-                      }
+                { level < thisLevel ? htmlInstallTrack(level, thisLevel) :
+                <>
+                  <div className="box">
+                    <div className="list">
+                      <ul>                    
+                        {this.state.assetName.map((item, index) =>
+                            index === this.state.listIndex ?
+                              <li onClick={() => this.listClick(index)} className="act" key={index}>{item}</li> :
+                              <li onClick={() => this.listClick(index)} key={index}>{item}</li>
+                        )}
+                      </ul>
                     </div>
                   </div>
-                  
-                  {this.state.articles.data ? <React.Fragment>
-                    <h3>{this.state.subCategoryName} <span>文章排行</span></h3>
-                    <ul className="articles">
-                      {this.state.articles.data.map( (item, index) => 
-                        <li key={index}>
-                          <span className="pv"><span>瀏覽 </span>{item.pv}</span> <a href={item.id}>{item.name}</a>
-                        </li>
-                      )}
-                    </ul>
-                    <hr/>
+                  <div className="box">
+                    <h3>分類占比
+                      <div className="select inlne">
+                        <label>
+                          主分類：
+                          <select value={this.state.categoryId} onChange={this.clickCategorylist}>
+                            <option value="all">全部</option>
+                            {this.state.category ? this.state.category.map( (item, index) => 
+                              <option key={index} value={item.id}>{item.name}</option>
+                            ):console.log("Error")}
+                          </select>
+                        </label>
+
+                        {this.state.subCategory.length > 0 ? <label>
+                          次分類：
+                          <select value={this.state.subCategoryId} onChange={this.clickSubCategorylist}>
+                            <option value="all">全部</option>
+                            {this.state.subCategory ? this.state.subCategory.map( (item, index) => 
+                              <option key={index} value={item.id}>{item.name}</option>
+                            ):console.log("Error")}
+                          </select>
+                        </label> : <span/>}
+
+                        {/* subCategory */}
+                        <label>
+                          分析區間：
+                          <select onChange={this.setInterval}>
+                            <option value="7">一週趨勢</option>
+                            <option value="5">5日趨勢</option>
+                            <option value="3">3日趨勢</option>
+                            <option value="1">1日趨勢</option>
+                          </select>
+                        </label>
+                      </div>
+                    </h3>
+                    
+                    
                     <div className="chart_box">
-                      <CanvasJSChart options = {lineDetailData} /> 
+                      {this.state.categoryId !== "all" ? 
+                        <div className="subtitle">主分類：<span>{this.state.categoryName}</span></div> : <span />
+                      }
+                      <div className="chart" >
+                        {/* {renderProportion} */}
+                        {this.state.isLoading ? 
+                          <div style={{lineHeight: "300px"}}><img src={Loading} alt="Loading" /></div> : 
+                          !this.state.noData ? <CanvasJSChart options = {pieData} /> : <div style={{lineHeight: "300px"}}>該分類區間下無顯著資料</div>
+                        }
+                      </div>
                     </div>
                     
-                  </React.Fragment> : <span />}
-                  
-                </div>
-
-                <div className="box">
-                  <h3>{this.state.newData.name} 流量統計</h3>
-                  <div className="chart_box">
-                    <div className="chart">
-
-                      {this.state.isLoading ? 
-                        <div style={{lineHeight: "300px"}}><img src={Loading} alt="Loading" /></div> : 
-                        !this.state.noData ? <CanvasJSChart options = {lineData} /> : <div style={{lineHeight: "300px"}}>該區間無資料</div>
-                      }
+                    {this.state.articles.data ? <React.Fragment>
+                      <h3>{this.state.subCategoryName} <span>文章排行</span></h3>
+                      <ul className="articles">
+                        {this.state.articles.data.map( (item, index) => 
+                          <li key={index}>
+                            <span className="pv"><span>瀏覽 </span>{item.pv}</span> <a href={item.id}>{item.name}</a>
+                          </li>
+                        )}
+                      </ul>
+                      <hr/>
+                      <div className="chart_box">
+                        <CanvasJSChart options = {lineDetailData} /> 
+                      </div>
                       
+                    </React.Fragment> : <span />}
+                    
+                  </div>
+                  <div className="box">
+                    <h3>{this.state.newData.name} 流量統計</h3>
+                    <div className="chart_box">
+                      <div className="chart">
+
+                        {this.state.isLoading ? 
+                          <div style={{lineHeight: "300px"}}><img src={Loading} alt="Loading" /></div> : 
+                          !this.state.noData ? <CanvasJSChart options = {lineData} /> : <div style={{lineHeight: "300px"}}>該區間無資料</div>
+                        }
+                        
+                      </div>
                     </div>
                   </div>
-                </div>
-
+                </>}
               </div>
             </Row>
           </Container>

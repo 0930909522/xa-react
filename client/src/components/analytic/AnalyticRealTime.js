@@ -6,14 +6,14 @@ import { FaBell } from 'react-icons/fa';
 import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
-import Detail from './AnalyticAssetDetail';
 import Loading from '../../images/loading.svg';
 import icon01 from '../../images/icon01.png';
 import icon02 from '../../images/icon02.png';
 import icon03 from '../../images/icon03.png';
 import icon04 from '../../images/icon04.png';
-// import icon04 from '../../images/icon04.png';
-import { PieChart, Pie, Cell, LineChart, Line, Tooltip, Legend, CartesianGrid, XAxis, YAxis, BarChart, Bar, } from 'recharts';
+
+import { Redirect } from 'react-router'
+
 
 class AnalyticRealTime extends Component {
   constructor(props) {

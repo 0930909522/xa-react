@@ -9,7 +9,12 @@ import { PieChart, Pie, Cell, LineChart, Line, Legend, CartesianGrid, XAxis, YAx
 import asyncComponent from './AsyncComponent';
 import 'react-circular-progressbar/dist/styles.css';
 import Loading from '../../images/loading.svg';
+import { Redirect } from 'react-router';
+import { htmlInstallTrack } from '../share/checkPermission';
+
 const PieReact = asyncComponent(() => import('./EchartsDemo/PieReact'));
+
+const thisLevel = 4; //設定本頁權限 1-4
 
 class AnalyticPortrait extends Component {
     constructor(props) {
@@ -200,210 +205,218 @@ class AnalyticPortrait extends Component {
                 And here's some <strong>amazing</strong> content. It's very engaging. right?
             </Popover>
         );
-        return (<>
-            <Header cateIndex={1} />
-            <div className="layout_main">
-                <Container className="main_analytic">
-                    <Row>
-                        <NavLeft />
-                        <div className="main_right">
-                            <h2>用戶畫像</h2>
-                            <div className="box">
-                                <div className="icon_box">
-                                    <div className={fishType + " icon"}></div>
-                                </div>
-                                <div className="info">
-                                    <div className="small">
-                                        網站用戶
-                                    </div>
-                                    {fishType ? <div className="title">
-                                        { fish.find((item) => item.id === fishType).name}
-                                        <span> { fish.find((item) => item.id === fishType).info}</span>
-                                    </div> : <span />}
-                                    <div className="detail">
-                                        <div className="small">
-                                            詳細指標
-                                        </div>
-                                        <ul>
-                                            <li>
-                                                <div className="head">單次使用時間</div>
-                                                <div className="cont">
-                                                    {isLoadingSummary ? 
-                                                        <>---</> :
-                                                        <>
-                                                            {this.setLevel(summary.staytimeLevel)}
-                                                            <span> ({summary.staytime} 秒)</span>
-                                                        </>}
-            
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="head">使用頻率</div>
-                                                <div className="cont">
-                                                    {isLoadingSummary ? 
-                                                        <>---</> :
-                                                        <>
-                                                            {summary.visitFreqLevel}
-                                                            <span> ({this.setLevel(summary.visitFreq)} 次/週)</span>
-                                                        </>}
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="head">轉換率</div>
-                                                <div className="cont">
-                                                    無
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="head">瀏覽偏好</div>
-                                                <div className="cont">
-                                                    {isLoadingInterest ?
-                                                        <>---</> :
-                                                        <>{topInterest}</> }
-                                                        
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                                <div className="progress_round">
-                                    
-                                    <ul>
-                                        <li>
-                                            <CircularProgressbar value={summary.staytimeLevel * 30} text={this.setLevel(summary.staytimeLevel)} strokeWidth='11'
-                                                styles={buildStyles({
-                                                    pathColor: '#fe5660',
-                                                    textColor: '#aaa',
-                                                    textSize: '20px',
-                                                    trailColor: '#dedede'
-                                                })}
-                                            />
-                                            <div className="title">停留時間</div>
-                                        </li>
-                                        <li>
-                                            <CircularProgressbar value={summary.visitFreqLevel * 30} text={this.setLevel(summary.visitFreqLevel)} strokeWidth='11'
-                                                styles={buildStyles({
-                                                    pathColor: '#24ccb8',
-                                                    textColor: '#aaa',
-                                                    textSize: '20px',
-                                                    trailColor: '#dedede'
-                                                })}
-                                            />
-                                            <div className="title">造訪頻率</div>
-                                        </li>
-                                        <li>
-                                            <CircularProgressbar value={summary.proportionLevel * 30} text={this.setLevel(summary.proportionLevel)} strokeWidth='11'
-                                                styles={buildStyles({
-                                                    pathColor: '#2e6eff',
-                                                    textColor: '#aaa',
-                                                    textSize: '20px',
-                                                    trailColor: '#dedede'
-                                                })}
-                                            />
-                                            <div className="title">完整瀏覽</div>
-                                        </li>
-                                    </ul> 
-                                </div>
-                            </div>
-                            <div className="box">
-                                <div style={{ display: "flex", alignItem: "center", justifyContent: "center" }}>
-                                    <h3 className="no_border inline">用戶分佈 <br /> 
-                                    <div style={{ fontSize: "15px", color: "#3472ff", cursor: "pointer" }} onClick={() => this.showExample()}>分布說明</div> </h3> <br />
-                                    <ul className="icons">
-                                        {fish.map((item, i) =>
-                                            <li onClick={() => this.changeFish(item.id)} key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss" : null}>
-                                                <CircularProgressbarWithChildren value={item.percent} strokeWidth='8'
-                                                    styles={buildStyles({
-                                                        pathColor: `${item.bgColor}`,
-                                                        textColor: '#333',
-                                                        trailColor: '#dedede'
-                                                    })}
-                                                >
-                                                    <OverlayTrigger trigger="hover" placement={ i === fish.length -1 ? "left" : "right" } overlay={<Popover title={item.name}> {item.info} </Popover>}>
-                                                        <div className={item.id + " icon"}></div>
-                                                    </OverlayTrigger>
-                                                </CircularProgressbarWithChildren>
-                                                <div style={{ marginTop: "3px" }}>{item.percent}%</div>
-                                            </li>
-                                        )}
-                                    </ul>
-
-                                </div>
-
-                                {this.state.openExample ?
-                                    <div>
-                                        {/* <hr /> */}
-                                        <h3>分布說明</h3>
-                                        <div className="fish_example">
-                                            <div className="fbg_box">
-                                                <br/>
-                                                <div className="align_left f_z20">消費等級（購買力/回購度）</div>
-                                                <div className="fbg">
-                                                    {fish.map((item, index) => {
-                                                        console.log(this.state.topId.split("g")[1])
-                                                        let top = "";
-                                                        if( index+1 == this.state.topId.split("g")[1]){
-                                                            top = "red"
-                                                        }
-                                                        return <div key={index} className={ "fish g"+ (index+1) + " "+ top }>{fish.find(f=>f.id === "g"+(index+1)).percent}%</div>
-                                                    })}
-                                                </div>
-                                                <div className="align_right f_z20">黏著度/忠誠度</div>
-                                            </div>
-
-                                        </div>
-                                        {/* <img src="./fish_example1.jpg" alt="" style={{maxWidth: "100%"}} /> */}
-                                    </div> : <></>
-                                }
-
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-6">
+        const { name, level, verified } = this.props.permissionData;
+        return (
+            verified !== true ?
+            <Redirect to="/signup/signin" /> :
+            <>
+                <Header cateIndex={1} />
+                
+                <div className="layout_main">
+                    <Container className="main_analytic">
+                        <Row>
+                            <NavLeft />
+                            <div className="main_right">
+                                <h2>用戶畫像</h2>
+                                { level < thisLevel ? htmlInstallTrack(level, thisLevel) :
+                                <>
                                     <div className="box">
-                                        <h3 className="no_border">觀看文章排行</h3>
-                                        { isLoadingHot ?  
-                                            <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
-                                            <ul className="article_list">
-                                                <li className="title">
-                                                    <div className="left">
-                                                    觀看次數
-                                                    </div>
-                                                    <div className="right">
-                                                    文章名稱
-                                                    </div>
-                                                </li>
-                                                {hot ? hot.map((item, i) =>
-                                                    <li key={i}>
-                                                        <div className="left">{item.value}</div>
-                                                        <div className="right">{item.name}</div>
+                                        <div className="icon_box">
+                                            <div className={fishType + " icon"}></div>
+                                        </div>
+                                        <div className="info">
+                                            <div className="small">
+                                                網站用戶
+                                            </div>
+                                            {fishType ? <div className="title">
+                                                { fish.find((item) => item.id === fishType).name}
+                                                <span> { fish.find((item) => item.id === fishType).info}</span>
+                                            </div> : <span />}
+                                            <div className="detail">
+                                                <div className="small">
+                                                    詳細指標
+                                                </div>
+                                                <ul>
+                                                    <li>
+                                                        <div className="head">單次使用時間</div>
+                                                        <div className="cont">
+                                                            {isLoadingSummary ? 
+                                                                <>---</> :
+                                                                <>
+                                                                    {this.setLevel(summary.staytimeLevel)}
+                                                                    <span> ({summary.staytime} 秒)</span>
+                                                                </>}
+                    
+                                                        </div>
                                                     </li>
-                                                ) : <li />}
-                                            </ul>
-                                        }
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="box">
-                                        <h3 className="no_border">閱讀偏好</h3>
-                                        { isLoadingInterest ?  
-                                            <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
-                                            <div className="chart_box" style={{ marginTop: "40px" }}>
-                                                <div className="chart">
-                                                    {interest ? <PieReact option={interest} /> : <></> }
-                                                </div>
+                                                    <li>
+                                                        <div className="head">使用頻率</div>
+                                                        <div className="cont">
+                                                            {isLoadingSummary ? 
+                                                                <>---</> :
+                                                                <>
+                                                                    {summary.visitFreqLevel}
+                                                                    <span> ({this.setLevel(summary.visitFreq)} 次/週)</span>
+                                                                </>}
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div className="head">轉換率</div>
+                                                        <div className="cont">
+                                                            無
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div className="head">瀏覽偏好</div>
+                                                        <div className="cont">
+                                                            {isLoadingInterest ?
+                                                                <>---</> :
+                                                                <>{topInterest}</> }
+                                                                
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             </div>
+
+                                        </div>
+                                        <div className="progress_round">
+                                            
+                                            <ul>
+                                                <li>
+                                                    <CircularProgressbar value={summary.staytimeLevel * 30} text={this.setLevel(summary.staytimeLevel)} strokeWidth='11'
+                                                        styles={buildStyles({
+                                                            pathColor: '#fe5660',
+                                                            textColor: '#aaa',
+                                                            textSize: '20px',
+                                                            trailColor: '#dedede'
+                                                        })}
+                                                    />
+                                                    <div className="title">停留時間</div>
+                                                </li>
+                                                <li>
+                                                    <CircularProgressbar value={summary.visitFreqLevel * 30} text={this.setLevel(summary.visitFreqLevel)} strokeWidth='11'
+                                                        styles={buildStyles({
+                                                            pathColor: '#24ccb8',
+                                                            textColor: '#aaa',
+                                                            textSize: '20px',
+                                                            trailColor: '#dedede'
+                                                        })}
+                                                    />
+                                                    <div className="title">造訪頻率</div>
+                                                </li>
+                                                <li>
+                                                    <CircularProgressbar value={summary.proportionLevel * 30} text={this.setLevel(summary.proportionLevel)} strokeWidth='11'
+                                                        styles={buildStyles({
+                                                            pathColor: '#2e6eff',
+                                                            textColor: '#aaa',
+                                                            textSize: '20px',
+                                                            trailColor: '#dedede'
+                                                        })}
+                                                    />
+                                                    <div className="title">完整瀏覽</div>
+                                                </li>
+                                            </ul> 
+                                        </div>
+                                    </div>
+                                    <div className="box">
+                                        <div style={{ display: "flex", alignItem: "center", justifyContent: "center" }}>
+                                            <h3 className="no_border inline">用戶分佈 <br /> 
+                                            <div style={{ fontSize: "15px", color: "#3472ff", cursor: "pointer" }} onClick={() => this.showExample()}>分布說明</div> </h3> <br />
+                                            <ul className="icons">
+                                                {fish.map((item, i) =>
+                                                    <li onClick={() => this.changeFish(item.id)} key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss" : null}>
+                                                        <CircularProgressbarWithChildren value={item.percent} strokeWidth='8'
+                                                            styles={buildStyles({
+                                                                pathColor: `${item.bgColor}`,
+                                                                textColor: '#333',
+                                                                trailColor: '#dedede'
+                                                            })}
+                                                        >
+                                                            <OverlayTrigger trigger="hover" placement={ i === fish.length -1 ? "left" : "right" } overlay={<Popover title={item.name}> {item.info} </Popover>}>
+                                                                <div className={item.id + " icon"}></div>
+                                                            </OverlayTrigger>
+                                                        </CircularProgressbarWithChildren>
+                                                        <div style={{ marginTop: "3px" }}>{item.percent}%</div>
+                                                    </li>
+                                                )}
+                                            </ul>
+
+                                        </div>
+
+                                        {this.state.openExample ?
+                                            <div>
+                                                {/* <hr /> */}
+                                                <h3>分布說明</h3>
+                                                <div className="fish_example">
+                                                    <div className="fbg_box">
+                                                        <br/>
+                                                        <div className="align_left f_z20">消費等級（購買力/回購度）</div>
+                                                        <div className="fbg">
+                                                            {fish.map((item, index) => {
+                                                                console.log(this.state.topId.split("g")[1])
+                                                                let top = "";
+                                                                if( index+1 == this.state.topId.split("g")[1]){
+                                                                    top = "red"
+                                                                }
+                                                                return <div key={index} className={ "fish g"+ (index+1) + " "+ top }>{fish.find(f=>f.id === "g"+(index+1)).percent}%</div>
+                                                            })}
+                                                        </div>
+                                                        <div className="align_right f_z20">黏著度/忠誠度</div>
+                                                    </div>
+
+                                                </div>
+                                                {/* <img src="./fish_example1.jpg" alt="" style={{maxWidth: "100%"}} /> */}
+                                            </div> : <></>
                                         }
+
+                                    </div>
+                                    <div className="row">
+                                    <div className="col-md-6">
+                                        <div className="box">
+                                            <h3 className="no_border">觀看文章排行</h3>
+                                            { isLoadingHot ?  
+                                                <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
+                                                <ul className="article_list">
+                                                    <li className="title">
+                                                        <div className="left">
+                                                        觀看次數
+                                                        </div>
+                                                        <div className="right">
+                                                        文章名稱
+                                                        </div>
+                                                    </li>
+                                                    {hot ? hot.map((item, i) =>
+                                                        <li key={i}>
+                                                            <div className="left">{item.value}</div>
+                                                            <div className="right">{item.name}</div>
+                                                        </li>
+                                                    ) : <li />}
+                                                </ul>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className="box">
+                                            <h3 className="no_border">閱讀偏好</h3>
+                                            { isLoadingInterest ?  
+                                                <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
+                                                <div className="chart_box" style={{ marginTop: "40px" }}>
+                                                    <div className="chart">
+                                                        {interest ? <PieReact option={interest} /> : <></> }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
+                                </>}
                             </div>
-                        </div>
-                    </Row>
-                </Container>
-            </div>
-            <Footer />
-        </>);
+                        </Row>
+                    </Container>
+                </div>
+                
+                <Footer />
+            </>);
     }
 }
 

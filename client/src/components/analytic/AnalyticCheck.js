@@ -2,17 +2,19 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Container, Row, Nav, Navbar, Form, FormControl, Button, OverlayTrigger, Table } from 'react-bootstrap';
 import BSTooltip from 'react-bootstrap/Tooltip';
-import { FaBell } from 'react-icons/fa';
 import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
 import asyncComponent from './AsyncComponent';
-import { pieOption, barOption, lineOption, scatterOption, mapOption, radarOption, candlestickOption } from './optionConfig/options';
 import { IoMdDesktop, IoMdToday, IoIosCalculator, IoIosPhonePortrait, IoMdSearch, IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { Redirect } from 'react-router';
+import { htmlInstallTrack } from '../share/checkPermission';
 
 const PieReact = asyncComponent(() => import('./EchartsDemo/PieReact'));
 const LineReact = asyncComponent(() => import('./EchartsDemo/LineReact'));
 const GaugeReact = asyncComponent(() => import('./EchartsDemo/GaugeReact'));
+
+const thisLevel = 2; //設定本頁權限 1-4
 
 class AnalyticCheck extends Component {
   constructor(props) {
@@ -289,7 +291,10 @@ class AnalyticCheck extends Component {
 
   render() {
     const { totalScore, option, scale, detail, isOpenDesktop, isOpenTop, isOpenMobile, isOpen, isOpen1, industry, scoreDesktop, scoreMobile, scoreSeo, realtime, userType, userAgeBracket, pageviewCate, pageviewCity, pageviewHot, pageviewMedium, pageviewShare, pageviewSource, userBranding, userGender, userInterest, pageStayRate } = this.state;
+    const { name, level, verified } = this.props.permissionData;
     return (
+      verified !== true ?
+      <Redirect to="/signup/signin" /> :
       <>
         <Header cateIndex={1} />
         <div className="layout_main">
@@ -312,213 +317,211 @@ class AnalyticCheck extends Component {
 
               <div className="main_right">
                 <h2>網站健檢</h2>
-                <div className="box">
-                  <h3>網站體驗評分</h3>
-                  <Row>
-                    <div className="col-md-6 check" style={{ marginTop: "30px" }}>
-                      <OverlayTrigger overlay={<BSTooltip>以電腦、行動裝置、SEO與流量等分數進行整體評測</BSTooltip>}>
-                        <span className="d-inline-block cont" style={{ border: 0 }}>
-                          <div className="icon">
-                            <IoIosCalculator style={{ fontSize: "28px" }} />
-                            <div className="active">網站總評分</div>
-                          </div>
-                          <div className="value">{totalScore} <span>分</span></div>
-                        </span>
-                      </OverlayTrigger>
-                      {/* <div className="more">
-                        <span >詳情</span>
-                      </div> */}
-                    </div>
-
-                    <div className="col-md-2 check small">
-                      <OverlayTrigger overlay={<BSTooltip>使用者於電腦瀏覽網站的體驗分數</BSTooltip>}>
-                        <span className="d-inline-block cont">
-                          <div className="icon">
-                            <IoMdDesktop style={{ fontSize: "24px" }} />
-                            <div className="active">電腦</div>
-                          </div>
-                          <div className="value">{scoreDesktop.score}
-                            {/* <span>分</span> */}
-                          </div>
-                        </span>
-                      </OverlayTrigger>
-                      <div className="more">
-                        <span onClick={() => this.scoreDetail(1)}>詳情</span>
+                { level < thisLevel ? htmlInstallTrack(level, thisLevel) : 
+                <>
+                  <div className="box">
+                    <h3>網站體驗評分</h3>
+                    <Row>
+                      <div className="col-md-6 check" style={{ marginTop: "30px" }}>
+                        <OverlayTrigger overlay={<BSTooltip>以電腦、行動裝置、SEO與流量等分數進行整體評測</BSTooltip>}>
+                          <span className="d-inline-block cont" style={{ border: 0 }}>
+                            <div className="icon">
+                              <IoIosCalculator style={{ fontSize: "28px" }} />
+                              <div className="active">網站總評分</div>
+                            </div>
+                            <div className="value">{totalScore} <span>分</span></div>
+                          </span>
+                        </OverlayTrigger>
+                        {/* <div className="more">
+                          <span >詳情</span>
+                        </div> */}
                       </div>
-                    </div>
 
-                    <div className="col-md-2 check small">
-                      <OverlayTrigger overlay={<BSTooltip>使用者於行動裝置瀏覽網站的體驗分數</BSTooltip>}>
-                        <span className="d-inline-block cont">
-                          <div className="icon">
-                            <IoIosPhonePortrait style={{ fontSize: "24px" }} />
-                            <div className="active">行動裝置</div>
-                          </div>
-                          <div className="value">{scoreMobile.score}
-                            {/* <span>分</span> */}
-                          </div>
-                        </span>
-                      </OverlayTrigger>
-                      <div className="more">
-                        <span onClick={() => this.scoreDetail(2)}>詳情</span>
+                      <div className="col-md-2 check small">
+                        <OverlayTrigger overlay={<BSTooltip>使用者於電腦瀏覽網站的體驗分數</BSTooltip>}>
+                          <span className="d-inline-block cont">
+                            <div className="icon">
+                              <IoMdDesktop style={{ fontSize: "24px" }} />
+                              <div className="active">電腦</div>
+                            </div>
+                            <div className="value">{scoreDesktop.score}
+                              {/* <span>分</span> */}
+                            </div>
+                          </span>
+                        </OverlayTrigger>
+                        <div className="more">
+                          <span onClick={() => this.scoreDetail(1)}>詳情</span>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="col-md-2 check small">
-                      <OverlayTrigger overlay={<BSTooltip>使用者於行動裝置瀏覽網站的體驗分數</BSTooltip>}>
-                        <span className="d-inline-block cont">
-                          <div className="icon">
-                            <IoMdSearch style={{ fontSize: "24px" }} />
-                            <div className="active">SEO</div>
-                          </div>
-                          <div className="value">{scoreSeo.score}
-                            {/* <span>分</span> */}
-                          </div>
-                        </span>
-                      </OverlayTrigger>
-                      <div className="more">
-                        <span onClick={() => this.scoreDetail(3)}>詳情</span>
+                      <div className="col-md-2 check small">
+                        <OverlayTrigger overlay={<BSTooltip>使用者於行動裝置瀏覽網站的體驗分數</BSTooltip>}>
+                          <span className="d-inline-block cont">
+                            <div className="icon">
+                              <IoIosPhonePortrait style={{ fontSize: "24px" }} />
+                              <div className="active">行動裝置</div>
+                            </div>
+                            <div className="value">{scoreMobile.score}
+                              {/* <span>分</span> */}
+                            </div>
+                          </span>
+                        </OverlayTrigger>
+                        <div className="more">
+                          <span onClick={() => this.scoreDetail(2)}>詳情</span>
+                        </div>
                       </div>
+
+                      <div className="col-md-2 check small">
+                        <OverlayTrigger overlay={<BSTooltip>使用者於行動裝置瀏覽網站的體驗分數</BSTooltip>}>
+                          <span className="d-inline-block cont">
+                            <div className="icon">
+                              <IoMdSearch style={{ fontSize: "24px" }} />
+                              <div className="active">SEO</div>
+                            </div>
+                            <div className="value">{scoreSeo.score}
+                              {/* <span>分</span> */}
+                            </div>
+                          </span>
+                        </OverlayTrigger>
+                        <div className="more">
+                          <span onClick={() => this.scoreDetail(3)}>詳情</span>
+                        </div>
+                      </div>
+
+                    </Row>
+
+                    <div>
+                      {/* <hr /> */}
+                      <br />
+                      {isOpenTop ? scoreDesktop ? this.htmlDetail() : "" : <></>}
                     </div>
 
-                  </Row>
-
-                  <div>
-                    {/* <hr /> */}
-                    <br />
-                    {isOpenTop ? scoreDesktop ? this.htmlDetail() : "" : <></>}
                   </div>
-
-                </div>
-
-
-                <div className="box">
-                  <h3>流量評測 </h3>
-                  <div className="center">
-                    產業類別: {industry}
+                  <div className="box">
+                    <h3>流量評測 </h3>
+                    <div className="center">
+                      產業類別: {industry}
+                    </div>
+                    <LineReact option={option} />
+                    <div className="info" style={{ margin: "10px 20px 0 75px" }}>
+                      按每日工作階段數劃分之大小：<span className="value"> {scale}</span>
+                      <p>所有使用者與網站的造訪總次數。不論使用者停留時間長短與造訪網頁的數量多寡，凡閒置滿30分鐘或超過午夜(24:00)，該次造訪即結束</p>
+                    </div>
                   </div>
-                  <LineReact option={option} />
-                  <div className="info" style={{ margin: "10px 20px 0 75px" }}>
-                    按每日工作階段數劃分之大小：<span className="value"> {scale}</span>
-                    <p>所有使用者與網站的造訪總次數。不論使用者停留時間長短與造訪網頁的數量多寡，凡閒置滿30分鐘或超過午夜(24:00)，該次造訪即結束</p>
-                  </div>
-                </div>
-                <div className="box">
-                  <h3><IoMdDesktop /> 電腦版改進建議
-                    <span onClick={() => { this.openDesktop() }} className="Collapse">
-                      {isOpenDesktop ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
-                    </span>
-                  </h3>
-                  <div className="toplist">
-                    <ul>
-                      <li><span></span> 最佳化建議</li>
-                      <li><span></span> 診斷書</li>
-                    </ul>
-                  </div>
-                  {isOpenDesktop ?
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th width="30%">項目</th>
-                          <th>表現</th>
-                          <th width="45%">建議</th>
-                          <th width="120">瞭解更多</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {scoreDesktop ? scoreDesktop.diagnosticsTable.map((item, index) => {
-                          return <tr key={index}>
-                            <td>{item.item}</td>
-                            <td>{item.text}</td>
-                            <td>{item.description ? item.description.split("Learn more")[1] === "" ? item.description.replace("Learn more", "") : item.description : ""}</td>
-                            <td>
-                              {item.extraTable ?
-                                <Button className="red" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
-                              }
-                            </td>
+                  <div className="box">
+                    <h3><IoMdDesktop /> 電腦版改進建議
+                      <span onClick={() => { this.openDesktop() }} className="Collapse">
+                        {isOpenDesktop ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
+                      </span>
+                    </h3>
+                    <div className="toplist">
+                      <ul>
+                        <li><span></span> 最佳化建議</li>
+                        <li><span></span> 診斷書</li>
+                      </ul>
+                    </div>
+                    {isOpenDesktop ?
+                      <Table striped bordered hover>
+                        <thead>
+                          <tr>
+                            <th width="30%">項目</th>
+                            <th>表現</th>
+                            <th width="45%">建議</th>
+                            <th width="120">瞭解更多</th>
                           </tr>
-                        }) : console.log()}
+                        </thead>
+                        <tbody>
+                          {scoreDesktop ? scoreDesktop.diagnosticsTable.map((item, index) => {
+                            return <tr key={index}>
+                              <td>{item.item}</td>
+                              <td>{item.text}</td>
+                              <td>{item.description ? item.description.split("Learn more")[1] === "" ? item.description.replace("Learn more", "") : item.description : ""}</td>
+                              <td>
+                                {item.extraTable ?
+                                  <Button className="red" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
+                                }
+                              </td>
+                            </tr>
+                          }) : console.log()}
 
-                        {scoreDesktop ? scoreDesktop.passTable.map((item, index) => {
-                          return <tr key={index}>
-                            <td>{item.item}</td>
-                            <td>{item.text}</td>
-                            <td>{item.description}</td>
-                            <td>
-                              {item.extraTable ?
-                                <Button className="blue" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
-                              }
-                            </td>
-                          </tr>
-                        }) : console.log()}
-                      </tbody>
-                    </Table> : <></>}
+                          {scoreDesktop ? scoreDesktop.passTable.map((item, index) => {
+                            return <tr key={index}>
+                              <td>{item.item}</td>
+                              <td>{item.text}</td>
+                              <td>{item.description}</td>
+                              <td>
+                                {item.extraTable ?
+                                  <Button className="blue" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
+                                }
+                              </td>
+                            </tr>
+                          }) : console.log()}
+                        </tbody>
+                      </Table> : <></>}
 
-                </div>
-
-                <div className="box">
-                  <h3><IoIosPhonePortrait /> 手機版改進建議
-                    <span onClick={() => { this.openMobile() }} className="Collapse">
-                      {isOpenMobile ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
-                    </span>
-                  </h3>
-                  <div className="toplist">
-                    <ul>
-                      <li><span></span> 最佳化建議</li>
-                      <li><span></span> 診斷書</li>
-                    </ul>
                   </div>
-                  {isOpenMobile ?
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th width="30%">項目</th>
-                          <th>表現</th>
-                          <th width="45%">建議</th>
-                          <th width="120">瞭解更多</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {scoreMobile ? scoreMobile.diagnosticsTable.map((item, index) => {
-                          return <tr key={index}>
-                            <td>{item.item}</td>
-                            <td>{item.text}</td>
-                            <td>{item.description ? item.description.split("Learn more")[1] === "" ? item.description.replace("Learn more", "") : item.description : ""}</td>
-                            <td>
-                              {item.extraTable ?
-                                <Button className="red" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
-                              }
-                            </td>
+                  <div className="box">
+                    <h3><IoIosPhonePortrait /> 手機版改進建議
+                      <span onClick={() => { this.openMobile() }} className="Collapse">
+                        {isOpenMobile ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
+                      </span>
+                    </h3>
+                    <div className="toplist">
+                      <ul>
+                        <li><span></span> 最佳化建議</li>
+                        <li><span></span> 診斷書</li>
+                      </ul>
+                    </div>
+                    {isOpenMobile ?
+                      <Table striped bordered hover>
+                        <thead>
+                          <tr>
+                            <th width="30%">項目</th>
+                            <th>表現</th>
+                            <th width="45%">建議</th>
+                            <th width="120">瞭解更多</th>
                           </tr>
-                        }) : console.log()}
+                        </thead>
+                        <tbody>
+                          {scoreMobile ? scoreMobile.diagnosticsTable.map((item, index) => {
+                            return <tr key={index}>
+                              <td>{item.item}</td>
+                              <td>{item.text}</td>
+                              <td>{item.description ? item.description.split("Learn more")[1] === "" ? item.description.replace("Learn more", "") : item.description : ""}</td>
+                              <td>
+                                {item.extraTable ?
+                                  <Button className="red" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
+                                }
+                              </td>
+                            </tr>
+                          }) : console.log()}
 
-                        {scoreMobile ? scoreMobile.passTable.map((item, index) => {
-                          return <tr key={index}>
-                            <td>{item.item}</td>
-                            <td>{item.text}</td>
-                            <td>{item.description}</td>
-                            <td>
-                              {item.extraTable ?
-                                <Button className="blue" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
-                              }
-                            </td>
-                          </tr>
-                        }) : console.log()}
-                      </tbody>
-                    </Table> : <></>}
-                </div>
-
-                <div className="box">
-                  <h3><IoMdToday /> 改進建議書</h3>
-                  <div style={{ textAlign: "center" }}>
-                    <button className="btn btn-success" onClick={() => {
-                      let dd = this.state.interval;
-                      window.location.href = "https://r.xnet.world/xa/foodnext/" + dd + ".xlsx"
-                    }}> 下載報告</button>
+                          {scoreMobile ? scoreMobile.passTable.map((item, index) => {
+                            return <tr key={index}>
+                              <td>{item.item}</td>
+                              <td>{item.text}</td>
+                              <td>{item.description}</td>
+                              <td>
+                                {item.extraTable ?
+                                  <Button className="blue" onClick={() => this.loadDetail(item.extraTable)}>瞭解更多</Button> : <></>
+                                }
+                              </td>
+                            </tr>
+                          }) : console.log()}
+                        </tbody>
+                      </Table> : <></>}
                   </div>
+                  <div className="box">
+                    <h3><IoMdToday /> 改進建議書</h3>
+                    <div style={{ textAlign: "center" }}>
+                      <button className="btn btn-success" onClick={() => {
+                        let dd = this.state.interval;
+                        window.location.href = "https://r.xnet.world/xa/foodnext/" + dd + ".xlsx"
+                      }}> 下載報告</button>
+                    </div>
 
-                </div>
-
+                  </div>
+                </>}
               </div>
             </Row>
           </Container>

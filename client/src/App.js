@@ -6,7 +6,6 @@ import './style.scss';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './components/Main';
 import AnalyticGeneral from './components/analytic/AnalyticGeneral';
-import AnalyticRealTime from './components/analytic/AnalyticRealTime';
 import AnalyticBasis from './components/analytic/AnalyticBasis';
 import AnalyticCheck from './components/analytic/AnalyticCheck';
 //import AnalyticSource from './components/analytic/AnalyticSource';
@@ -61,50 +60,50 @@ class App extends Component {
     permissionData: {
       level: '',
       name: '',
-      verified: ''
+      verified: false
     }
   }
   // level: 1以上才有追蹤的網站
   // name:用戶名稱
   // verified: 是否驗證過
-  componentDidMount(){
+  UNSAFE_componentWillMount = () => {
     let storageData = localStorage.getItem('permission');
     if(storageData){
       this.setState({permissionData: JSON.parse(storageData)});
     }
   }
+
   permission = (data) => {
     this.setState({ permissionData: data })
   }
 
   render() {
+    const {permissionData} = this.state;
     return (
       <div className="all">
         <Router>
-          <Route exact path="/" component={AnalyticBasis} />
+          <Route exact path="/" component={p=><AnalyticBasis {...p} permissionData={permissionData} />} />
           {/* 訪客總覽 */}
           <Route path="/general" component={AnalyticGeneral} />
-          {/* 即時資訊 */}
-          <Route path="/realtime" component={AnalyticRealTime} />
           {/* 基礎數據分析 */}
-          <Route path="/basis" component={AnalyticBasis} />
+          <Route path="/basis" component={p=><AnalyticBasis {...p} permissionData={permissionData} />} />
           {/*  */}
-          <Route path="/check" component={AnalyticCheck} />
+          <Route path="/check" component={p=><AnalyticCheck {...p} permissionData={permissionData} />} />
           {/* 流量報表 */}
-          <Route path="/reports" component={AnalyticReports} />
+          <Route path="/reports" component={ p=><AnalyticReports {...p} permissionData={permissionData} />}  />
           {/* 熱門頁面 */}
-          <Route path="/hot" component={AnalyticHot} />
+          <Route path="/hot" component={ p=><AnalyticHot {...p} permissionData={permissionData} />}  />
           {/* 互動指標 */}
-          <Route path="/interaction" component={AnalyticInteraction} />
+          {/* <Route path="/interaction" component={ p=><AnalyticInteraction {...p} permissionData={permissionData} />} /> */}
           {/* 資產價值 */}
-          <Route path="/asset_rise" component={AnalyticAsset} />
+          <Route path="/asset_rise" component={ p=><AnalyticAsset {...p} permissionData={permissionData} />} />
           {/* 用戶畫像 */}
-          <Route path="/portrait" component={AnalyticPortrait} />
+          <Route path="/portrait" component={ p=><AnalyticPortrait {...p} permissionData={permissionData} />} />
           {/* 用戶分群 */}
-          <Route path="/group" component={AnalyticGroup} />
+          {/* <Route path="/group" component={ p=><AnalyticGroup {...p} permissionData={permissionData} />} /> */}
 
           {/* 測試用 */}
-          <Route path="/test" component={Test} />
+          {/* <Route path="/test" component={Test} /> */}
 
           {/* 推播 主題活動-新增 */}
           {/* <Route path="/push/add" component={ActivityNew} /> */}

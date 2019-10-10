@@ -26,7 +26,7 @@ class SignIn extends Component {
             this.props.getPermission(res);
             localStorage.setItem('permission',JSON.stringify(res));
             if(res.level < 1){
-                window.location.href = '/memberCentre/edit';
+                window.location.href = '/memberCentre/billing/two';
             }else{
                 window.location.href = '/basis';
             }
@@ -39,15 +39,16 @@ class SignIn extends Component {
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <div className="box p-5 w-75 mx-auto" style={{'position':'relative'}}>
-                            <button className="btn_noborder_r btn_like dec_none cancel_btn m-2 bg-secondary round text-white">&#10006;</button>
-                            <h3 className="mb-3">智媒推推</h3>
+                            {/* <button className="btn_noborder_r btn_like dec_none cancel_btn m-2 bg-secondary round text-white">&#10006;</button> */}
+                            <h3 className="mb-3">智媒數據顧問</h3>
+                            <p>歡迎使用智媒數據顧問服務，請您先註冊或登入以使用本服務，謝謝您</p>
                             <input placeholder="請輸入電子郵箱" type="email" name="email" className="input_1 my-3" onChange={(e)=>this.inputData(e, 'un')} />
                             <input placeholder=" 請輸入密碼" type="password" name="pwd" className="input_1" onChange={(e)=>this.inputData(e, 'uid')} />
                             <a href="XXX" className="my-1 d-block">忘記密碼？</a>
-                            <button className="btn btn-outline-primary radius20 font_20 my-4 p-2 w-100" onClick={this.submit}>登入</button>
+                            <button className="btn btn-outline-primary radius40 font_20 my-4 p-2 w-100" onClick={this.submit}>登入</button>
                             <div className="text-center">
                                 <p className="d-block mb-2 text-dark">還沒有帳號？</p>
-                                <Link to="/signup/register" className="btn btn-info radius20 px-5 py-2">我要註冊</Link>
+                                <Link to="/signup/register" className="btn btn-info radius40 px-5 py-2">我要註冊</Link>
                             </div>
                         </div>
                     </Container>

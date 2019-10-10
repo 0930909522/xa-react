@@ -95,9 +95,14 @@ button.font_20 {
 .radius20 {
     border-radius: 20px;
 }
-
-button.radius20 {
+.btn.radius20 {
     border-radius: 20px;
+}
+.radius40 {
+    border-radius: 40px;
+}
+.btn.radius40 {
+    border-radius: 40px;
 }
 
 .round {
@@ -601,9 +606,9 @@ button.radius20 {
 }
 
 %input_reg {
-    border-radius: 10px;
+    border-radius: 2px;
     width: 100%;
-    padding: 7px;
+    padding: 6px 12px;
     font-size: 18px;
     box-sizing: border-box;
 }
@@ -620,12 +625,12 @@ button.radius20 {
 
 .input_1 {
     @extend %input_reg;
-    border: 2px solid $gray;
+    border: 1px solid $gray;
 }
 
 .input_1:focus {
     outline: 0;
-    border: 2px solid $orange;
+    border: 1px solid $orange;
 }
 
 #start-time::before {

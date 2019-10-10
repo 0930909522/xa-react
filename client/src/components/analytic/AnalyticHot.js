@@ -4,9 +4,13 @@ import NavLeft from './NavLeft';
 import Header from '../Header';
 import Footer from '../Footer';
 import Loading from '../../images/loading.svg';
+import { Redirect } from 'react-router';
+import { htmlInstallTrack } from '../share/checkPermission';
 
 import { Table, Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
+
+const thisLevel = 2; //設定本頁權限 1-4
 
 class AnalyticGroup extends Component {
     constructor(props) {
@@ -109,7 +113,11 @@ class AnalyticGroup extends Component {
     }
     render() {
         const { hot, isLoadingWordCloud, isLoadingList } = this.state
-        return (<>
+        const { name, level, verified } = this.props.permissionData;
+        return (
+        verified !== true ?
+        <Redirect to="/signup/signin" /> :
+        <>
             <Header cateIndex={1} />
             <div className="layout_main">
                 <Container className="main_analytic">
@@ -117,144 +125,133 @@ class AnalyticGroup extends Component {
                         <NavLeft />
                         <div className="main_right">
                             <h2>熱門頁面</h2>
-                            <div className="box hot">
-                                <div className="detail">
-                                    <h3>熱門頁面關鍵字</h3>
-                                    <div>
-                                        <div className="select">
-                                            <label>
-                                                分析區間：
-                                                <select onChange={this.setWordCloudInterval}>
-                                                    <option value="7">本週熱門</option>
-                                                    <option value="5">5日熱門</option>
-                                                    <option value="3">3日熱門</option>
-                                                    <option value="1">1日熱門</option>
-                                                </select>
-                                            </label>
-                                            <label>
-                                                目前數量：{this.state.wordCloudCount}
-                                            </label>
-                                            <label>
-                                                <input type="range" onMouseUp={this.setWordCloudCount} min={10} />
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    
-                                    { isLoadingWordCloud ?  
-                                        <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
-                                        this.state.keywords ?
-                                            <div className="chart_box">
-                                                    <BubbleChart
-                                                        graph={{
-                                                            zoom: 1,
-                                                            offsetX: 0,
-                                                            offsetY: 0,
-                                                        }}
-                                                        width={650}
-                                                        height={660}
-                                                        overflow={false}
-                                                        padding={0} // optional value, number that set the padding between bubbles
-                                                        showLegend={false} // optional value, pass false to disable the legend.
-                                                        legendPercentage={20} // number that represent the % of with that legend going to use.
-                                                        legendFont={{
-                                                            family: 'Arial',
-                                                            size: 14,
-                                                            color: '#000',
-                                                            weight: 'normal',
-                                                        }}
-                                                        valueFont={{
-                                                            family: 'Arial',
-                                                            size: 0,
-                                                            color: '#fff',
-                                                            weight: 'normal',
-                                                        }}
-                                                        labelFont={{
-                                                            family: 'Arial',
-                                                            size: 15,
-                                                            color: '#fff',
-                                                            weight: 'normal',
-                                                            padding: '10px'
-                                                        }}
-                                                        //Custom bubble/legend click functions such as searching using the label, redirecting to other page
-                                                        // bubbleClickFun={this.bubbleClick}
-                                                        // legendClickFun={this.legendClick}
-                                                        data={this.state.keywords}
-                                                    />
+                            { level < thisLevel ? htmlInstallTrack(level, thisLevel) : 
+                            <>
+                                <div className="box hot">
+                                    <div className="detail">
+                                        <h3>熱門頁面關鍵字</h3>
+                                        <div>
+                                            <div className="select">
+                                                <label>
+                                                    分析區間：
+                                                    <select onChange={this.setWordCloudInterval}>
+                                                        <option value="7">本週熱門</option>
+                                                        <option value="5">5日熱門</option>
+                                                        <option value="3">3日熱門</option>
+                                                        <option value="1">1日熱門</option>
+                                                    </select>
+                                                </label>
+                                                <label>
+                                                    目前數量：{this.state.wordCloudCount}
+                                                </label>
+                                                <label>
+                                                    <input type="range" onMouseUp={this.setWordCloudCount} min={10} />
+                                                </label>
                                             </div>
-                                            : <span />}
-
-                                    <h3>熱門頁面排行 </h3>
-                                    <div>
-                                        <div className="select">
-                                            <label>
-                                                排行時間：
-                                                <select onChange={this.setHotInterval}>
-                                                    <option value="7">本週</option>
-                                                    <option value="5">5日</option>
-                                                    <option value="3">3日</option>
-                                                    <option value="1">1日</option>
-                                                </select>
-                                            </label>
-                                            <label>
-                                                觀看筆數：
-                                                <select onChange={this.setHotCount}>
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="30">30</option>
-                                                </select>
-                                            </label>
                                         </div>
-                                    </div>
 
-                                    { isLoadingList ?
-                                    <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
-                                    <Table striped bordered hover>
-                                        <thead>
-                                            <tr>
-                                                <th width="8%">排名</th>
-                                                <th>文章名稱</th>
-                                                <th width="8%">人數</th>
-                                                <th width="10%">瀏覽量</th>
-                                                <th width="10%">新客戶</th>
-                                                <th width="10%">舊客戶</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {hot ? hot.map((item, index) =>
-                                                <tr key={index}>
-                                                    <td>{index + 1}</td>
-                                                    <td> <a href={item._id}>{item.title}</a> </td>
-                                                    <td>{item.uv}</td>
-                                                    <td>{item.pv}</td>
-                                                    <td>{item.newVisitor}</td>
-                                                    <td>{item.oldVisitor}</td>
-
-                                                </tr>
-                                            ) : console.log()}
-
-                                        </tbody>
-                                    </Table> }
-
-
-                                    {/* <ul>
-                                        {this.state.basic ? this.state.basic.detail.map((item, i) =>
-                                            <li key={i} className={i == 1 ? "artice" : ""}>
-                                                <div className="head">
-                                                    {item.name}
+                                        
+                                        { isLoadingWordCloud ?  
+                                            <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
+                                            this.state.keywords ?
+                                                <div className="chart_box">
+                                                        <BubbleChart
+                                                            graph={{
+                                                                zoom: 1,
+                                                                offsetX: 0,
+                                                                offsetY: 0,
+                                                            }}
+                                                            width={650}
+                                                            height={660}
+                                                            overflow={false}
+                                                            padding={0} // optional value, number that set the padding between bubbles
+                                                            showLegend={false} // optional value, pass false to disable the legend.
+                                                            legendPercentage={20} // number that represent the % of with that legend going to use.
+                                                            legendFont={{
+                                                                family: 'Arial',
+                                                                size: 14,
+                                                                color: '#000',
+                                                                weight: 'normal',
+                                                            }}
+                                                            valueFont={{
+                                                                family: 'Arial',
+                                                                size: 0,
+                                                                color: '#fff',
+                                                                weight: 'normal',
+                                                            }}
+                                                            labelFont={{
+                                                                family: 'Arial',
+                                                                size: 15,
+                                                                color: '#fff',
+                                                                weight: 'normal',
+                                                                padding: '10px'
+                                                            }}
+                                                            //Custom bubble/legend click functions such as searching using the label, redirecting to other page
+                                                            // bubbleClickFun={this.bubbleClick}
+                                                            // legendClickFun={this.legendClick}
+                                                            data={this.state.keywords}
+                                                        />
                                                 </div>
-                                                {item.list.map((one, j) =>
-                                                    <div key={j} className="cont">
-                                                        {one}
-                                                    </div>
-                                                )}
+                                                : <span />}
 
-                                            </li>
-                                        ) : <li />}
-                                    </ul> */}
+                                        <h3>熱門頁面排行 </h3>
+                                        <div>
+                                            <div className="select">
+                                                <label>
+                                                    排行時間：
+                                                    <select onChange={this.setHotInterval}>
+                                                        <option value="7">本週</option>
+                                                        <option value="5">5日</option>
+                                                        <option value="3">3日</option>
+                                                        <option value="1">1日</option>
+                                                    </select>
+                                                </label>
+                                                <label>
+                                                    觀看筆數：
+                                                    <select onChange={this.setHotCount}>
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
 
-                                </div>
-                            </div>
+                                        { isLoadingList ?
+                                        <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
+                                        <Table striped bordered hover>
+                                            <thead>
+                                                <tr>
+                                                    <th width="8%">排名</th>
+                                                    <th>文章名稱</th>
+                                                    <th width="8%">人數</th>
+                                                    <th width="10%">瀏覽量</th>
+                                                    <th width="10%">新客戶</th>
+                                                    <th width="10%">舊客戶</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {hot ? hot.map((item, index) =>
+                                                    <tr key={index}>
+                                                        <td>{index + 1}</td>
+                                                        <td> <a href={item._id}>{item.title}</a> </td>
+                                                        <td>{item.uv}</td>
+                                                        <td>{item.pv}</td>
+                                                        <td>{item.newVisitor}</td>
+                                                        <td>{item.oldVisitor}</td>
+
+                                                    </tr>
+                                                ) : console.log()}
+
+                                            </tbody>
+                                        </Table> }
+
+
+                                       
+
+                                    </div>
+                                </div> 
+                            </>}
                         </div>
                     </Row>
                 </Container>
