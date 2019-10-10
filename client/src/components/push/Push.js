@@ -7,7 +7,7 @@ import PushTitle from "./share/PushTitle";
 import Switch from './share/Switch';
 import PushList from './PushList';
 // import PushList2 from './PushList2';
-import { pushStatus, modifyPushStatus } from '../share/ajax';
+import { pushStatus, modifyPushStatus, getPush } from '../share/ajax';
 // import { FaRegCalendar, FaRegNewspaper, FaRegThumbsUp } from "react-icons/fa";
 
 
@@ -17,6 +17,7 @@ class Push extends Component {
     this.state = {
       openList1: false,
       // openList2: false,
+      hasData: [false, false], //專題報導和主題活動是否有檔案
       title: '',
       ajaxSleep: false,
       data: {
@@ -28,10 +29,49 @@ class Push extends Component {
     }
   }
 
-  componentDidMount() {
-    pushStatus().then(res => {
+  componentDidMount = async () => {
+    let newHasData = [...this.state.hasData];
+    let newData = {};
+    // pushingReport、pushingTheme是否可改
+    let postData1 = {
+      view: localStorage.getItem('view'),
+      type: 'report'
+    }
+    let postData2 = {
+      view: localStorage.getItem('view'),
+      type: 'theme'
+    }
+
+    //初始化狀態
+    await pushStatus().then(res => {
+      newData = res;
       this.setState({ data: res });
     })
+
+    //初始化是否可更改狀態
+    await getPush(postData1).then(res => {
+      if (res == 0) {
+        newHasData[0] = false;
+        if (newData.pushingReport) {
+          // 改為關閉
+          this.change('pushingReport');
+        }
+      }else{
+        newHasData[0] = true;
+      }
+    })
+    await getPush(postData2).then(res => {
+      if (res == 0) {
+        newHasData[1] = false;
+        if (newData.pushingTheme) {
+          // 改為關閉
+          this.change('pushingTheme');
+        }
+      }else{
+        newHasData[1] = true;
+      }
+    })
+    this.setState({ hasData: newHasData });
   }
 
   chooseType = type => {
@@ -56,13 +96,25 @@ class Push extends Component {
     })
   }
 
-  //修改狀態
+  //修改狀態+條件控制
   recommendChange = (name) => {
+    if (name === 'pushingReport' && !this.state.hasData[0]) {
+      // 如果專題報導無內容
+      return;
+    }
+    if (name === 'pushingTheme' && !this.state.hasData[1]) {
+      // 如果主題活動無內容
+      return;
+    }
     if (this.state.ajaxSleep) {
       //如果在休息狀態
       return;
     }
+    this.change(name);
+  }
 
+  //修改狀態
+  change = (name) => {
     let nameStatus = this.state.data[name];
     let postData = {
       view: localStorage.getItem('view'),
@@ -141,22 +193,6 @@ class Push extends Component {
                           <td>
                             <span
                               className="btn_like text-primary"
-                              onClick={() => this.chooseType('主題活動')}
-                            >主題活動
-                            </span>
-                          </td>
-                          <td>手動推播</td>
-                          <td>
-                            <Switch
-                              changeStatus={() => this.recommendChange('pushingTheme')}
-                              value={this.state.data.pushingTheme}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <span
-                              className="btn_like text-primary"
                               onClick={() => this.chooseType('專題報導')}
                             >專題報導
                           </span>
@@ -166,6 +202,22 @@ class Push extends Component {
                             <Switch
                               changeStatus={() => this.recommendChange('pushingReport')}
                               value={this.state.data.pushingReport}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span
+                              className="btn_like text-primary"
+                              onClick={() => this.chooseType('主題活動')}
+                            >主題活動
+                            </span>
+                          </td>
+                          <td>手動推播</td>
+                          <td>
+                            <Switch
+                              changeStatus={() => this.recommendChange('pushingTheme')}
+                              value={this.state.data.pushingTheme}
                             />
                           </td>
                         </tr>

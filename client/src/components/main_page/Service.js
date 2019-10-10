@@ -5,13 +5,26 @@ import Footer from '../Footer';
 import MemberCentreTitle from '../share/MemberCentreTitle';
 import NavLeftMember from '../share/NavLeftMember';
 import Payment from '../share/Payment';
+import { addValueMem } from '../share/ajax';
+
+const initialData = {
+    interval: '',
+    level: '',
+    mode: '',
+    date: '',
+    accountName: '',
+    bankNo: '',
+    price: '',
+    lastFiveNum: ''
+}
 
 class Service extends Component {
     constructor(props) {
         super(props);
         this.state = {
             showData: false,
-            chosenProject: '',
+            alertText: '', //*以上內容皆為必填
+            deposit: Object.assign({}, initialData),
             sent: false
         }
         this.title = [
@@ -66,23 +79,53 @@ class Service extends Component {
     }
 
     toggleShowData = () => {
-        this.setState({ showData: !this.state.showData });
+        this.setState({
+            showData: false,
+            alertText: '',
+            deposit: Object.assign({}, initialData),
+            sent: false
+        })
     }
 
     // 選擇方案
-    chooseProject = (num) => {
-        this.setState({ chosenProject: num })
+    chooseProject = (project) => {
+        let newData = this.state.deposit;
+        newData.price = project[0];
+        newData.interval = project[1];
+        newData.level = project[2];
+        this.setState({ deposit: newData });
     }
 
     // 填寫資料
-    writeInfo = (e, type) => {
-
+    writeInfo = (value, type) => {
+        let newData = this.state.deposit;
+        newData[type] = value;
+        this.setState({ deposit: newData });
+        if (this.state.alertText) {
+            this.setState({ alertText: '' });
+        }
     }
 
     //送出資料
     submit = () => {
-        this.setState({ sent: true })
+        let postData = this.state.deposit;
+        for (let i in postData) {
+            if (!String(postData[i]).trim()) {
+                // this.alertMsg('內容皆為必填');
+                this.setState({ alertText: '*以上內容皆為必填' });
+                return;
+            }
+        }
+        addValueMem(postData).then(res => {
+            if (res === 1) {
+                //成功
+                this.setState({ sent: true });
+            } else {
+                this.setState({ alertText: '*傳送失敗，請稍後再試' });
+            }
+        })
     }
+
 
     render() {
         return (
@@ -94,14 +137,14 @@ class Service extends Component {
                             更改你的會員方案
                             <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.toggleShowData}>&#10006;</button>
                         </h4>
-                        <div className={this.state.chosenProject ? "d-none" : "p-3 mx-auto w-100 scrollY h-65v "}>
+                        <div className={this.state.deposit.price ? "d-none" : "p-3 mx-auto w-100 scrollY h-65v "}>
                             <Row>
                                 <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">資產分析</h2></Col>
                                 <Col sm={6}>
                                     <div className="my-3">
                                         <button
                                             className="btn btn-outline-warning px-5 py-2"
-                                            onClick={() => this.chooseProject(1)}
+                                            onClick={() => this.chooseProject([8000, 'm', 3])}
                                         >月繳
                                         </button>
                                         <span className="ml-3">8000 ~ 1.5萬 / 月</span>
@@ -109,7 +152,7 @@ class Service extends Component {
                                     <div className="my-3">
                                         <button
                                             className="btn btn-outline-warning px-5 py-2"
-                                            onClick={() => this.chooseProject(1)}
+                                            onClick={() => this.chooseProject([360000, 'y', 3])}
                                         >年繳
                                         </button>
                                         <span className="ml-3">36萬 / 年</span>
@@ -123,7 +166,7 @@ class Service extends Component {
                                     <div className="my-3">
                                         <button
                                             className="btn btn-outline-warning px-5 py-2"
-                                            onClick={() => this.chooseProject(1)}
+                                            onClick={() => this.chooseProject([960000, 'y', 4])}
                                         >年繳
                                         </button>
                                         <span className="ml-3">96萬 / 年</span>
@@ -137,7 +180,7 @@ class Service extends Component {
                                     <div className="my-3">
                                         <button
                                             className="btn btn-outline-warning px-5 py-2"
-                                            onClick={() => this.chooseProject(1)}
+                                            onClick={() => this.chooseProject([960000, 'y', 2])}
                                         >年繳</button>
                                         <span className="ml-3">96萬 / 年</span>
                                     </div>
@@ -148,11 +191,13 @@ class Service extends Component {
                             </div>
                         </div>
                         {
-                            this.state.chosenProject &&
-                            <Payment 
-                            sent={this.state.sent}
-                            sendMsg={this.submit}
-                             />
+                            this.state.deposit.price &&
+                            <Payment
+                                sent={this.state.sent}
+                                sendMsg={this.submit}
+                                getInput={this.writeInfo}
+                                alertText={this.state.alertText}
+                            />
                         }
                     </div>
                 </div>
