@@ -79,7 +79,7 @@ button.font_20 {
     color: $blue;
 }
 
-.no_outline{
+.no_outline {
     outline: none;
 }
 
@@ -95,12 +95,15 @@ button.font_20 {
 .radius20 {
     border-radius: 20px;
 }
+
 .btn.radius20 {
     border-radius: 20px;
 }
+
 .radius40 {
     border-radius: 40px;
 }
+
 .btn.radius40 {
     border-radius: 40px;
 }
@@ -139,7 +142,7 @@ button.font_20 {
     vertical-align: top;
 }
 
-.vertical_base{
+.vertical_base {
     vertical-align: baseline;
 }
 
@@ -820,4 +823,20 @@ button.font_20 {
             text-align: left;
         }
     }
+}
+
+.icon {
+    text-align: center;
+    line-height: 70px;
+}
+.icon_name{
+    @extend .font_20;
+    @extend .weight600;
+    display: inline-block;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    width: 80px;
+    white-space: nowrap;
 }
