@@ -10,6 +10,10 @@ import InstallationGuide from '../push_install/InstallationGuide';
 import { getBoard, deleteBoard } from '../share/ajax';
 // import PushTitle from '../share/PushTitle';
 import { FaArrowRight } from 'react-icons/fa';
+import { htmlInstallTrack } from '../share/checkPermission';
+import { Redirect } from 'react-router';
+
+const thisLevel = 1; //設定本頁權限 1-4
 
 const initialUserAddingData = {
     acceptType: [], //
@@ -123,106 +127,112 @@ class Board extends Component {
 
     render() {
         return (
-            <>
-                <Header cateIndex={2} />
-                <div className="layout_main">
-                    <Container className="main_analytic">
-                        <Row>
-                            <NavLeftPush three />
-                            <div className="main_right">
-                                <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">放進來</span></h2>
-                                <div className={this.state.status === 0 ? 'd-none' : ''}>
-                                    <span className={this.state.status > 0 ? 'text-primary' : ''}>
-                                        選取黑名單項目
+            !this.props.permissionData.verified ?
+                <Redirect to="/signup/signin" /> :
+                <>
+                    <Header cateIndex={2} />
+                    <div className="layout_main">
+                        <Container className="main_analytic">
+                            <Row>
+                                <NavLeftPush three />
+                                <div className="main_right">
+                                    <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">放進來</span></h2>
+                                    {this.props.permissionData.level < thisLevel ? htmlInstallTrack(this.props.permissionData.level, thisLevel) :
+                                        <>
+                                            <div className={this.state.status === 0 ? 'd-none' : ''}>
+                                                <span className={this.state.status > 0 ? 'text-primary' : ''}>
+                                                    選取黑名單項目
                                         <FaArrowRight className="vertical_base mx-2" />
-                                    </span>
-                                    <span className={this.state.status > 1 ? 'text-primary' : ''}>
-                                        設定黑名單
+                                                </span>
+                                                <span className={this.state.status > 1 ? 'text-primary' : ''}>
+                                                    設定黑名單
                                         <FaArrowRight className="vertical_base mx-2" />
-                                    </span>
-                                    <span className={this.state.status > 2 ? 'text-primary' : this.state.userAddingData.boardId === '' ? '' : 'text-secondary'}>安裝教學</span>
-                                </div>
-                                <div className={this.state.status === 0 ? 'box' : 'd-none'}>
-                                    <table className="pushTable_r w-100" cellPadding="15">
-                                        <thead>
-                                            <tr>
-                                                <th className="d-flex justify-content-between align-items-center">
-                                                    <input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;清單
+                                                </span>
+                                                <span className={this.state.status > 2 ? 'text-primary' : this.state.userAddingData.boardId === '' ? '' : 'text-secondary'}>安裝教學</span>
+                                            </div>
+                                            <div className={this.state.status === 0 ? 'box' : 'd-none'}>
+                                                <table className="pushTable_r w-100" cellPadding="15">
+                                                    <thead>
+                                                        <tr>
+                                                            <th className="d-flex justify-content-between align-items-center">
+                                                                <input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;清單
                                                     <button className="btn_noborder text-primary" onClick={() => this.changeStatus(1)}><FaPlusCircle /></button>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.state.data.map((val, index) => (
-                                                <React.Fragment key={val.boardId}>
-                                                    <tr>
-                                                        <td className="d-flex justify-content-between align-items-center">
-                                                            <div>
-                                                                <input type="checkbox" checked={val.choose} onChange={() => this.clickCheckbox(index)} />
-                                                                <h5 className="d-inline-block vertical_middle ml-5" style={{ 'margin': '0' }}>{'清單 ' + (index + 1)}</h5>
-                                                            </div>
-                                                            <div>
-                                                                <FaSearch onClick={(e) => this.toggleTr(index)} className="btn_like mx-2" />
-                                                                <FaEdit onClick={(e) => this.editData(index)} className="btn_like mx-2" />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    {
-                                                        (val.content !== null && val.show) && <tr>
-                                                            <td colSpan="2">
-                                                                <strong>類別</strong>
-                                                                {
-                                                                    Array.from(val.acceptType).map((val, index) => (
-                                                                        <h6 key={index}>{val}</h6>
-                                                                    ))
-                                                                }
-                                                                <br />
-                                                                <strong>黑名單</strong>
-                                                                {
-                                                                    (val.blacklist.length === 0) ? (
-                                                                        <p>無黑名單</p>
-                                                                    )
-                                                                        :
-                                                                        val.blacklist.map((val, index) => (
-                                                                            <h6 key={index}>{val}</h6>
-                                                                        ))
-                                                                }
-                                                            </td>
+                                                            </th>
                                                         </tr>
-                                                    }
-                                                </React.Fragment>
-                                            ))}
-                                            {(this.state.showBtn) && <tr><td className="text-right btn_like" onClick={this.deleteList}><FaTrashAlt /></td></tr>}
-                                        </tbody>
-                                    </table>
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.data.map((val, index) => (
+                                                            <React.Fragment key={val.boardId}>
+                                                                <tr>
+                                                                    <td className="d-flex justify-content-between align-items-center">
+                                                                        <div>
+                                                                            <input type="checkbox" checked={val.choose} onChange={() => this.clickCheckbox(index)} />
+                                                                            <h5 className="d-inline-block vertical_middle ml-5" style={{ 'margin': '0' }}>{'清單 ' + (index + 1)}</h5>
+                                                                        </div>
+                                                                        <div>
+                                                                            <FaSearch onClick={(e) => this.toggleTr(index)} className="btn_like mx-2" />
+                                                                            <FaEdit onClick={(e) => this.editData(index)} className="btn_like mx-2" />
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                {
+                                                                    (val.content !== null && val.show) && <tr>
+                                                                        <td colSpan="2">
+                                                                            <strong>類別</strong>
+                                                                            {
+                                                                                Array.from(val.acceptType).map((val, index) => (
+                                                                                    <h6 key={index}>{val}</h6>
+                                                                                ))
+                                                                            }
+                                                                            <br />
+                                                                            <strong>黑名單</strong>
+                                                                            {
+                                                                                (val.blacklist.length === 0) ? (
+                                                                                    <p>無黑名單</p>
+                                                                                )
+                                                                                    :
+                                                                                    val.blacklist.map((val, index) => (
+                                                                                        <h6 key={index}>{val}</h6>
+                                                                                    ))
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            </React.Fragment>
+                                                        ))}
+                                                        {(this.state.showBtn) && <tr><td className="text-right btn_like" onClick={this.deleteList}><FaTrashAlt /></td></tr>}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            {(this.state.status === 1) &&
+                                                <PushPage
+                                                    changeStatus={this.changeStatus}
+                                                    getResponseData={this.saveData}
+                                                    sendData={this.state.userAddingData}
+                                                />
+                                            }
+                                            {(this.state.status === 2) &&
+                                                <SetBlackList
+                                                    changeStatus={this.changeStatus}
+                                                    getResponseData={this.saveData}
+                                                    sendData={this.state.userAddingData}
+                                                />
+                                            }
+                                            {(this.state.status === 3) &&
+                                                <InstallationGuide
+                                                    changeStatus={this.changeStatus}
+                                                    sendData={this.state.userAddingData.boardId}
+                                                />
+                                            }
+                                        </>
+                                    }
                                 </div>
-                                {(this.state.status === 1) &&
-                                    <PushPage
-                                        changeStatus={this.changeStatus}
-                                        getResponseData={this.saveData}
-                                        sendData={this.state.userAddingData}
-                                    />
-                                }
-                                {(this.state.status === 2) &&
-                                    <SetBlackList
-                                        changeStatus={this.changeStatus}
-                                        getResponseData={this.saveData}
-                                        sendData={this.state.userAddingData}
-                                    />
-                                }
-                                {(this.state.status === 3) &&
-                                    <InstallationGuide
-                                        changeStatus={this.changeStatus}
-                                        sendData={this.state.userAddingData.boardId}
-                                    />
-                                }
-                            </div>
 
-                        </Row>
-                    </Container>
-                </div>
-                <Footer />
-            </>
+                            </Row>
+                        </Container>
+                    </div>
+                    <Footer />
+                </>
         )
     }
 }

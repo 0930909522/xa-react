@@ -9,7 +9,10 @@ import PushList from './PushList';
 // import PushList2 from './PushList2';
 import { pushStatus, modifyPushStatus, getPush } from '../share/ajax';
 // import { FaRegCalendar, FaRegNewspaper, FaRegThumbsUp } from "react-icons/fa";
+import { htmlInstallTrack } from '../share/checkPermission';
+import { Redirect } from 'react-router';
 
+const thisLevel = 1; //設定本頁權限 1-4
 
 class Push extends Component {
   constructor(props) {
@@ -56,7 +59,7 @@ class Push extends Component {
           // 改為關閉
           this.change('pushingReport');
         }
-      }else{
+      } else {
         newHasData[0] = true;
       }
     })
@@ -67,7 +70,7 @@ class Push extends Component {
           // 改為關閉
           this.change('pushingTheme');
         }
-      }else{
+      } else {
         newHasData[1] = true;
       }
     })
@@ -138,17 +141,21 @@ class Push extends Component {
 
   render() {
     return (
-      <>
-        <Header cateIndex={2} />
-        <div className="layout_main">
-          <Container className="main_analytic">
-            <Row>
-              <NavLeftPush two />
-              <div className="main_right">
-                <h2><span className="btn_like" onClick={this.closeList}>推出去</span><span dangerouslySetInnerHTML={{ __html: this.state.title }}></span></h2>
-                <PushTitle one />
-                <div className={this.state.openList1 || this.state.openList2 ? 'd-none' : ''}>
-                  {/* <div className="box radius10">
+      !this.props.permissionData.verified ?
+        <Redirect to="/signup/signin" /> :
+        <>
+          <Header cateIndex={2} />
+          <div className="layout_main">
+            <Container className="main_analytic">
+              <Row>
+                <NavLeftPush two />
+                <div className="main_right">
+                  <h2><span className="btn_like" onClick={this.closeList}>推出去</span><span dangerouslySetInnerHTML={{ __html: this.state.title }}></span></h2>
+                  {this.props.permissionData.level < thisLevel ? htmlInstallTrack(this.props.permissionData.level, thisLevel) :
+                    <>
+                      <PushTitle one />
+                      <div className={this.state.openList1 || this.state.openList2 ? 'd-none' : ''}>
+                        {/* <div className="box radius10">
                     <div className="mb-3">
                       <span className="vertical_middle d-inline-block font_20 weight600">全自動推播</span>
                       <span className="vertical_middle d-inline-block ml-3"><Switch /></span>
@@ -156,8 +163,8 @@ class Push extends Component {
                     <p>您可以選擇全自動推播，系統將自動串連您的推播工具，追蹤用戶閱讀習慣，自動推播於點擊率最高的渠道。</p>
                   </div> */}
 
-                  <div className="box radius10">
-                    {/* <h4 className="my-3">選擇推播類別</h4>
+                        <div className="box radius10">
+                          {/* <h4 className="my-3">選擇推播類別</h4>
                     <div className="my-2">
                       <button className="btn_outline w-45 m-2">
                         <FaRegCalendar />&nbsp;主題活動
@@ -180,79 +187,81 @@ class Push extends Component {
                       &nbsp;推薦文章
                     </div>
                     <button className="btn_outline w-45 m-2" onClick={() => this.chooseType('推薦文章')}><FaRegThumbsUp />&nbsp;推薦文章</button> */}
-                    <table className="pushTable_r w-100  text-center" cellPadding="15">
-                      <thead>
-                        <tr>
-                          <th>服務名</th>
-                          <th>類別</th>
-                          <th>開啟推播</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <span
-                              className="btn_like text-primary"
-                              onClick={() => this.chooseType('專題報導')}
-                            >專題報導
+                          <table className="pushTable_r w-100  text-center" cellPadding="15">
+                            <thead>
+                              <tr>
+                                <th>服務名</th>
+                                <th>類別</th>
+                                <th>開啟推播</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <span
+                                    className="btn_like text-primary"
+                                    onClick={() => this.chooseType('專題報導')}
+                                  >專題報導
                           </span>
-                          </td>
-                          <td>手動推播</td>
-                          <td>
-                            <Switch
-                              changeStatus={() => this.recommendChange('pushingReport')}
-                              value={this.state.data.pushingReport}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <span
-                              className="btn_like text-primary"
-                              onClick={() => this.chooseType('主題活動')}
-                            >主題活動
+                                </td>
+                                <td>手動推播</td>
+                                <td>
+                                  <Switch
+                                    changeStatus={() => this.recommendChange('pushingReport')}
+                                    value={this.state.data.pushingReport}
+                                  />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <span
+                                    className="btn_like text-primary"
+                                    onClick={() => this.chooseType('主題活動')}
+                                  >主題活動
                             </span>
-                          </td>
-                          <td>手動推播</td>
-                          <td>
-                            <Switch
-                              changeStatus={() => this.recommendChange('pushingTheme')}
-                              value={this.state.data.pushingTheme}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>推薦商品</td>
-                          <td>自動推播</td>
-                          <td>
-                            <Switch
-                              changeStatus={() => this.recommendChange('pushingEcommerce')}
-                              value={this.state.data.pushingEcommerce}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>推薦文章</td>
-                          <td>自動推播</td>
-                          <td>
-                            <Switch
-                              changeStatus={() => this.recommendChange('pushingMedia')}
-                              value={this.state.data.pushingMedia}
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                                </td>
+                                <td>手動推播</td>
+                                <td>
+                                  <Switch
+                                    changeStatus={() => this.recommendChange('pushingTheme')}
+                                    value={this.state.data.pushingTheme}
+                                  />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>推薦商品</td>
+                                <td>自動推播</td>
+                                <td>
+                                  <Switch
+                                    changeStatus={() => this.recommendChange('pushingEcommerce')}
+                                    value={this.state.data.pushingEcommerce}
+                                  />
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>推薦文章</td>
+                                <td>自動推播</td>
+                                <td>
+                                  <Switch
+                                    changeStatus={() => this.recommendChange('pushingMedia')}
+                                    value={this.state.data.pushingMedia}
+                                  />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      {this.state.openList1 && <PushList type={this.state.title} goback={this.toList} />}
+                      {/* {this.state.openList2 && <PushList2 type={this.state.title} />} */}
+                    </>
+                  }
                 </div>
-                {this.state.openList1 && <PushList type={this.state.title} goback={this.toList} />}
-                {/* {this.state.openList2 && <PushList2 type={this.state.title} />} */}
-              </div>
-            </Row>
-          </Container>
-        </div>
-        <Footer />
-      </>
+              </Row>
+            </Container>
+          </div>
+          <Footer />
+        </>
     );
   }
 }

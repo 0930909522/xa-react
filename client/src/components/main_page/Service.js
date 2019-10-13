@@ -6,6 +6,9 @@ import MemberCentreTitle from '../share/MemberCentreTitle';
 import NavLeftMember from '../share/NavLeftMember';
 import Payment from '../share/Payment';
 import { addValueMem } from '../share/ajax';
+import { Redirect } from 'react-router';
+
+// 本頁權限 0-4
 
 const initialData = {
     interval: '',
@@ -129,150 +132,152 @@ class Service extends Component {
 
     render() {
         return (
-            <>
-                <Header />
-                <div className={(!this.state.showData && 'd-none ') + 'w-100 bg_gray'}>
-                    <div className="box w-75 mx-auto bg-white my-5 radius10">
-                        <h4 className="bg-warning py-3 pl-4 pr-2 text-white d-flex justify-content-between">
-                            更改你的會員方案
+            !this.props.permissionData.verified ?
+                <Redirect to="/signup/signin" /> :
+                <>
+                    <Header />
+                    <div className={(!this.state.showData && 'd-none ') + 'w-100 bg_gray'}>
+                        <div className="box w-75 mx-auto bg-white my-5 radius10">
+                            <h4 className="bg-warning py-3 pl-4 pr-2 text-white d-flex justify-content-between">
+                                更改你的會員方案
                             <button className="btn_noborder_r btn_like dec_none bg-secondary round text-white" onClick={this.toggleShowData}>&#10006;</button>
-                        </h4>
-                        <div className={this.state.deposit.price ? "d-none" : "p-3 mx-auto w-100 scrollY h-65v "}>
-                            <Row>
-                                <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">資產分析</h2></Col>
-                                <Col sm={6}>
-                                    <div className="my-3">
-                                        <button
-                                            className="btn btn-outline-warning px-5 py-2"
-                                            onClick={() => this.chooseProject([8000, 'm', 3])}
-                                        >月繳
+                            </h4>
+                            <div className={this.state.deposit.price ? "d-none" : "p-3 mx-auto w-100 scrollY h-65v "}>
+                                <Row>
+                                    <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">資產分析</h2></Col>
+                                    <Col sm={6}>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
+                                                onClick={() => this.chooseProject([8000, 'm', 3])}
+                                            >月繳
                                         </button>
-                                        <span className="ml-3">8000 ~ 1.5萬 / 月</span>
-                                    </div>
-                                    <div className="my-3">
-                                        <button
-                                            className="btn btn-outline-warning px-5 py-2"
-                                            onClick={() => this.chooseProject([360000, 'y', 3])}
-                                        >年繳
+                                            <span className="ml-3">8000 ~ 1.5萬 / 月</span>
+                                        </div>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
+                                                onClick={() => this.chooseProject([360000, 'y', 3])}
+                                            >年繳
                                         </button>
-                                        <span className="ml-3">36萬 / 年</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <hr className="dash_line" />
-                            <Row>
-                                <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">用戶分析</h2></Col>
-                                <Col sm={6}>
-                                    <div className="my-3">
-                                        <button
-                                            className="btn btn-outline-warning px-5 py-2"
-                                            onClick={() => this.chooseProject([960000, 'y', 4])}
-                                        >年繳
+                                            <span className="ml-3">36萬 / 年</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <hr className="dash_line" />
+                                <Row>
+                                    <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">用戶分析</h2></Col>
+                                    <Col sm={6}>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
+                                                onClick={() => this.chooseProject([960000, 'y', 4])}
+                                            >年繳
                                         </button>
-                                        <span className="ml-3">96萬 / 年</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <hr className="dash_line" />
-                            <Row>
-                                <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">網站健檢</h2></Col>
-                                <Col sm={6}>
-                                    <div className="my-3">
-                                        <button
-                                            className="btn btn-outline-warning px-5 py-2"
-                                            onClick={() => this.chooseProject([960000, 'y', 2])}
-                                        >年繳</button>
-                                        <span className="ml-3">96萬 / 年</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <div className="text-center my-4">
-                                <button className="btn btn-outline-primary w-75 p-2 font_20 radius20">我要更改方案，請聯絡我</button>
+                                            <span className="ml-3">96萬 / 年</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <hr className="dash_line" />
+                                <Row>
+                                    <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">網站健檢</h2></Col>
+                                    <Col sm={6}>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
+                                                onClick={() => this.chooseProject([960000, 'y', 2])}
+                                            >年繳</button>
+                                            <span className="ml-3">96萬 / 年</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <div className="text-center my-4">
+                                    <button className="btn btn-outline-primary w-75 p-2 font_20 radius20">我要更改方案，請聯絡我</button>
+                                </div>
                             </div>
+                            {
+                                this.state.deposit.price &&
+                                <Payment
+                                    sent={this.state.sent}
+                                    sendMsg={this.submit}
+                                    getInput={this.writeInfo}
+                                    alertText={this.state.alertText}
+                                />
+                            }
                         </div>
-                        {
-                            this.state.deposit.price &&
-                            <Payment
-                                sent={this.state.sent}
-                                sendMsg={this.submit}
-                                getInput={this.writeInfo}
-                                alertText={this.state.alertText}
-                            />
-                        }
                     </div>
-                </div>
-                <div className="layout_main">
-                    <Container className="main_analytic">
-                        <Row>
-                            <NavLeftMember three />
-                            <div className="main_right">
-                                <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/ 帳單與儲值 /服務與用量</span></h2>
-                                <MemberCentreTitle one />
-                                <Container className="mt-20">
-                                    <Row>
-                                        <Col sm={7}>
-                                            <h5>您目前的方案：<span>付費會員 - 月繳</span></h5>
-                                            <h5>會員方案期限：<span>2019年3月3日 ~ 2019年4月3日</span></h5>
-                                        </Col>
-                                        <Col sm={5} className="d-flex justify-content-end align-items-end">
-                                            <button className="btn btn-info p-2 mr-3" onClick={this.toggleShowData}>更改方案</button>
-                                        </Col>
-                                    </Row>
-                                </Container>
-                                <table className="w-100 pushTable text-center mt-20 bg-white" cellPadding="5">
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td><b>免費會員</b></td>
-                                            <td><b>網站健檢</b></td>
-                                            <td><b>資產分析</b></td>
-                                            <td><b>用戶分析</b></td>
-                                        </tr>
-                                        {this.title.map((val, index) =>
-                                            <tr key={index}>
-                                                <td>{val}</td>
-                                                <td>
-                                                    {this.data0[index].split('\n').map((text, index2) => (
-                                                        <React.Fragment key={index2}>
-                                                            {text}
-                                                            <br />
-                                                        </React.Fragment>))
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {this.data1[index].split('\n').map((text, index2) => (
-                                                        <React.Fragment key={index2}>
-                                                            {text}
-                                                            <br />
-                                                        </React.Fragment>))
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {this.data2[index].split('\n').map((text, index2) => (
-                                                        <React.Fragment key={index2}>
-                                                            {text}
-                                                            <br />
-                                                        </React.Fragment>))
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {this.data3[index].split('\n').map((text, index2) => (
-                                                        <React.Fragment key={index2}>
-                                                            {text}
-                                                            <br />
-                                                        </React.Fragment>))
-                                                    }
-                                                </td>
-                                            </tr>)}
-                                    </tbody>
-                                </table>
-                                <p className="mt-20">※可依照客戶需求客製化數據分析，費用待議。</p>
-                            </div>
-                        </Row>
-                    </Container>
-                </div>
-                <Footer />
-            </>
+                    <div className="layout_main">
+                        <Container className="main_analytic">
+                            <Row>
+                                <NavLeftMember three />
+                                <div className="main_right">
+                                    <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/ 帳單與儲值 /服務與用量</span></h2>
+                                    <MemberCentreTitle one />
+                                    <Container className="mt-20">
+                                        <Row>
+                                            <Col sm={7}>
+                                                <h5>您目前的方案：<span>付費會員 - 月繳</span></h5>
+                                                <h5>會員方案期限：<span>2019年3月3日 ~ 2019年4月3日</span></h5>
+                                            </Col>
+                                            <Col sm={5} className="d-flex justify-content-end align-items-end">
+                                                <button className="btn btn-info p-2 mr-3" onClick={this.toggleShowData}>更改方案</button>
+                                            </Col>
+                                        </Row>
+                                    </Container>
+                                    <table className="w-100 pushTable text-center mt-20 bg-white" cellPadding="5">
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td><b>免費會員</b></td>
+                                                <td><b>網站健檢</b></td>
+                                                <td><b>資產分析</b></td>
+                                                <td><b>用戶分析</b></td>
+                                            </tr>
+                                            {this.title.map((val, index) =>
+                                                <tr key={index}>
+                                                    <td>{val}</td>
+                                                    <td>
+                                                        {this.data0[index].split('\n').map((text, index2) => (
+                                                            <React.Fragment key={index2}>
+                                                                {text}
+                                                                <br />
+                                                            </React.Fragment>))
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        {this.data1[index].split('\n').map((text, index2) => (
+                                                            <React.Fragment key={index2}>
+                                                                {text}
+                                                                <br />
+                                                            </React.Fragment>))
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        {this.data2[index].split('\n').map((text, index2) => (
+                                                            <React.Fragment key={index2}>
+                                                                {text}
+                                                                <br />
+                                                            </React.Fragment>))
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        {this.data3[index].split('\n').map((text, index2) => (
+                                                            <React.Fragment key={index2}>
+                                                                {text}
+                                                                <br />
+                                                            </React.Fragment>))
+                                                        }
+                                                    </td>
+                                                </tr>)}
+                                        </tbody>
+                                    </table>
+                                    <p className="mt-20">※可依照客戶需求客製化數據分析，費用待議。</p>
+                                </div>
+                            </Row>
+                        </Container>
+                    </div>
+                    <Footer />
+                </>
         )
     }
 }

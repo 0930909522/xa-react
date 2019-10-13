@@ -9,8 +9,11 @@ import MemberCard from '../share/MemberCard';
 import PushBill from './PushBill';
 import AlertMsg from '../share/AlertMsg';
 import { FaRegCreditCard } from "react-icons/fa";
-import { bill, getUserInfo,addValuePush } from '../share/ajax';
+import { bill, getUserInfo, addValuePush } from '../share/ajax';
 // import Payment from '../share/Payment';
+import { Redirect } from 'react-router';
+
+//本頁權限 0-4
 
 const initialData = {
     date: '',
@@ -83,7 +86,7 @@ class Billing extends Component {
     close = () => {
         this.props.history.push('/memberCentre/billing/two');
         // 清除資料
-        this.setState({ 
+        this.setState({
             status: '',
             paid: false,
             sent: false,
@@ -94,7 +97,7 @@ class Billing extends Component {
 
     // 付費方案已選妥，開始填表
     toSend = () => {
-        if(this.state.deposit.price){
+        if (this.state.deposit.price) {
             this.setState({ paid: true });
         }
     }
@@ -111,8 +114,8 @@ class Billing extends Component {
     // 填寫資料
     writeInfo = (value, type) => {
         let newData = this.state.deposit;
-        if(!newData.hasOwnProperty(type)){ //避免增添新屬性
-            return ;
+        if (!newData.hasOwnProperty(type)) { //避免增添新屬性
+            return;
         }
         newData[type] = value;
         this.setState({ deposit: newData });
@@ -144,80 +147,82 @@ class Billing extends Component {
     render() {
         const { bill } = this.state;
         return (
-            <>
-                <Header cateIndex={4} />
-                {/* 儲值頁面 */}
-                <PushBill
-                    getInput={this.writeInfo}
-                    alertText={this.state.alertText}
-                    status={this.state.status}
-                    paid={this.state.paid}
-                    close={() => this.close()}
-                    handlePaid={this.toSend}
-                    sent={this.state.sent}
-                    submit={this.submit}
-                />
-                {/* 註冊成功提醒 */}
-                <AlertMsg
-                    text="註冊成功，感謝您"
-                    attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
-                    close={() => this.setState({ showAlertMsg: false })}
-                />
-                <div className="layout_main">
-                    <Container className="main_analytic">
-                        <Row>
-                            <NavLeftMember three />
-                            <div className="main_right">
-                                <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/ 帳單與儲值</span></h2>
-                                <MemberCentreTitle num={this.state.type} />
-                                <div className="cards">
-                                    {/* <MemberCard title="您的餘額" buttonName="儲值已付款">
+            !this.props.permissionData.verified ?
+                <Redirect to="/signup/signin" /> :
+                <>
+                    <Header cateIndex={4} />
+                    {/* 儲值頁面 */}
+                    <PushBill
+                        getInput={this.writeInfo}
+                        alertText={this.state.alertText}
+                        status={this.state.status}
+                        paid={this.state.paid}
+                        close={() => this.close()}
+                        handlePaid={this.toSend}
+                        sent={this.state.sent}
+                        submit={this.submit}
+                    />
+                    {/* 註冊成功提醒 */}
+                    <AlertMsg
+                        text="註冊成功，感謝您"
+                        attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                        close={() => this.setState({ showAlertMsg: false })}
+                    />
+                    <div className="layout_main">
+                        <Container className="main_analytic">
+                            <Row>
+                                <NavLeftMember three />
+                                <div className="main_right">
+                                    <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/ 帳單與儲值</span></h2>
+                                    <MemberCentreTitle num={this.state.type} />
+                                    <div className="cards">
+                                        {/* <MemberCard title="您的餘額" buttonName="儲值已付款">
                                         <h1>$7,640.00</h1>
                                     </MemberCard> */}
-                                    <MemberCard
-                                        title="數據服務與用量"
-                                        buttonName="查看更多內容"
-                                        //handleClick={() => browserHistory.push('/memberCentre/service')}
-                                        handleClick={() => this.props.history.push('/memberCentre/service')}
-                                    >
-                                        <h6 className="my-2">會員資格：付費會員 - 月繳</h6>
-                                        <h6 className="my-2">會員方案期限：2019年3月3日 ~ 2019年4月3日</h6>
-                                    </MemberCard>
-                                    <MemberCard
-                                        title="數據服務儲值"
-                                        buttonName="數據儲值"
-                                        handleClick={() => this.props.history.push('/memberCentre/billing/three')}
-                                    >
-                                        <Row>
-                                            <Col sm="4">
-                                                <FaRegCreditCard className="img_fluid1 pl-2" />
-                                            </Col>
-                                            <Col sm="8">
-                                                <p>696···· ···69699</p>
-                                                <p>到期日：09/20</p>
-                                            </Col>
-                                        </Row>
-                                    </MemberCard>
-                                    <MemberCard
-                                        title="您的推播餘額"
-                                        buttonName="推播儲值"
-                                        handleClick={() => this.props.history.push('/memberCentre/billing/four')}
-                                    >
-                                        <p>儲值後開始推廣您的網站</p>
-                                        <h1>${bill[1] ? bill[1].balance : ""}</h1>
-                                        {/* push */}
-                                    </MemberCard>
-                                    <MemberCard
-                                        title="您的推播收入"
-                                        buttonName="安裝追蹤碼"
-                                        handleClick={this.pullBenefitHref}
-                                    >
-                                        <p>在您的網站安裝推推立即可開始收錢</p>
-                                        <h1>${bill[0] ? bill[0].balance : ""}</h1>
-                                        {/* pull */}
-                                    </MemberCard>
+                                        <MemberCard
+                                            title="數據服務與用量"
+                                            buttonName="查看更多內容"
+                                            //handleClick={() => browserHistory.push('/memberCentre/service')}
+                                            handleClick={() => this.props.history.push('/memberCentre/service')}
+                                        >
+                                            <h6 className="my-2">會員資格：付費會員 - 月繳</h6>
+                                            <h6 className="my-2">會員方案期限：2019年3月3日 ~ 2019年4月3日</h6>
+                                        </MemberCard>
+                                        <MemberCard
+                                            title="數據服務儲值"
+                                            buttonName="數據儲值"
+                                            handleClick={() => this.props.history.push('/memberCentre/billing/three')}
+                                        >
+                                            <Row>
+                                                <Col sm="4">
+                                                    <FaRegCreditCard className="img_fluid1 pl-2" />
+                                                </Col>
+                                                <Col sm="8">
+                                                    <p>696···· ···69699</p>
+                                                    <p>到期日：09/20</p>
+                                                </Col>
+                                            </Row>
+                                        </MemberCard>
+                                        <MemberCard
+                                            title="您的推播餘額"
+                                            buttonName="推播儲值"
+                                            handleClick={() => this.props.history.push('/memberCentre/billing/four')}
+                                        >
+                                            <p>儲值後開始推廣您的網站</p>
+                                            <h1>${bill[1] ? bill[1].balance : ""}</h1>
+                                            {/* push */}
+                                        </MemberCard>
+                                        <MemberCard
+                                            title="您的推播收入"
+                                            buttonName="安裝追蹤碼"
+                                            handleClick={this.pullBenefitHref}
+                                        >
+                                            <p>在您的網站安裝推推立即可開始收錢</p>
+                                            <h1>${bill[0] ? bill[0].balance : ""}</h1>
+                                            {/* pull */}
+                                        </MemberCard>
 
-                                    {/* <MemberCard title="交易明細" buttonName="查看更多內容">
+                                        {/* <MemberCard title="交易明細" buttonName="查看更多內容">
                                         <div className="d-flex justify-content-between my-2">
                                             <span>2019年2月1日 -2019年2月28日</span>
                                             <span>$8,000</span>
@@ -227,17 +232,17 @@ class Billing extends Component {
                                             <span>$9,460</span>
                                         </div>
                                     </MemberCard>*/}
-                                    <MemberCard title="帳號設定" buttonName="管理設定" handleClick={() => window.location = '/memberCentre/edit'}>
-                                        <h6 className="my-2">統一編號：{this.state.accountInfo.taxId}</h6>
-                                        <h6 className="my-2">{this.state.accountInfo.companyName}</h6>
-                                    </MemberCard>
+                                        <MemberCard title="帳號設定" buttonName="管理設定" handleClick={() => window.location = '/memberCentre/edit'}>
+                                            <h6 className="my-2">統一編號：{this.state.accountInfo.taxId}</h6>
+                                            <h6 className="my-2">{this.state.accountInfo.companyName}</h6>
+                                        </MemberCard>
+                                    </div>
                                 </div>
-                            </div>
-                        </Row>
-                    </Container>
-                </div>
-                <Footer />
-            </>
+                            </Row>
+                        </Container>
+                    </div>
+                    <Footer />
+                </>
         )
     }
 }

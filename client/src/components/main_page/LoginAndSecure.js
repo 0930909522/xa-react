@@ -4,7 +4,10 @@ import Header from "../Header";
 import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
 import AlertMsg from '../share/AlertMsg';
-import {updatePsd} from '../share/ajax';
+import { updatePsd } from '../share/ajax';
+import { Redirect } from 'react-router';
+
+//本頁權限 0-4
 
 const LoginAndSecure = () => {
     const [psd, changePsd] = useState('');
@@ -31,14 +34,14 @@ const LoginAndSecure = () => {
             }
             // 傳送密碼
             updatePsd(postData)
-            .then(res=>{
-                if(res === 1){
-                    showMsgFun('修改成功');
-                }else{
-                    showMsgFun('舊密碼輸入錯誤');
-                    return;
-                }
-            })
+                .then(res => {
+                    if (res === 1) {
+                        showMsgFun('修改成功');
+                    } else {
+                        showMsgFun('舊密碼輸入錯誤');
+                        return;
+                    }
+                })
         }
         changeState(!editing);
     }
@@ -85,68 +88,70 @@ const LoginAndSecure = () => {
 
     // render() {
     return (
-        <>
-            <AlertMsg
-                text={msg}
-                attr={showMsg ? 'opacity1' : 'opacity0'}
-                close={() => showAlertMsg(false)}
-            />
-            <Header />
-            <div className="layout_main">
-                <Container className="main_analytic">
-                    <Row>
-                        <NavLeftMember two />
-                        <div className="main_right">
-                            <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/登入與帳號安全</span></h2>
-                            <div className=" box radius10 mt-20">
-                                <h4 className="text-primary">變更密碼</h4>
-                                <hr />
-                                <label htmlFor="password">密碼</label>
-                                {editing ?
-                                    <>
-                                        <label htmlFor="oldpassword">請輸入舊密碼</label>
-                                        <input
-                                            name="oldpassword"
-                                            type="password"
-                                            className="input_1 mb-3"
-                                            defaultValue=""
-                                            placeholder="密碼：8個以上包含半形英文數字"
-                                            onChange={(e) => changeOldPsd(e.target.value)}
-                                        />
-                                        <label htmlFor="password">請輸入新密碼</label>
-                                        <input
-                                            name="password"
-                                            type="password"
-                                            className="input_1 mb-3"
-                                            defaultValue=""
-                                            placeholder="密碼：8個以上包含半形英文數字"
-                                            onChange={(e) => changePsd(e.target.value)}
-                                        />
-                                        <input
-                                            name="password"
-                                            type="password"
-                                            className="input_1 mb-3"
-                                            defaultValue=""
-                                            placeholder="再次輸入密碼"
-                                            onChange={(e) => changeCheckPsd(e.target.value)}
-                                        />
-                                        {(psd !== checkPsd && checkPsd) && <p className="text-danger">*密碼不一致</p>}
-                                    </>
-                                    :
-                                    <h5>{'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}</h5>
-                                }
-                                <button
-                                    className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20"
-                                    onClick={submit}
-                                >{editing ? '儲存' : '變更'}</button>
+        !this.props.permissionData.verified ?
+            <Redirect to="/signup/signin" /> :
+            <>
+                <AlertMsg
+                    text={msg}
+                    attr={showMsg ? 'opacity1' : 'opacity0'}
+                    close={() => showAlertMsg(false)}
+                />
+                <Header />
+                <div className="layout_main">
+                    <Container className="main_analytic">
+                        <Row>
+                            <NavLeftMember two />
+                            <div className="main_right">
+                                <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/登入與帳號安全</span></h2>
+                                <div className=" box radius10 mt-20">
+                                    <h4 className="text-primary">變更密碼</h4>
+                                    <hr />
+                                    <label htmlFor="password">密碼</label>
+                                    {editing ?
+                                        <>
+                                            <label htmlFor="oldpassword">請輸入舊密碼</label>
+                                            <input
+                                                name="oldpassword"
+                                                type="password"
+                                                className="input_1 mb-3"
+                                                defaultValue=""
+                                                placeholder="密碼：8個以上包含半形英文數字"
+                                                onChange={(e) => changeOldPsd(e.target.value)}
+                                            />
+                                            <label htmlFor="password">請輸入新密碼</label>
+                                            <input
+                                                name="password"
+                                                type="password"
+                                                className="input_1 mb-3"
+                                                defaultValue=""
+                                                placeholder="密碼：8個以上包含半形英文數字"
+                                                onChange={(e) => changePsd(e.target.value)}
+                                            />
+                                            <input
+                                                name="password"
+                                                type="password"
+                                                className="input_1 mb-3"
+                                                defaultValue=""
+                                                placeholder="再次輸入密碼"
+                                                onChange={(e) => changeCheckPsd(e.target.value)}
+                                            />
+                                            {(psd !== checkPsd && checkPsd) && <p className="text-danger">*密碼不一致</p>}
+                                        </>
+                                        :
+                                        <h5>{'\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022'}</h5>
+                                    }
+                                    <button
+                                        className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20"
+                                        onClick={submit}
+                                    >{editing ? '儲存' : '變更'}</button>
 
-                                {/* <h4 className="text-primary mt-5">邀請帳戶存取權</h4>
+                                    {/* <h4 className="text-primary mt-5">邀請帳戶存取權</h4>
                                     <hr />
                                     <label htmlFor="email">電子郵件信箱</label>
                                     <input name="email" id="email" type="email" className="input_1 mb-3" defaultValue={this.state.data.email} readOnly={this.state.editData[1]} onChange={this.typeData} />
                                     <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={(e) => this.changeBtn(1, e)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button> */}
-                            </div>
-                            {/* <div className=" mt-20 bg-white">
+                                </div>
+                                {/* <div className=" mt-20 bg-white">
                                     <table className="w-100 dash_table">
                                         <tbody>
                                             <tr className="d-table-row bg-light">
@@ -218,13 +223,13 @@ const LoginAndSecure = () => {
                                         </tbody>
                                     </table>
                                 </div> */}
-                        </div>
+                            </div>
 
-                    </Row>
-                </Container>
-            </div>
-            <Footer />
-        </>
+                        </Row>
+                    </Container>
+                </div>
+                <Footer />
+            </>
     )
     // }
 }

@@ -5,6 +5,9 @@ import Footer from '../Footer';
 import NavLeftMember from "../share/NavLeftMember";
 import { getUserInfo, updateUserInfo } from '../share/ajax';
 import EditUserInfoElement from './EditUserInfoElement';
+import { Redirect } from 'react-router';
+
+//本頁權限 0-4
 
 class EditUserInfo extends Component {
     constructor(props) {
@@ -56,12 +59,12 @@ class EditUserInfo extends Component {
                     name: this.state.data.name
                 };
                 updateUserInfo(postData)
-                .then(response=>{
-                    if(response.status == 1){
-                        alert('修改成功');
-                        localStorage.setItem('name', this.state.data.name);
-                    }
-                })
+                    .then(response => {
+                        if (response.status == 1) {
+                            alert('修改成功');
+                            localStorage.setItem('name', this.state.data.name);
+                        }
+                    })
 
             }
         } else {
@@ -77,39 +80,41 @@ class EditUserInfo extends Component {
     }
     render() {
         return (
-            <>
-                <Header />
-                <div className="layout_main">
-                    <Container className="main_analytic">
-                        <Row>
-                            <NavLeftMember one />
-                            <div className="main_right">
-                                <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/編輯使用者資訊</span></h2>
-                                <div className="box radius10 mt-20">
-                                    <h4 className="text-primary">個人檔案</h4>
-                                    <hr />
-                                    {Object.keys(this.state.data).map((key, index) =>
-                                        <React.Fragment key={index}>
-                                            <label>{this.title[key]}</label>
-                                            <EditUserInfoElement
-                                                name={this.state.data[key]}
-                                                keyElement={key}
-                                                editData={this.state.editData}
-                                                inputWord={this.typeData}
-                                                readOnly={(this.title[key] === '暱稱' || this.title[key] === '服務類型') ? false : true}
-                                            />
-                                        </React.Fragment>
-                                    )}
-                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={this.changeBtn}>{this.state.editData ? '儲存' : '變更'}</button>
-                                    {this.state.editData && <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={() => window.location.reload()}>取消</button>}
+            !this.props.permissionData.verified ?
+                <Redirect to="/signup/signin" /> :
+                <>
+                    <Header />
+                    <div className="layout_main">
+                        <Container className="main_analytic">
+                            <Row>
+                                <NavLeftMember one />
+                                <div className="main_right">
+                                    <h2>會員中心<span style={{ fontSize: '20px' }}>&nbsp;/編輯使用者資訊</span></h2>
+                                    <div className="box radius10 mt-20">
+                                        <h4 className="text-primary">個人檔案</h4>
+                                        <hr />
+                                        {Object.keys(this.state.data).map((key, index) =>
+                                            <React.Fragment key={index}>
+                                                <label>{this.title[key]}</label>
+                                                <EditUserInfoElement
+                                                    name={this.state.data[key]}
+                                                    keyElement={key}
+                                                    editData={this.state.editData}
+                                                    inputWord={this.typeData}
+                                                    readOnly={(this.title[key] === '暱稱' || this.title[key] === '服務類型') ? false : true}
+                                                />
+                                            </React.Fragment>
+                                        )}
+                                        <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={this.changeBtn}>{this.state.editData ? '儲存' : '變更'}</button>
+                                        {this.state.editData && <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={() => window.location.reload()}>取消</button>}
+                                    </div>
                                 </div>
-                            </div>
 
-                        </Row>
-                    </Container>
-                </div>
-                <Footer />
-            </>
+                            </Row>
+                        </Container>
+                    </div>
+                    <Footer />
+                </>
         )
     }
 }

@@ -10,6 +10,9 @@ import TableElement from './TableElement';
 import TableElementEdit from './TableElementEdit';
 import { trackingList, modifyTracking } from '../share/ajax';
 import AlertMsg from '../share/AlertMsg';
+import { Redirect } from 'react-router';
+
+//本頁權限 0-4
 
 class EditPage extends Component {
     constructor(props) {
@@ -82,13 +85,13 @@ class EditPage extends Component {
         let sendData = { url: project.domainName, name: project.siteName };
         this.setState({
             dataOnCheckPage: sendData,
-            status:2
+            status: 2
         })
 
     }
-    newDataToCheckPage = (data) =>{
+    newDataToCheckPage = (data) => {
         //新增的追蹤碼要傳至驗證頁
-        let {siteName,domainName} = data;
+        let { siteName, domainName } = data;
         let sendData = { url: domainName, name: siteName };
         this.setState({
             dataOnCheckPage: sendData,
@@ -132,96 +135,98 @@ class EditPage extends Component {
 
     render() {
         return (
-            <>
-                <AlertMsg
-                    text={this.state.alertText}
-                    attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
-                    close={() => this.setState({ showAlertMsg: false })}
-                />
-                <Header />
-                <div className="layout_main">
-                    <Container className="main_analytic">
-                        <Row>
-                            <NavLeftMember four />
-                            <div className="main_right">
-                                <h2><span className="btn_like" onClick={() => this.changeStatus(0)}>編輯網站資訊</span></h2>
-                                {/* <div className={this.state.status === 0 ? 'd-none' : ''}>
+            !this.props.permissionData.verified ?
+                <Redirect to="/signup/signin" /> :
+                <>
+                    <AlertMsg
+                        text={this.state.alertText}
+                        attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                        close={() => this.setState({ showAlertMsg: false })}
+                    />
+                    <Header />
+                    <div className="layout_main">
+                        <Container className="main_analytic">
+                            <Row>
+                                <NavLeftMember four />
+                                <div className="main_right">
+                                    <h2><span className="btn_like" onClick={() => this.changeStatus(0)}>編輯網站資訊</span></h2>
+                                    {/* <div className={this.state.status === 0 ? 'd-none' : ''}>
                                     <span className={this.state.status > 0 ? 'text-primary' : ''}>選取黑名單項目</span>
                                     <span>&nbsp;｜&nbsp;</span>
                                     <span className={this.state.status > 1 ? 'text-primary' : ''}>設定黑名單</span>
                                     <span>&nbsp;｜&nbsp;</span>
                                     <span className={this.state.status > 2 ? 'text-primary' : this.state.userAddingData.boardId === null ? '' : 'text-secondary'}>安裝教學</span>
                                 </div> */}
-                                <div className={this.state.status === 0 ? 'box' : 'd-none'}>
-                                    <table className="text-center w-100 table_simple" cellPadding="15">
-                                        <thead>
-                                            <tr>
-                                                <th colSpan="5" className="align-items-center">
-                                                    <h4>追蹤碼清單</h4>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>狀態</th>
-                                                <th>網站名稱</th>
-                                                <th>網站網址</th>
-                                                <th>產業類型</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {/* <tr>
+                                    <div className={this.state.status === 0 ? 'box' : 'd-none'}>
+                                        <table className="text-center w-100 table_simple" cellPadding="15">
+                                            <thead>
+                                                <tr>
+                                                    <th colSpan="5" className="align-items-center">
+                                                        <h4>追蹤碼清單</h4>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th>狀態</th>
+                                                    <th>網站名稱</th>
+                                                    <th>網站網址</th>
+                                                    <th>產業類型</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {/* <tr>
                                                 <td>
                                                     <input type="checkbox" className="table_checkbox" onClick={this.toggleClickAll} />
                                                 </td>
                                                 <td colSpan="3"></td>
                                             </tr> */}
-                                            {this.state.data.map((val, index) => (
-                                                !val.edit ? <TableElement
-                                                    val={val}
-                                                    index={index}
-                                                    key={index}
-                                                    // clickCheckbox={this.clickCheckbox}
-                                                    editData={this.editData}
-                                                    toCheckPage={() => this.sendToCheckPage(index)}
-                                                />
-                                                    :
-                                                    <TableElementEdit
+                                                {this.state.data.map((val, index) => (
+                                                    !val.edit ? <TableElement
                                                         val={val}
                                                         index={index}
                                                         key={index}
                                                         // clickCheckbox={this.clickCheckbox}
                                                         editData={this.editData}
-                                                        submitData={this.submitEdit}
                                                         toCheckPage={() => this.sendToCheckPage(index)}
                                                     />
-                                            ))}
-                                            {(this.state.showBtn) && <tr><td colSpan="4"></td><td className="btn_like" onClick={this.deleteList}><FaTrashAlt /></td></tr>}
-                                        </tbody>
-                                    </table>
-                                    <div className="text-center">
-                                        <button className="btn btn-primary text-white px-4 mt-2 weight600 font_20" onClick={() => this.changeStatus(1)}>&#43;</button>
+                                                        :
+                                                        <TableElementEdit
+                                                            val={val}
+                                                            index={index}
+                                                            key={index}
+                                                            // clickCheckbox={this.clickCheckbox}
+                                                            editData={this.editData}
+                                                            submitData={this.submitEdit}
+                                                            toCheckPage={() => this.sendToCheckPage(index)}
+                                                        />
+                                                ))}
+                                                {(this.state.showBtn) && <tr><td colSpan="4"></td><td className="btn_like" onClick={this.deleteList}><FaTrashAlt /></td></tr>}
+                                            </tbody>
+                                        </table>
+                                        <div className="text-center">
+                                            <button className="btn btn-primary text-white px-4 mt-2 weight600 font_20" onClick={() => this.changeStatus(1)}>&#43;</button>
+                                        </div>
                                     </div>
+                                    {
+                                        this.state.status === 1 &&
+                                        <SetTrackingCode
+                                            changeStatus={() => this.changeStatus(2)}
+                                            toCheckPage={this.newDataToCheckPage}
+                                        />
+                                    }
+                                    {
+                                        this.state.status === 2 &&
+                                        <CheckTrackingCode
+                                            data={this.state.dataOnCheckPage}
+                                        />
+                                    }
                                 </div>
-                                {
-                                    this.state.status === 1 &&
-                                    <SetTrackingCode
-                                        changeStatus={() => this.changeStatus(2)}
-                                        toCheckPage={this.newDataToCheckPage}
-                                    />
-                                }
-                                {
-                                    this.state.status === 2 &&
-                                    <CheckTrackingCode
-                                        data={this.state.dataOnCheckPage}
-                                    />
-                                }
-                            </div>
 
-                        </Row>
-                    </Container>
-                </div>
-                <Footer />
-            </>
+                            </Row>
+                        </Container>
+                    </div>
+                    <Footer />
+                </>
         )
     }
 }
