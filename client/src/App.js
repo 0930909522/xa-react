@@ -60,11 +60,13 @@ class App extends Component {
     permissionData: {
       level: '',
       name: '',
+      maxAge: '',
       verified: false
     }
   }
   // level: 1以上才有追蹤的網站
   // name:用戶名稱
+  // maxAge: 會員期限
   // verified: 是否驗證過
   UNSAFE_componentWillMount = () => {
     let storageData = localStorage.getItem('permission');

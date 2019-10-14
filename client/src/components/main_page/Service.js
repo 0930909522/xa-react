@@ -4,9 +4,10 @@ import Header from "../Header";
 import Footer from '../Footer';
 import MemberCentreTitle from '../share/MemberCentreTitle';
 import NavLeftMember from '../share/NavLeftMember';
-import Payment from '../share/Payment';
-import { addValueMem } from '../share/ajax';
+// import Payment from '../share/Payment';
+// import { addValueMem } from '../share/ajax';
 import { Redirect } from 'react-router';
+import JSON from '../share/memberAccount.json';
 
 // 本頁權限 0-4
 
@@ -25,60 +26,27 @@ class Service extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            accountInfo: {
+                level: 'XXX',
+                maxAge: 'XXXX-XX-XX'
+            },
+            formData: {},   //欄位資料
             showData: false,
             alertText: '', //*以上內容皆為必填
             deposit: Object.assign({}, initialData),
             sent: false
         }
-        this.title = [
-            // '智媒推推系統',
-            '頁面比對驗證功能',
-            '基礎分析功能',
-            '進階分析功能',
-            '推播成效報告功能',
-            '數據分析收費',
-            '廣告推播付費功能',
-            '廣告曝光收益'
-        ]
-        this.data0 = [
-            // '自行安裝',
-            '×',
-            '1. 用戶分析\n2. 流量來源分析\n3. 客群分析\n4. 消費分析\n5. 價值分析(主力、上 升、衰退、遺珠、孱弱)',
-            '×',
-            '×',
-            // '儲值面額 10,000 / 次\n儲值面額 15,000 / 次\n儲值面額 20,000 / 次',
-            '×',
-            '曝光數: 30元 / 百次\n點擊數: 25元 / 次',
-            '曝光數: 6元 / 百次\n點擊數: 5元 / 次'
-        ];
-        this.data1 = [
-            // '自行安裝',
-            '×',
-            '1. 用戶分析\n2. 流量來源分析\n3. 客群分析\n4. 消費分析\n5. 價值分析(主力、上 升、衰退、遺珠、孱弱)',
-            '×',
-            '×',
-            '1萬 / 月\n2.8萬 / 季\n10萬 / 年',
-            '曝光數: 30元 / 百次\n點擊數: 25元 / 次',
-            '曝光數: 6元 / 百次\n點擊數: 5元 / 次'
-        ];
-        this.data2 = [
-            // '全自動程式系統安裝',
-            '確認內容頁\n商品頁\n導購頁\n結帳頁網址驗證',
-            '1. 用戶分析\n2. 流量來源分析\n3. 客群分析\n4. 消費分析\n5. 價值分析(主力、上 升、衰退、遺珠、孱弱)',
-            '1. 用戶互動分析\n2. 適配度分析\n3. 用戶畫像分析\n4. 微數據分析\n商品頁 \n導購頁\n結帳頁網址驗證',
-            '推播調整建議',
-            '3萬 / 月\n8萬 / 季\n30萬 / 年',
-            '曝光數: 30元 / 百次\n點擊數: 25元 / 次',
-            '曝光數: 12元 / 百次\n點擊數: 8元 / 次'];
-        this.data3 = [
-            // '全自動程式系統安裝',
-            '確認內容頁\n商品頁\n導購頁\n結帳頁網址驗證',
-            '1. 用戶分析\n2. 流量來源分析\n3. 客群分析\n4. 消費分析\n5. 價值分析(主力、上 升、衰退、遺珠、孱弱)',
-            '1. 用戶互動分析\n2. 適配度分析\n3. 用戶畫像分析\n4. 微數據分析\n商品頁 \n導購頁\n結帳頁網址驗證',
-            '1. 推播調整建議\n2. 推播成效報告',
-            '8萬 / 月\n22萬 / 季\n85萬 / 年',
-            '1. 無限智能配對推播曝光次數\n2. 保證點擊1,000次/月',
-            '曝光數: 12元 / 百次\n點擊數: 8元 / 次'];
+    }
+    componentDidMount() {
+        //初始化會員資料、欄位資料
+        this.setState({
+            ...this.state,
+            accountInfo: {
+                level: this.translate(),
+                maxAge: this.props.permissionData.maxAge
+            },
+            formData: JSON
+        })
     }
 
     toggleShowData = () => {
@@ -90,6 +58,27 @@ class Service extends Component {
         })
     }
 
+    // 轉換會員資格意義
+    translate = () => {
+        let data = '';
+        switch (this.props.permissionData.level) {
+            case 1:
+                data = '免費會員'
+                break;
+            case 2:
+                data = '網站健檢'
+                break;
+            case 3:
+                data = '資產分析'
+                break;
+            case 4:
+                data = '用戶分析'
+                break;
+            default:
+                break;
+        }
+        return data;
+    }
     // 選擇方案
     chooseProject = (project) => {
         let newData = this.state.deposit;
@@ -100,34 +89,34 @@ class Service extends Component {
     }
 
     // 填寫資料
-    writeInfo = (value, type) => {
-        let newData = this.state.deposit;
-        newData[type] = value;
-        this.setState({ deposit: newData });
-        if (this.state.alertText) {
-            this.setState({ alertText: '' });
-        }
-    }
+    // writeInfo = (value, type) => {
+    //     let newData = this.state.deposit;
+    //     newData[type] = value;
+    //     this.setState({ deposit: newData });
+    //     if (this.state.alertText) {
+    //         this.setState({ alertText: '' });
+    //     }
+    // }
 
     //送出資料
-    submit = () => {
-        let postData = this.state.deposit;
-        for (let i in postData) {
-            if (!String(postData[i]).trim()) {
-                // this.alertMsg('內容皆為必填');
-                this.setState({ alertText: '*以上內容皆為必填' });
-                return;
-            }
-        }
-        addValueMem(postData).then(res => {
-            if (res === 1) {
-                //成功
-                this.setState({ sent: true });
-            } else {
-                this.setState({ alertText: '*傳送失敗，請稍後再試' });
-            }
-        })
-    }
+    // submit = () => {
+    //     let postData = this.state.deposit;
+    //     for (let i in postData) {
+    //         if (!String(postData[i]).trim()) {
+    //             // this.alertMsg('內容皆為必填');
+    //             this.setState({ alertText: '*以上內容皆為必填' });
+    //             return;
+    //         }
+    //     }
+    //     addValueMem(postData).then(res => {
+    //         if (res === 1) {
+    //             //成功
+    //             this.setState({ sent: true });
+    //         } else {
+    //             this.setState({ alertText: '*傳送失敗，請稍後再試' });
+    //         }
+    //     })
+    // }
 
 
     render() {
@@ -144,23 +133,57 @@ class Service extends Component {
                             </h4>
                             <div className={this.state.deposit.price ? "d-none" : "p-3 mx-auto w-100 scrollY h-65v "}>
                                 <Row>
+                                    <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">網站健檢</h2></Col>
+                                    <Col sm={6}>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
+                                            // onClick={() => this.chooseProject([8000, 'm', 3])}
+                                            >月繳
+                                        </button>
+                                            <span className="ml-3">1萬 / 月</span>
+                                        </div>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
+                                            >季繳
+                                        </button>
+                                            <span className="ml-3">2.8萬 / 季</span>
+                                        </div>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
+                                            >年繳
+                                        </button>
+                                            <span className="ml-3">10萬 / 年</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <hr className="dash_line" />
+                                <Row>
                                     <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">資產分析</h2></Col>
                                     <Col sm={6}>
                                         <div className="my-3">
                                             <button
                                                 className="btn btn-outline-warning px-5 py-2"
-                                                onClick={() => this.chooseProject([8000, 'm', 3])}
+                                            // onClick={() => this.chooseProject([8000, 'm', 3])}
                                             >月繳
                                         </button>
-                                            <span className="ml-3">8000 ~ 1.5萬 / 月</span>
+                                            <span className="ml-3">3萬 / 月</span>
                                         </div>
                                         <div className="my-3">
                                             <button
                                                 className="btn btn-outline-warning px-5 py-2"
-                                                onClick={() => this.chooseProject([360000, 'y', 3])}
+                                            >季繳
+                                        </button>
+                                            <span className="ml-3">8萬 / 季</span>
+                                        </div>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
                                             >年繳
                                         </button>
-                                            <span className="ml-3">36萬 / 年</span>
+                                            <span className="ml-3">30萬 / 年</span>
                                         </div>
                                     </Col>
                                 </Row>
@@ -171,23 +194,24 @@ class Service extends Component {
                                         <div className="my-3">
                                             <button
                                                 className="btn btn-outline-warning px-5 py-2"
-                                                onClick={() => this.chooseProject([960000, 'y', 4])}
-                                            >年繳
+                                            // onClick={() => this.chooseProject([8000, 'm', 3])}
+                                            >月繳
                                         </button>
-                                            <span className="ml-3">96萬 / 年</span>
+                                            <span className="ml-3">8萬 / 月</span>
                                         </div>
-                                    </Col>
-                                </Row>
-                                <hr className="dash_line" />
-                                <Row>
-                                    <Col sm={6} className="d-flex justify-content-center align-items-center"><h2 className="text-center">網站健檢</h2></Col>
-                                    <Col sm={6}>
                                         <div className="my-3">
                                             <button
                                                 className="btn btn-outline-warning px-5 py-2"
-                                                onClick={() => this.chooseProject([960000, 'y', 2])}
-                                            >年繳</button>
-                                            <span className="ml-3">96萬 / 年</span>
+                                            >季繳
+                                        </button>
+                                            <span className="ml-3">22萬 / 季</span>
+                                        </div>
+                                        <div className="my-3">
+                                            <button
+                                                className="btn btn-outline-warning px-5 py-2"
+                                            >年繳
+                                        </button>
+                                            <span className="ml-3">85萬 / 年</span>
                                         </div>
                                     </Col>
                                 </Row>
@@ -195,7 +219,7 @@ class Service extends Component {
                                     <button className="btn btn-outline-primary w-75 p-2 font_20 radius20">我要更改方案，請聯絡我</button>
                                 </div>
                             </div>
-                            {
+                            {/* {
                                 this.state.deposit.price &&
                                 <Payment
                                     sent={this.state.sent}
@@ -203,7 +227,7 @@ class Service extends Component {
                                     getInput={this.writeInfo}
                                     alertText={this.state.alertText}
                                 />
-                            }
+                            } */}
                         </div>
                     </div>
                     <div className="layout_main">
@@ -216,8 +240,8 @@ class Service extends Component {
                                     <Container className="mt-20">
                                         <Row>
                                             <Col sm={7}>
-                                                <h5>您目前的方案：<span>付費會員 - 月繳</span></h5>
-                                                <h5>會員方案期限：<span>2019年3月3日 ~ 2019年4月3日</span></h5>
+                                                <h5>您目前的方案：<span>{this.state.accountInfo.level}</span></h5>
+                                                <h5>會員方案期限：<span>{this.state.accountInfo.maxAge}</span></h5>
                                             </Col>
                                             <Col sm={5} className="d-flex justify-content-end align-items-end">
                                                 <button className="btn btn-info p-2 mr-3" onClick={this.toggleShowData}>更改方案</button>
@@ -233,42 +257,43 @@ class Service extends Component {
                                                 <td><b>資產分析</b></td>
                                                 <td><b>用戶分析</b></td>
                                             </tr>
-                                            {this.title.map((val, index) =>
-                                                <tr key={index}>
-                                                    <td>{val}</td>
-                                                    <td>
-                                                        {this.data0[index].split('\n').map((text, index2) => (
-                                                            <React.Fragment key={index2}>
-                                                                {text}
-                                                                <br />
-                                                            </React.Fragment>))
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        {this.data1[index].split('\n').map((text, index2) => (
-                                                            <React.Fragment key={index2}>
-                                                                {text}
-                                                                <br />
-                                                            </React.Fragment>))
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        {this.data2[index].split('\n').map((text, index2) => (
-                                                            <React.Fragment key={index2}>
-                                                                {text}
-                                                                <br />
-                                                            </React.Fragment>))
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        {this.data3[index].split('\n').map((text, index2) => (
-                                                            <React.Fragment key={index2}>
-                                                                {text}
-                                                                <br />
-                                                            </React.Fragment>))
-                                                        }
-                                                    </td>
-                                                </tr>)}
+                                            {this.state.formData.title &&
+                                                this.state.formData.title.map((val, index) =>
+                                                    <tr key={index}>
+                                                        <td>{val}</td>
+                                                        <td>
+                                                            {this.state.formData.data0[index].split('\n').map((text, index2) => (
+                                                                <React.Fragment key={index2}>
+                                                                    {text}
+                                                                    <br />
+                                                                </React.Fragment>))
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {this.state.formData.data1[index].split('\n').map((text, index2) => (
+                                                                <React.Fragment key={index2}>
+                                                                    {text}
+                                                                    <br />
+                                                                </React.Fragment>))
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {this.state.formData.data2[index].split('\n').map((text, index2) => (
+                                                                <React.Fragment key={index2}>
+                                                                    {text}
+                                                                    <br />
+                                                                </React.Fragment>))
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {this.state.formData.data3[index].split('\n').map((text, index2) => (
+                                                                <React.Fragment key={index2}>
+                                                                    {text}
+                                                                    <br />
+                                                                </React.Fragment>))
+                                                            }
+                                                        </td>
+                                                    </tr>)}
                                         </tbody>
                                     </table>
                                     <p className="mt-20">※可依照客戶需求客製化數據分析，費用待議。</p>
