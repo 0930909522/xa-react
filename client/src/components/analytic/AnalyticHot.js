@@ -16,7 +16,7 @@ class AnalyticGroup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: "foodnext",
+            view: localStorage.getItem('view'),
             keywords: "",
             hot: "",
             now: "",
@@ -122,7 +122,7 @@ class AnalyticGroup extends Component {
             <div className="layout_main">
                 <Container className="main_analytic">
                     <Row>
-                        <NavLeft />
+                        <NavLeft view={this.state.view}/>
                         <div className="main_right">
                             <h2>熱門頁面</h2>
                             { level < thisLevel ? htmlInstallTrack(level, thisLevel) : 

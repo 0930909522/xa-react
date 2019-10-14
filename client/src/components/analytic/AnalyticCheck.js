@@ -20,7 +20,7 @@ class AnalyticCheck extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: "foodnext",
+      view: localStorage.getItem('view'),
       isOpen: false,
       isOpenDesktop: true,
       isOpenMobile: true,
@@ -313,7 +313,7 @@ class AnalyticCheck extends Component {
 
           <Container className="main_analytic">
             <Row>
-              <NavLeft />
+            <NavLeft view={this.state.view}/>
 
               <div className="main_right">
                 <h2>網站健檢</h2>

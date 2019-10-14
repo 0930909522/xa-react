@@ -13,7 +13,7 @@ class AnalyticBasis extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: "foodnext",
+            view: localStorage.getItem('view'),
             isOpenItem01: true,
             isOpenItem02: true,
             isOpenItem03: true,
@@ -70,7 +70,7 @@ class AnalyticBasis extends Component {
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
-                            <NavLeft />
+                            <NavLeft view={this.state.view}/>
                             <div className="main_right">
                                 <h2>流量報表</h2>
                                 { level < thisLevel ? htmlInstallTrack(level, thisLevel) : 

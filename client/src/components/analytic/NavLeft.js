@@ -5,15 +5,32 @@ import { IoIosHappy, IoIosOptions, IoMdContact, IoIosCode, IoIosTime, IoMdPie, I
 import { GoRuby , GoDesktopDownload, GoBookmark} from 'react-icons/go';
 import { FaHandshake } from 'react-icons/fa';
 
+
+
+
 class NavLeft extends Component {
-  state = {}
+
+  setViewName = ()=> {
+    let view = localStorage.getItem("view");
+    let ary = JSON.parse(localStorage.getItem("website"));
+
+    console.log("view", view);
+    console.log("ary", ary);
+    let name = ary.find( item => 
+      item.websiteId === view
+    ).siteName
+    return name
+  }
+
   render() {
     return (
       <div className="layout_left">
         <div className="box_logo">
-          <div className="logo" style={{backgroundImage: "url('./logo.png')"}}></div>
+          <div className="logo" style={{backgroundColor: "#333", fontSize:"45px", lineHeight:"75px", textAlign: "center", color: "#fff", fontWeight: "normal"}}>
+          {this.setViewName().substr(0, 1)}
+          </div>
         </div>
-        <h2><span style={{fontSize:"20px"}}>食力</span> 數據分析 </h2>
+        <h2><span style={{fontSize:"20px"}}>{this.setViewName()}</span> 數據分析 </h2>
         <ul className="nav_left">
           {/* <li> <FaFileAlt /> <Link to="/general">訪客總覽</Link></li> */}
           <li> <IoMdPie /> <Link to="/basis">基礎分析</Link></li>

@@ -19,6 +19,7 @@ class AnalyticAsset extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      view: localStorage.getItem('view'),
       //isDetail: false,
       //assetId: "rise",
       //categoryId: "c1",
@@ -129,7 +130,7 @@ class AnalyticAsset extends Component {
       params: {
         type: this.state.listIndex + 1,
         interval: this.state.listInterval,
-        view: "foodnext",
+        view: this.state.view,
         id1: this.state.categoryId,
         id2: this.state.subCategoryId,
       }
@@ -378,7 +379,7 @@ class AnalyticAsset extends Component {
         <div className="layout_main">
           <Container className="main_analytic">
             <Row>
-              <NavLeft />
+              <NavLeft view={this.state.view}/>
               
               <div className="main_right">
                 <h2>資產價值</h2>

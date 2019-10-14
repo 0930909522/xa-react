@@ -20,7 +20,7 @@ class AnalyticPortrait extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: "foodnext",
+            view: localStorage.getItem("view,"),
             openExample: false,
             fishType: "",
             topId: 0,
@@ -215,7 +215,7 @@ class AnalyticPortrait extends Component {
                 <div className="layout_main">
                     <Container className="main_analytic">
                         <Row>
-                            <NavLeft />
+                            <NavLeft view={this.state.view}/>
                             <div className="main_right">
                                 <h2>用戶畫像</h2>
                                 { level < thisLevel ? htmlInstallTrack(level, thisLevel) :
