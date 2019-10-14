@@ -30,7 +30,7 @@ class NavLeft extends Component {
           {this.setViewName().substr(0, 1)}
           </div>
         </div>
-        <h2><span style={{fontSize:"20px"}}>{this.setViewName()}</span> 數據分析 </h2>
+        <h2><span style={{fontSize:"20px", paddingBottom: "5px"}}>{this.setViewName()}</span> 分析 </h2>
         <ul className="nav_left">
           {/* <li> <FaFileAlt /> <Link to="/general">訪客總覽</Link></li> */}
           <li> <IoMdPie /> <Link to="/basis">基礎分析</Link></li>
