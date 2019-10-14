@@ -96,12 +96,13 @@ class Payment extends Component {
                         </button>
                     </div>
                     <h4 className="my-5 p-4 btn_like bg-light radius10" onClick={() => this.choosePayState(2)}>
-                        <span className="text-primary">開立即期支票</span>
+                        {/* <span className="text-primary">開立即期支票</span> */}
+                        <span className="text-primary">來電通知</span>
                         {this.state.payState === 2 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}
                     </h4>
                     <div className={this.state.payState === 2 ? 'd-block' : 'd-none'}>
                         <hr />
-                        <p>
+                        {/* <p>
                             <strong className="font_20 d-block">開立即期支票掛號寄送至：</strong>
                             <br />台北市中正區忠孝東路一段85號5樓
                                     <br />收 件 人：王大明先生
@@ -118,7 +119,6 @@ class Payment extends Component {
                                 onChange={(e) => this.props.getInput(e.target.value, 'lastFiveNum')}
                             />
                         </label>
-                        {/* <label className="w-100 font_20">支票金額<input className="d-block my-2 input_1" /></label> */}
                         <label className="w-100 font_20">郵寄單號
                             <input
                                 className="d-block my-2 input_1"
@@ -132,7 +132,7 @@ class Payment extends Component {
                             className="d-block mx-auto mt-3 btn btn-outline-primary w-75 radius20 font_20"
                             onClick={this.props.sendMsg}
                         >通知已付款
-                        </button>
+                        </button> */}
                     </div>
                     {/* <h5 className="my-3 btn_like" onClick={() => this.choosePayState(3)}>線上轉帳付款{this.state.payState === 3 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}</h5>
                             <div className={this.state.payState === 3 ? 'd-block' : 'd-none'}>

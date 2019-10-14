@@ -2,8 +2,19 @@ import React, { Component } from 'react';
 import PopMsg from '../share/PopMsg';
 import { Container, Row, Col } from "react-bootstrap";
 import Payment from '../share/Payment';
+import JSON from '../share/memberAccount.json';
 
 class PushBill extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            optionValue: []
+        }
+    }
+    componentDidMount() {
+        let newData = JSON['data' + (this.props.level - 1)][4].split('\n');
+        this.setState({ optionValue: newData });
+    }
     render() {
         let titleWord;
         if (this.props.status === '10' && !this.props.paid) {
@@ -56,11 +67,16 @@ class PushBill extends Component {
                             <h3 className="text-center">儲值面額</h3>
                         </Col>
                         <Col sm={6}>
-                            <select className="px-4 py-2 radius10 no_outline">
+                            <select
+                                className="px-4 py-2 radius10 no_outline"
+                                onChange={(e) => this.props.getInput(e.target.value, 'price')}
+                            >
                                 <option>---請選擇---</option>
-                                <option>1萬 / 月</option>
-                                <option>2.8萬 / 季</option>
-                                <option>10萬 / 年</option>
+                                {
+                                    this.state.optionValue.map(val => (
+                                        <option key={val}>{val}</option>
+                                    ))
+                                }
                             </select>
                         </Col>
                     </Row>

@@ -589,10 +589,26 @@ export const addValuePush = async postData => {
     return data;
 }
 
-//推播收益
-export const myPush = async (postData) => {
+//收益明細
+export const myPull = async (postData) => {
     let data;
     await fetch('https://node.aiday.org/sbir/user/paymentFlow/pull?yyyymm='+postData, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+    }).then(response => response.json()
+    ).then(response => {
+        data = response;
+    }).catch(err => {
+        console.log(err);
+    })
+    return data;
+}
+
+//推播明細
+export const myPush = async (postData) => {
+    let data;
+    await fetch('https://node.aiday.org/sbir/user/paymentFlow/push?yyyymm='+postData, {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',

@@ -60,11 +60,13 @@ class App extends Component {
     permissionData: {
       level: '',
       name: '',
+      maxAge: '',
       verified: false
     }
   }
   // level: 1以上才有追蹤的網站
   // name:用戶名稱
+  // maxAge: 會員期限
   // verified: 是否驗證過
   UNSAFE_componentWillMount = () => {
     let storageData = localStorage.getItem('permission');
@@ -138,9 +140,9 @@ class App extends Component {
           {/* 安裝追蹤碼(設定追蹤碼) */}
           {/* <Route path="/trackingCode/setting" component={SetTrackingCode} /> */}
           {/* 安裝追蹤碼(修改設定) */}
-          <Route path="/trackingCode/modify" component={ModifySetting} />
+          {/* <Route path="/trackingCode/modify" render={(props) => <ModifySetting permissionData={permissionData} {...props} />} /> */}
           {/* 安裝追蹤碼*/}
-          <Route path="/trackingCode/install" component={InstallTrackingCode} />
+          {/* <Route path="/trackingCode/install" render={(props) => <InstallTrackingCode permissionData={permissionData} {...props} />} /> */}
           {/* 安裝追蹤碼(測試安裝是否成功) */}
           {/* <Route path="/trackingCode/check" component={CheckSuccess} /> */}
           {/* sign up(建立帳號) */}
@@ -148,32 +150,31 @@ class App extends Component {
           {/* sign up(驗證) */}
           <Route path="/signup/verification" component={Verification} />
           {/* sign up(驗證信程式) */}
-          <Route path="/checkEmailPermission" component={checkEmailPermission} />
+          {/* <Route path="/checkEmailPermission" component={checkEmailPermission} /> */}
           {/* sign up(驗證成功) */}
-          <Route path="/signup/success" component={VerifySuccess} />
+          {/* <Route path="/signup/success" component={VerifySuccess} /> */}
           {/* sign in*/}
           <Route path="/signup/signin" render={(props) => <SignIn getPermission={this.permission} {...props} />} />
           {/* 會員中心 (編輯使用者資訊) */}
-          <Route path="/memberCentre/edit" component={EditUserInfo} />
+          <Route path="/memberCentre/edit" render={(props) => <EditUserInfo permissionData={permissionData} {...props} />} />
           {/* 會員中心 (編輯網站資訊) */}
-          {/* <Route path="/memberCentre/website" component={EditPage} /> */}
-          <Route path="/memberCentre/website" component={EditPage} />
+          <Route path="/memberCentre/website" render={(props) => <EditPage permissionData={permissionData} {...props} />} />
           {/* 會員中心 (登入與帳號安全) */}
-          <Route path="/memberCentre/loginAndSecure" component={LoginAndSecure} />
+          <Route path="/memberCentre/loginAndSecure" render={(props) => <LoginAndSecure permissionData={permissionData} {...props} />} />
           {/* 會員中心(帳單與儲值) */}
-          <Route path="/memberCentre/billing/:type" component={Billing} />
+          <Route path="/memberCentre/billing/:type" render={(props) => <Billing permissionData={permissionData} {...props} />} />
           {/* 會員中心 (管理方案付款-金融卡) */}
-          <Route path="/memberCentre/debitCard" component={DebitCard} />
+          <Route path="/memberCentre/debitCard" render={(props) => <DebitCard permissionData={permissionData} {...props} />} />
           {/* 會員中心 (服務與用量) */}
-          <Route path="/memberCentre/service" component={Service} />
+          <Route path="/memberCentre/service" render={(props) => <Service permissionData={permissionData} {...props} />} />
           {/* 推播 */}
-          <Route exact path="/push" component={Push} />
+          <Route exact path="/push" render={(props) => <Push permissionData={permissionData} {...props} />} />
           {/* 推播 黑名單 */}
           {/* <Route path="/push/blacklist" component={BlackList} /> */}
           {/* 布告欄（清單） */}
-          <Route path="/board" component={Board} />
+          <Route path="/board" render={(props) => <Board permissionData={permissionData} {...props} />} />
           {/* 財務報表 */}
-          <Route path="/report/:id" component={Receipt} />
+          <Route path="/report/:id" render={(props) => <Receipt permissionData={permissionData} {...props} />} />
           {/* 特定頁面推播 */}
           {/* <Route exact path="/pushInstall" component={PushPage} /> */}
           {/* 設定黑名單-已建立 */}

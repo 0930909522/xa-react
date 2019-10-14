@@ -10,7 +10,7 @@ class Header extends Component {
   state = {
     showAlertMsg: false,
     websites: [],
-    viewIndex: []
+    viewIndex: ''
   };
   componentDidMount() {
     const getWebsites = JSON.parse(localStorage.getItem('website')) || [];
@@ -21,30 +21,29 @@ class Header extends Component {
     getWebsites.forEach((val, index) => {
       if (val.websiteId === currentView) {
         this.setState({ 'viewIndex': index });
+        localStorage.setItem('viewName', val.siteName);
       }
     });
 
   }
   logout = () => {
     // if (localStorage.getItem('name')) {
-      this.setState({ showAlertMsg: true });
-      localStorage.removeItem('name');
-      localStorage.removeItem('view');
-      localStorage.removeItem('visited');
-      localStorage.removeItem('website');
-      localStorage.removeItem('permission');
+    this.setState({ showAlertMsg: true });
+    localStorage.clear();
 
-      logout();
-      setTimeout(() => {
-        this.setState({ showAlertMsg: false });
-        // window.location.href = '/signup/signin';
-      }, 4000);
+    logout();
+    setTimeout(() => {
+      this.setState({ showAlertMsg: false });
+      // window.location.href = '/signup/signin';
+    }, 4000);
     // } else {
     //   window.location.href = '/signup/signin';
     // }
   }
+
   switchWebsite = (index) => {
     localStorage.setItem('view', this.state.websites[index].websiteId);
+    localStorage.setItem('viewName', this.state.websites[index].siteName);
     this.setState({ 'viewIndex': index });
     window.location.reload();
   }
