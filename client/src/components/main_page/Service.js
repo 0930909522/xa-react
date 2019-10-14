@@ -83,7 +83,7 @@ class Service extends Component {
 
     toggleShowData = () => {
         this.setState({
-            showData: false,
+            showData: !this.state.showData,
             alertText: '',
             deposit: Object.assign({}, initialData),
             sent: false
