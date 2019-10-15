@@ -20,7 +20,7 @@ class AnalyticPortrait extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: localStorage.getItem("view,"),
+            view: localStorage.getItem("view"),
             openExample: false,
             fishType: "",
             topId: 0,
