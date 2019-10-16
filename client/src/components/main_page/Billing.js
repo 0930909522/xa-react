@@ -8,7 +8,6 @@ import MemberCard from '../share/MemberCard';
 // import PopMsg from '../share/PopMsg';
 import PushBill from './PushBill';
 import AlertMsg from '../share/AlertMsg';
-import { FaRegCreditCard } from "react-icons/fa";
 import { bill, getUserInfo, addValuePush, addValueMem } from '../share/ajax';
 // import Payment from '../share/Payment';
 import { Redirect } from 'react-router';
@@ -153,6 +152,30 @@ class Billing extends Component {
         }
     }
 
+    //數據增添、修改資料
+    modifyPostData = (postData) => {
+        let price = postData.price.replace(/\s/g, '').split('/');
+        let interval = '';
+        switch (price[1]) {
+            case '年':
+                interval = 'y';
+                break;
+            case '季':
+                interval = 's';
+                break;
+            case '月':
+                interval = 'm';
+                break;
+            default:
+                break;
+        }
+        price = price[0].replace('萬', '')*10000;
+        postData.level = this.props.permissionData.level;   // 添加level
+        postData.price = price; //金錢
+        postData.interval = interval;   // 繳款週期
+        return postData;
+    }
+
     //送出資料
     submit = () => {
         let postData = this.state.deposit;
@@ -162,8 +185,7 @@ class Billing extends Component {
                 return;
             }
         }
-        console.log(postData)
-        if(this.state.status === "10"){
+        if (this.state.status === "10") {
             // 推播
             addValuePush(postData).then(res => {
                 if (res === 1) {
@@ -173,8 +195,9 @@ class Billing extends Component {
                     this.setState({ alertText: '*傳送失敗，請稍後再試' });
                 }
             })
-        }else if(this.state.status === "11"){
+        } else if (this.state.status === "11") {
             //數據
+            postData = this.modifyPostData(postData);   //修改postData
             addValueMem(postData).then(res => {
                 if (res === 1) {
                     //成功
@@ -236,15 +259,7 @@ class Billing extends Component {
                                             buttonName="數據儲值"
                                             handleClick={() => this.props.history.push('/memberCentre/billing/three')}
                                         >
-                                            <Row>
-                                                <Col sm="4">
-                                                    <FaRegCreditCard className="img_fluid1 pl-2" />
-                                                </Col>
-                                                <Col sm="8">
-                                                    <p>696···· ···69699</p>
-                                                    <p>到期日：09/20</p>
-                                                </Col>
-                                            </Row>
+                                            <h6 className="my-2">儲值以延續會員資格</h6>
                                         </MemberCard>
                                         <MemberCard
                                             title="您的推播餘額"
@@ -276,8 +291,8 @@ class Billing extends Component {
                                         </div>
                                     </MemberCard>*/}
                                         <MemberCard title="帳號設定" buttonName="管理設定" handleClick={() => window.location = '/memberCentre/edit'}>
+                                            <h6 className="my-2">公司名稱：{this.state.accountInfo.companyName}</h6>
                                             <h6 className="my-2">統一編號：{this.state.accountInfo.taxId}</h6>
-                                            <h6 className="my-2">{this.state.accountInfo.companyName}</h6>
                                         </MemberCard>
                                     </div>
                                 </div>

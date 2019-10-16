@@ -3,11 +3,14 @@ import { Container } from 'react-bootstrap';
 import Footer from '../Footer';
 import Navpt from '../share/Navpt';
 import { register } from '../share/ajax';
+import AlertMsg from '../share/AlertMsg';
 
 class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            alertText: '',
+            showAlertMsg: false,
             checkPwd: '',
             same: null,
             checkEmail: false,
@@ -22,6 +25,14 @@ class Register extends Component {
             }
         }
     }
+    // 跳出訊息視窗
+    popMsg = (val) => {
+        this.setState({ alertText: val, showAlertMsg: true });
+        setTimeout(() => {
+            this.setState({ alertText: '', showAlertMsg: false });
+        }, 4000);
+    }
+
     addData = (e, text) => {
         const value = e.target.value;
         const newData = this.state.data;
@@ -65,41 +76,51 @@ class Register extends Component {
     submit = () => {
         for (let i in this.state.data) { //檢查必填
             if (this.state.data[i] === null || this.state.data[i] === '') {
-                alert('欄位不可為空');
+                this.popMsg('欄位不可為空');
                 return;
             }
         }
         //密碼不符合
         if (this.state.checkPwd !== true) {
-            alert('密碼格式不符');
+            this.popMsg('密碼格式不符');
             return;
         }
         //電子信箱不符合
         if (this.state.checkEmail !== true) {
-            alert('電子信箱格式不符');
+            this.popMsg('電子信箱格式不符');
             return;
         }
         //有再次輸入
         if (this.state.same !== true) {
-            alert('確認密碼欄位錯誤');
+            this.popMsg('確認密碼欄位錯誤');
             return;
         }
         //統編格式不符
         let taxid = this.state.data.taxId;
         if (taxid.match(/[^0-9]/) !== null || taxid.length !== 8) {
-            alert('統編格式不符');
+            this.popMsg('統編格式不符');
             return;
         }
         //有勾選
         if (this.state.hasRead !== true) {
-            alert('請同意使用條款');
+            this.popMsg('請同意使用條款');
             return;
         }
-        register(this.state.data);
+        register(this.state.data).then(res=>{
+            if(typeof res === 'string'){
+                // 如果有錯誤訊息
+                this.popMsg(res);
+            }
+        })
     }
     render() {
         return (
             <>
+                <AlertMsg
+                    text={this.state.alertText}
+                    attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                    close={() => this.setState({ showAlertMsg: false })}
+                />
                 <Navpt />
                 <div className="layout_main bg-white d-inline-block text-center w-100">
                     <Container className="main_analytic w-50">
@@ -109,7 +130,7 @@ class Register extends Component {
                             <input name="email" id="email" type="email" className="input_1 mb-4" placeholder="電子郵件信箱" onChange={(e) => this.addData(e, 'email')} />
                             <input name="pwd" id="pwd" type="password" className="input_1 mb-4" placeholder="密碼：8個以上包含半形英文數字" onChange={(e) => this.addData(e, 'pwd')} />
                             <div className="position-relative">
-                                <p className={(this.state.same || this.state.same === null ? 'd-none' : '') +  ' text-danger text-left position-absolute translateY'}>*密碼不一致</p>
+                                <p className={(this.state.same || this.state.same === null ? 'd-none' : '') + ' text-danger text-left position-absolute translateY'}>*密碼不一致</p>
                                 <input name="pwd2" id="pwd2" type="password" className="input_1 mb-4" placeholder="再次輸入密碼" onKeyUp={(e) => this.doubleCheckPwd(e)} />
                             </div>
                             <input name="company" id="company" type="text" className="input_1 mb-4" placeholder="輸入公司名稱" onChange={(e) => this.addData(e, 'companyName')} />

@@ -48,7 +48,7 @@ class Icon extends Component {
         return (
             <>
                 <div className="box_logo">
-                    <h1 className="logo bg-dark text-white icon">
+                    <h1 className="logo bg-dark text-white member_icon">
                         {this.state.name.slice(0,1)}
                     </h1>
                 </div>

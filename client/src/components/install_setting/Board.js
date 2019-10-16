@@ -48,7 +48,7 @@ class Board extends Component {
                     array[index].choose = false;
                 })
                 this.setState({ data: getData });
-                console.log(getData)
+                // console.log(getData)
             })
         // this.setState({ userAddingData: Object.assign({}, initialUserAddingData) }); //初始化
 
@@ -80,6 +80,7 @@ class Board extends Component {
             showBtn: booleanBtn
         });
     }
+    // 展開或隱藏
     toggleTr = (index) => {
         const newContent = [...this.state.data];
         newContent[index].show = !newContent[index].show;
@@ -124,6 +125,21 @@ class Board extends Component {
                 window.location.reload();
             })
     }
+    // 英翻中
+    translate = (value) => {
+        switch (value) {
+            case 'm':
+                value = '文章';
+                break;
+            case 'e':
+                value = '商品';
+                break;
+            default:
+                value = '';
+                break;
+        }
+        return value;
+    }
 
     render() {
         return (
@@ -161,45 +177,46 @@ class Board extends Component {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {this.state.data.map((val, index) => (
-                                                            <React.Fragment key={val.boardId}>
-                                                                <tr>
-                                                                    <td className="d-flex justify-content-between align-items-center">
-                                                                        <div>
-                                                                            <input type="checkbox" checked={val.choose} onChange={() => this.clickCheckbox(index)} />
-                                                                            <h5 className="d-inline-block vertical_middle ml-5" style={{ 'margin': '0' }}>{'清單 ' + (index + 1)}</h5>
-                                                                        </div>
-                                                                        <div>
-                                                                            <FaSearch onClick={(e) => this.toggleTr(index)} className="btn_like mx-2" />
-                                                                            <FaEdit onClick={(e) => this.editData(index)} className="btn_like mx-2" />
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                {
-                                                                    (val.content !== null && val.show) && <tr>
-                                                                        <td colSpan="2">
-                                                                            <strong>類別</strong>
-                                                                            {
-                                                                                Array.from(val.acceptType).map((val, index) => (
-                                                                                    <h6 key={index}>{val}</h6>
-                                                                                ))
-                                                                            }
-                                                                            <br />
-                                                                            <strong>黑名單</strong>
-                                                                            {
-                                                                                (val.blacklist.length === 0) ? (
-                                                                                    <p>無黑名單</p>
-                                                                                )
-                                                                                    :
-                                                                                    val.blacklist.map((val, index) => (
-                                                                                        <h6 key={index}>{val}</h6>
-                                                                                    ))
-                                                                            }
+                                                        {this.state.data.length > 0 &&
+                                                            this.state.data.map((val, index) => (
+                                                                <React.Fragment key={val.boardId}>
+                                                                    <tr>
+                                                                        <td className="d-flex justify-content-between align-items-center">
+                                                                            <div>
+                                                                                <input type="checkbox" checked={val.choose} onChange={() => this.clickCheckbox(index)} />
+                                                                                <h5 className="d-inline-block vertical_middle ml-5" style={{ 'margin': '0' }}>{'清單 ' + (index + 1)}</h5>
+                                                                            </div>
+                                                                            <div>
+                                                                                <FaSearch onClick={(e) => this.toggleTr(index)} className="btn_like mx-2" />
+                                                                                <FaEdit onClick={(e) => this.editData(index)} className="btn_like mx-2" />
+                                                                            </div>
                                                                         </td>
                                                                     </tr>
-                                                                }
-                                                            </React.Fragment>
-                                                        ))}
+                                                                    {
+                                                                        (val.content !== null && val.show) && <tr>
+                                                                            <td colSpan="2">
+                                                                                <strong>類別</strong>
+                                                                                {
+                                                                                    Array.from(val.acceptType).map((val, index) => (
+                                                                                        <h6 key={index}>{this.translate(val)}</h6>
+                                                                                    ))
+                                                                                }
+                                                                                <br />
+                                                                                <strong>黑名單</strong>
+                                                                                {
+                                                                                    (val.blacklist.length === 0) ? (
+                                                                                        <p>無黑名單</p>
+                                                                                    )
+                                                                                        :
+                                                                                        val.blacklist.map((val, index) => (
+                                                                                            <h6 key={index}>{val}</h6>
+                                                                                        ))
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+                                                                </React.Fragment>
+                                                            ))}
                                                         {(this.state.showBtn) && <tr><td className="text-right btn_like" onClick={this.deleteList}><FaTrashAlt /></td></tr>}
                                                     </tbody>
                                                 </table>

@@ -122,15 +122,23 @@ class EditPage extends Component {
         modifyTracking(postData)
             .then(response => {
                 if (response.status === 4) {
-                    this.setState({ showAlertMsg: true, alertText: '此專案已不存在' });
-                    setTimeout(() => {
-                        this.setState({ showAlertMsg: false });
-                        window.location.reload();
-                    }, 5000);
+                    this.popMsg('此專案已不存在');
                     return;
+                }
+                if(typeof response === 'string'){
+                    // 如果有錯誤訊息
+                    this.popMsg(response);
+                    return ;
                 }
                 this.editData(index);
             })
+    }
+    popMsg = (value) => {
+        this.setState({ showAlertMsg: true, alertText: value });
+        setTimeout(() => {
+            this.setState({ showAlertMsg: false });
+            window.location.reload();
+        }, 5000);
     }
 
     render() {

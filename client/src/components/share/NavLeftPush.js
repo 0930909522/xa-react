@@ -11,8 +11,7 @@ class NavLeft extends Component {
       <div className="layout_left">
         <Icon />
         <ul className="nav_left">
-          {/* <li className={this.props.one && 'selected_text'}> <FaCode /> <Link to="/trackingCode/setting" className="dec_none btn_like">安裝追蹤碼</Link></li> */}
-          <li className={this.props.two && 'selected_text'}> <IoIosSettings /> <Link to="/push" className="dec_none btn_like">推出去</Link></li>
+          <li className={this.props.two && 'selected_text'} onClick={this.props.close}> <IoIosSettings /> <Link to="/push" className="dec_none btn_like">推出去</Link></li>
           <li className={this.props.three && 'selected_text'}> <FaTools /> <Link to="/board" className="dec_none btn_like">放進來</Link></li>
         </ul>
       </div>

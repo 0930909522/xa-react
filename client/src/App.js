@@ -38,18 +38,18 @@ import Push from './components/push/Push';
 // import SetBlacklist from './components/push_install/SetBlackList'; 
 // import InstallationGuide from './components/push_install/InstallationGuide';
 // import SetTrackingCode from './components/install_setting/SetTrackingCode';
-import ModifySetting from './components/install_setting/ModifySetting';
-import InstallTrackingCode from './components/install_setting/InstallTrackingCode';
+// import ModifySetting from './components/install_setting/ModifySetting';
+// import InstallTrackingCode from './components/install_setting/InstallTrackingCode';
 // import CheckSuccess from './components/install_setting/CheckSuccess';
 import Register from './components/main_page/Register';
 import checkEmailPermission from './components/main_page/checkEmailPermission';
-import Verification from './components/main_page/Verification';
+// import Verification from './components/main_page/Verification';
 import VerifySuccess from './components/main_page/VerifySuccess';
 import SignIn from './components/main_page/SignIn';
 import EditUserInfo from './components/main_page/EditUserInfo';
 import LoginAndSecure from './components/main_page/LoginAndSecure';
 import Billing from './components/main_page/Billing';
-import DebitCard from './components/main_page/DebitCard';
+// import DebitCard from './components/main_page/DebitCard';
 import Service from './components/main_page/Service';
 import Board from './components/install_setting/Board';
 import EditPage from './components/main_page/EditPage';
@@ -148,11 +148,11 @@ class App extends Component {
           {/* sign up(建立帳號) */}
           <Route path="/signup/register" component={Register} />
           {/* sign up(驗證) */}
-          <Route path="/signup/verification" component={Verification} />
+          {/* <Route path="/signup/verification" component={Verification} /> */}
           {/* sign up(驗證信程式) */}
-          {/* <Route path="/checkEmailPermission" component={checkEmailPermission} /> */}
+          <Route path="/checkEmailPermission" component={checkEmailPermission} />
           {/* sign up(驗證成功) */}
-          {/* <Route path="/signup/success" component={VerifySuccess} /> */}
+          <Route path="/signup/success" component={VerifySuccess} />
           {/* sign in*/}
           <Route path="/signup/signin" render={(props) => <SignIn getPermission={this.permission} {...props} />} />
           {/* 會員中心 (編輯使用者資訊) */}
@@ -164,11 +164,11 @@ class App extends Component {
           {/* 會員中心(帳單與儲值) */}
           <Route path="/memberCentre/billing/:type" render={(props) => <Billing permissionData={permissionData} {...props} />} />
           {/* 會員中心 (管理方案付款-金融卡) */}
-          <Route path="/memberCentre/debitCard" render={(props) => <DebitCard permissionData={permissionData} {...props} />} />
+          {/* <Route path="/memberCentre/debitCard" render={(props) => <DebitCard permissionData={permissionData} {...props} />} /> */}
           {/* 會員中心 (服務與用量) */}
           <Route path="/memberCentre/service" render={(props) => <Service permissionData={permissionData} {...props} />} />
           {/* 推播 */}
-          <Route exact path="/push" render={(props) => <Push permissionData={permissionData} {...props} />} />
+          <Route path="/push" render={(props) => <Push permissionData={permissionData} {...props} />} />
           {/* 推播 黑名單 */}
           {/* <Route path="/push/blacklist" component={BlackList} /> */}
           {/* 布告欄（清單） */}
