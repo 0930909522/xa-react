@@ -353,12 +353,13 @@ class AnalyticPortrait extends Component {
                                                         <div className="align_left f_z20">消費等級（購買力/回購度）</div>
                                                         <div className="fbg">
                                                             {fish.map((item, index) => {
-                                                                console.log(this.state.topId.split("g")[1])
                                                                 let top = "";
-                                                                if( index+1 == this.state.topId.split("g")[1]){
+                                                                if( item.id == this.state.topId){
                                                                     top = "red"
                                                                 }
-                                                                return <div key={index} className={ "fish g"+ (index+1) + " "+ top }>{fish.find(f=>f.id === "g"+(index+1)).percent}%</div>
+                                                                let myFish = fish.find(f=>f.id === item.id);
+                                                                let pp = myFish ? myFish.percent : 0;
+                                                                return <div key={index} className={ "fish "+ item.id + " "+ top }>{pp}%</div>
                                                             })}
                                                         </div>
                                                         <div className="align_right f_z20">黏著度/忠誠度</div>

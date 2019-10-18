@@ -14,8 +14,8 @@ class NavLeft extends Component {
     let view = localStorage.getItem("view");
     let ary = JSON.parse(localStorage.getItem("website"));
 
-    console.log("view", view);
-    console.log("ary", ary);
+    // console.log("view", view);
+    // console.log("ary", ary);
     let name = ary.find( item => 
       item.websiteId === view
     ).siteName
