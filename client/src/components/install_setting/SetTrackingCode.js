@@ -13,7 +13,6 @@ class SetTrackingCode extends Component {
         this.state = {
             showAlertMsg: false,
             alertText: '',
-            visited: null,
             guideNum: 0,
             data: {
                 siteName: '',
@@ -24,22 +23,7 @@ class SetTrackingCode extends Component {
         // this.guide = [<div><h2 className="my-5">歡迎使用智媒推推</h2><h4 className="my-5">智媒推推讓您更有效的流量提升，針對媒體與電商的需求設計，讓您更簡便的投放操作。</h4>
         // </div>, <div><p>AAAAAAA</p></div>, <div><p>BBBBB</p></div>];
     }
-    // componentDidMount() {
-    //     let status = localStorage.getItem('visited');
-    //     if (status === '1') {
-    //         // 第一次登入
-    //         this.setState({ visited: 1 });
-    //     } else {
-    //         this.setState({ visited: 0 });
-    //     }
-    // }
-    // closeGuide = () => {
-    //     this.setState({ visited: 0 });
-    //     localStorage.setItem('visited', '0');
-    // }
-    // handleChange = e => {
-    //     this.setState({ guideNum: e.target.value })
-    // }
+
     addingData = (e, text) => {
         const newData = this.state.data;
         newData[text] = e.target.value;

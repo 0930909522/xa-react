@@ -12,15 +12,17 @@ class PushBill extends Component {
         }
     }
     componentDidMount() {
-        let newData = JSON['data' + (this.props.level - 1)][4].split('\n');
-        this.setState({ optionValue: newData });
+        if(this.props.level){
+            let newData = JSON['data' + (this.props.level - 1)][4].split('\n');
+            this.setState({ optionValue: newData });
+        }
     }
     render() {
         let titleWord;
         if (this.props.status === '10' && !this.props.paid) {
             titleWord = '選擇推播儲值面額';
         } else if (this.props.status === '11' && !this.props.paid) {
-            titleWord = '選擇推播';
+            titleWord = '選擇數據服務儲值面額';
         } else {
             titleWord = '付款';
         }

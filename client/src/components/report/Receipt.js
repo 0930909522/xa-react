@@ -5,7 +5,7 @@ import Footer from '../Footer';
 import NavLeftReport from '../share/NavLeftReport';
 import { FaDownload } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import PopMsg from '../share/PopMsg';
+// import PopMsg from '../share/PopMsg';
 import { myPush, myPull, bill } from '../share/ajax';
 import { htmlInstallTrack } from '../share/checkPermission';
 import { Redirect } from 'react-router';
@@ -17,8 +17,8 @@ class Receipt extends Component {
         super(props);
         this.state = {
             status: ['', '0'],     //推播或收益，為明細0 或月報表1
-            showPopMsg: false,      //是否顯示某篇
-            showPopMsgIndex: 0,     //顯示地某篇
+            // showPopMsg: false,      //是否顯示某篇
+            // showPopMsgIndex: 0,     //顯示的某篇
             balance: {},    //推播、收益餘額
             pointer: 0  //查看哪月份
             // {      
@@ -31,7 +31,8 @@ class Receipt extends Component {
             ,
             date: [],   //日期列表
             weblist: [], //追蹤頁面列表
-            data: []    //列表資料
+            data: [],    //列表資料
+            page: [1, 1]    //目前總頁數，目前在第幾頁
         }
     }
     componentDidMount = async () => {
@@ -40,6 +41,7 @@ class Receipt extends Component {
         let dateList = [].concat(this.state.date);
         let newData = [].concat(this.state.data);
         let price = Object.assign({}, this.state.balance);
+        let newPage = [...this.state.page];
 
         // 為收益或推播
         if (this.props.match.params.id === 'income') {
@@ -66,10 +68,17 @@ class Receipt extends Component {
             dateList.push(String(year + '/' + month));
         }
 
+        this.setState({
+            ...this.state,
+            date: dateList,
+            balance: price,
+            status: id
+        })
+
         //初始化資料
         for (let i = 0; i < dateList.length; i++) {
             if (id[0] === '收益') {
-                await myPull(dateList[i]).then(res => {
+                await myPull(dateList[i].replace('/', '-')).then(res => {
                     for (let j of res) {
                         let element = j;
                         element.date = dateList[i];
@@ -78,7 +87,7 @@ class Receipt extends Component {
 
                 })
             } else {
-                await myPush(dateList[i]).then(res => {
+                await myPush(dateList[i].replace('/', '-')).then(res => {
                     for (let j of res) {
                         let element = j;
                         element.date = dateList[i];
@@ -86,13 +95,16 @@ class Receipt extends Component {
                     }
                 })
             }
+            //初始化頁數
+            if (i === 0) {
+                newPage[0] = Math.ceil(newData.length / 10);
+            }
         }
+
         this.setState({
             ...this.state,
             data: newData,
-            date: dateList,
-            balance: price,
-            status: id
+            page: newPage
         })
     }
     componentDidUpdate(preProp) {
@@ -123,7 +135,11 @@ class Receipt extends Component {
             return element;
         }).join("\n");
         let download = document.createElement('a');
-        download.setAttribute('href', 'data:text/csv;charset=utf-8,\uFEFF平台,類型,點擊數,曝光數,收支,日期,\n' + encodeURIComponent(csvContent));
+        if (this.state.status[0] === '收益') {
+            download.setAttribute('href', 'data:text/csv;charset=utf-8,\uFEFF平台,點擊數,曝光數,收支,日期,\n' + encodeURIComponent(csvContent));
+        } else {
+            download.setAttribute('href', 'data:text/csv;charset=utf-8,\uFEFF平台,類型,點擊數,曝光數,收支,日期,\n' + encodeURIComponent(csvContent));
+        }
         download.setAttribute('download', 'data.csv');
         download.setAttribute('target', '_blank');
         download.style.display = 'none';
@@ -135,7 +151,37 @@ class Receipt extends Component {
         // let to = String(this.props.match.params.id + this.state.status[1]);
         // let newPointer = this.state.pointer;
         // newPointer[to] = ;
-        this.setState({ pointer: index });
+
+        // 更新頁面數、目前頁面
+        let date = this.state.date[index];
+        let length = 0;
+        for (let i of this.state.data) {
+            if (i.date === date) {
+                length++;
+            }
+        }
+        let newPage = [Math.ceil(length / 10), 1];
+        this.setState({ pointer: index, page: newPage });
+    }
+    turnPage = (num) => {    //切換頁面
+        let newPage = [...this.state.page];
+        newPage[1] = num;
+        this.setState({ page: newPage });
+    }
+    translate = (val) => {
+        // 轉換為中文字
+        switch (val) {
+            case 'media':
+                return '推薦文章';
+            case 'ecommerce':
+                return '推薦商品';
+            case 'report':
+                return '專題報導';
+            case 'theme':
+                return '主題活動';
+            default:
+                return '';
+        }
     }
 
     render() {
@@ -206,11 +252,11 @@ class Receipt extends Component {
                                                 >推播明細
                                     </span>
                                                 <span>&nbsp;｜&nbsp;</span>
-                                                <span
+                                                {/* <span
                                                     className={(this.state.status[1] === '1' ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}
                                                     onClick={() => this.setState({ status: [this.state.status[0], '1'] })}
                                                 >月報表
-                                    </span>
+                                    </span> */}
 
                                             </div>
                                             <div className="box radius10">
@@ -222,7 +268,7 @@ class Receipt extends Component {
                                                                     {this.state.status[0] === '推播' ? this.state.balance.push : this.state.balance.pull}
                                                                 </h4>
                                                             </span>
-                                                            {this.state.status[0] === '推播' && <button className="btn btn-info ml-5" onClick={() => window.location.href = "/memberCentre/billing/two"}>推播儲值</button>}
+                                                            {this.state.status[0] === '推播' && <Link to="/memberCentre/billing/four"><button className="btn btn-info ml-5" >推播儲值</button></Link>}
                                                         </Col>
                                                         <Col sm="3">
                                                             <button className="btn btn-outline-dark w-100" onClick={this.toCSV}><FaDownload />&nbsp;&nbsp;匯出明細</button>
@@ -241,7 +287,7 @@ class Receipt extends Component {
                                                         </h4>
                                                     ))}
                                                 </div>
-                                                <select className="my-4">
+                                                {/* <select className="my-4">
                                                     <option value="1">日期由舊到新</option>
                                                     <option value="-1">日期由新到舊</option>
                                                 </select>
@@ -249,8 +295,8 @@ class Receipt extends Component {
                                                     <option value="1">全部</option>
                                                     <option value="-1">今周刊</option>
                                                     <option value="-1">食力</option>
-                                                </select>
-                                                <table className="w-100 text-center pushTable_r even" cellPadding="10">
+                                                </select> */}
+                                                <table className="w-100 text-center pushTable_r even my-4" cellPadding="10">
                                                     <thead>
                                                         <tr className="bg_gray1">
                                                             {/* <th>日期</th> */}
@@ -264,14 +310,18 @@ class Receipt extends Component {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {this.state.data.filter(val => (
+                                                        {this.state.data.filter((val, index) => (
                                                             val.date === this.state.date[this.state.pointer]
+                                                        )).filter((val, index) => (
+                                                            index >= 10 * (this.state.page[1] - 1) &&
+                                                            index < 10 * (this.state.page[1])
                                                         )).map((val, index) => {
+
                                                             return (
                                                                 <tr key={index}>
                                                                     {/* <td>{val.date}</td> */}
                                                                     <td>{val.brand}</td>
-                                                                    <td>{val.type}</td>
+                                                                    <td>{this.translate(val.type)}</td>
                                                                     {/* <td className="text-center">
                                                                         <span
                                                                             className="text_ellipsis d-block a_hover mx-auto"
@@ -291,9 +341,18 @@ class Receipt extends Component {
                                                     </tbody>
                                                 </table>
                                                 <div className="mt-4 mb-2 text-center">
-                                                    <span className="mx-2 btn_like text-primary">1</span>
+                                                    {/* <span className="mx-2 btn_like text-primary">1</span>
                                                     <span className="mx-2 btn_like">2</span>
-                                                    <span className="mx-2 btn_like">3</span>
+                                                    <span className="mx-2 btn_like">3</span> */}
+                                                    {
+                                                        Array.from(Array(this.state.page[0]), (e, val) => (
+                                                            <span
+                                                                key={val}
+                                                                className={"mx-2 btn_like " + (((val + 1) === this.state.page[1]) ? "text-primary" : "")}
+                                                                onClick={() => this.turnPage(val + 1)}
+                                                            >{val + 1}</span>
+                                                        ))
+                                                    }
                                                 </div>
                                             </div>
                                         </>

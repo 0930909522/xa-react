@@ -6,6 +6,7 @@ import NavLeftMember from "../share/NavLeftMember";
 import { getUserInfo, updateUserInfo } from '../share/ajax';
 import EditUserInfoElement from './EditUserInfoElement';
 import { Redirect } from 'react-router';
+import AlertMsg from '../share/AlertMsg';
 
 //本頁權限 0-4
 
@@ -14,6 +15,8 @@ class EditUserInfo extends Component {
         super(props);
         this.state = {
             editData: false,
+            alertText: '',
+            showAlertMsg: false,
             data: {
                 "name": "",
                 "email": "",
@@ -40,6 +43,13 @@ class EditUserInfo extends Component {
             this.setState({ data: newData })
         })
     }
+    popMsg = (value) => {
+        this.setState({ showAlertMsg: true, alertText: value });
+        setTimeout(() => {
+            this.setState({ showAlertMsg: false });
+            window.location.reload();
+        }, 5000);
+    }
     changeBtn = () => {
         let haveInput = false;
         if (this.state.editData) {
@@ -60,10 +70,15 @@ class EditUserInfo extends Component {
                 };
                 updateUserInfo(postData)
                     .then(response => {
-                        if (response.status == 1) {
-                            alert('修改成功');
+                        if (response.status === 1) {
+                            this.popMsg('修改成功，將重新整理頁面');
                             localStorage.setItem('name', this.state.data.name);
+                        }else{
+                            this.popMsg('修改失敗');
                         }
+                    })
+                    .catch(err=>{
+                        this.popMsg('修改失敗');
                     })
 
             }
@@ -83,6 +98,11 @@ class EditUserInfo extends Component {
             !this.props.permissionData.verified ?
                 <Redirect to="/signup/signin" /> :
                 <>
+                    <AlertMsg
+                        text={this.state.alertText}
+                        attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                        close={() => this.setState({ showAlertMsg: false })}
+                    />
                     <Header />
                     <div className="layout_main">
                         <Container className="main_analytic">

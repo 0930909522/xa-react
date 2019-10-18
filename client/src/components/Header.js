@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import { FaBell, FaUser } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 import { IoMdSwap } from 'react-icons/io';
 import AlertMsg from './share/AlertMsg';
 import { logout } from './share/ajax';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class Header extends Component {
   state = {
@@ -27,18 +27,13 @@ class Header extends Component {
 
   }
   logout = () => {
-    // if (localStorage.getItem('name')) {
     this.setState({ showAlertMsg: true });
-    localStorage.clear();
-
     logout();
+    localStorage.clear();
     setTimeout(() => {
       this.setState({ showAlertMsg: false });
-      // window.location.href = '/signup/signin';
+      window.location.href = '/signup/signin';
     }, 4000);
-    // } else {
-    //   window.location.href = '/signup/signin';
-    // }
   }
 
   switchWebsite = (index) => {
@@ -65,7 +60,7 @@ class Header extends Component {
             <Nav className="mr-auto">
               <Link to="/" className="nav-link">回首頁</Link>
               <Link to="/" className={cIndex === 1 ? "nav-link active" : "nav-link"}>數據分析</Link>
-              <Link to="/board" className={cIndex === 2 ? "nav-link active" : "nav-link"}>推播管理</Link>
+              <Link to="/push" className={cIndex === 2 ? "nav-link active" : "nav-link"}>推播管理</Link>
               <Link to="/report/push" className={cIndex === 3 ? "nav-link active" : "nav-link"}>帳務報表</Link>
               <Link to="/memberCentre/billing/:type" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
             </Nav>
@@ -96,7 +91,7 @@ class Header extends Component {
                   <li id="name">{`${localStorage.getItem('name') || '訪客'}，您好`}</li>
                   <li><Link to="/memberCentre/billing/two" className="nav-link">進入會員中心</Link></li>
                   {/* <li onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li> */}
-                  <li><Link onClick={this.logout} to="/signup/signin" className="nav-link">{localStorage.getItem('name') ? '登出' : '登入'}</Link></li>
+                  <li onClick={this.logout} className="nav-link"> {localStorage.getItem('name') ? '登出' : '登入'} </li>
                 </ul>
               </div>
             </div>

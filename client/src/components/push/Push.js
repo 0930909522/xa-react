@@ -6,7 +6,6 @@ import NavLeftPush from "../share/NavLeftPush";
 import PushTitle from "./share/PushTitle";
 import Switch from './share/Switch';
 import PushList from './PushList';
-// import PushList2 from './PushList2';
 import { pushStatus, modifyPushStatus, getPush } from '../share/ajax';
 // import { FaRegCalendar, FaRegNewspaper, FaRegThumbsUp } from "react-icons/fa";
 import { htmlInstallTrack } from '../share/checkPermission';
@@ -19,7 +18,6 @@ class Push extends Component {
     super(props);
     this.state = {
       openList1: false,
-      // openList2: false,
       hasData: [false, false], //專題報導和主題活動是否有檔案
       title: '',
       ajaxSleep: false,
@@ -34,7 +32,7 @@ class Push extends Component {
 
   componentDidMount = async () => {
     let newHasData = [...this.state.hasData];
-    let newData = {};
+    let newData = {...this.state.data};
     // pushingReport、pushingTheme是否可改
     let postData1 = {
       view: localStorage.getItem('view'),
@@ -47,8 +45,10 @@ class Push extends Component {
 
     //初始化狀態
     await pushStatus().then(res => {
-      newData = res;
-      this.setState({ data: res });
+      for(let i in res){
+        newData[i] = res[i];
+      }
+      this.setState({ data: newData });
     })
 
     //初始化是否可更改狀態
@@ -89,7 +89,7 @@ class Push extends Component {
   }
 
   closeList = () => {
-    this.setState({ openList1: false, openList2: false, title: '' });
+    this.setState({ openList1: false, title: '' });
   }
 
   //推出去執行完成後回到列表
@@ -148,7 +148,7 @@ class Push extends Component {
           <div className="layout_main">
             <Container className="main_analytic">
               <Row>
-                <NavLeftPush two />
+                <NavLeftPush two close={this.closeList} />
                 <div className="main_right">
                   <h2><span className="btn_like" onClick={this.closeList}>推出去</span><span dangerouslySetInnerHTML={{ __html: this.state.title }}></span></h2>
                   {this.props.permissionData.level < thisLevel ? htmlInstallTrack(this.props.permissionData.level, thisLevel) :
@@ -253,7 +253,6 @@ class Push extends Component {
                         </div>
                       </div>
                       {this.state.openList1 && <PushList type={this.state.title} goback={this.toList} />}
-                      {/* {this.state.openList2 && <PushList2 type={this.state.title} />} */}
                     </>
                   }
                 </div>

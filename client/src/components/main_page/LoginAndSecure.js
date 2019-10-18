@@ -9,7 +9,7 @@ import { Redirect } from 'react-router';
 
 //本頁權限 0-4
 
-const LoginAndSecure = () => {
+const LoginAndSecure = (props) => {
     const [psd, changePsd] = useState('');
     const [checkPsd, changeCheckPsd] = useState('');
     const [oldPsd, changeOldPsd] = useState('');
@@ -18,7 +18,7 @@ const LoginAndSecure = () => {
     const [showMsg, showAlertMsg] = useState(false);
 
 
-    const submit = () => {
+    const submit = async () => {
         if (editing === true) {
             if (psd.search(/\d/) === -1 || psd.length < 8 || psd.search(/[a-z]/) === -1) {
                 showMsgFun('密碼格式不符');
@@ -33,9 +33,14 @@ const LoginAndSecure = () => {
                 new: psd
             }
             // 傳送密碼
-            updatePsd(postData)
+            await updatePsd(postData)
                 .then(res => {
-                    if (res === 1) {
+                    if (typeof res === 'string') {
+                        // 如果有錯誤訊息
+                        showMsgFun(res);
+                        return;
+                    }
+                    if (res.status === 1) {
                         showMsgFun('修改成功');
                     } else {
                         showMsgFun('舊密碼輸入錯誤');
@@ -53,42 +58,8 @@ const LoginAndSecure = () => {
         }, 3000);
     }
 
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         editingData: false,
-    //         temporaryData: "",
-    //         data: ""
-
-    //     };
-    // }
-
-    // componentDidMount() {
-    //     const addPsd = this.state.data;
-    //     addPsd.password = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
-    //     this.setState({ data: addPsd });
-    // }
-
-    // changeBtn = (i, e) => {
-    //     const newEditData = this.state.editData;
-    //     if (newEditData[i] === false) {
-    //         this.setState({ data: this.state.temporaryData, temporaryData: null });
-    //     }
-    //     newEditData[i] = !newEditData[i];
-    //     this.setState({ editData: newEditData });
-    // }
-    // typeData = e => {
-    //     let newData = this.state.temporaryData;
-    //     if (newData === null) {
-    //         newData = this.state.data;
-    //     }
-    //     newData[e.target.id] = e.target.value;
-    //     this.setState({ temporaryData: newData });
-    // }
-
-    // render() {
     return (
-        !this.props.permissionData.verified ?
+        !props.permissionData.verified ?
             <Redirect to="/signup/signin" /> :
             <>
                 <AlertMsg
@@ -144,87 +115,8 @@ const LoginAndSecure = () => {
                                         className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20"
                                         onClick={submit}
                                     >{editing ? '儲存' : '變更'}</button>
-
-                                    {/* <h4 className="text-primary mt-5">邀請帳戶存取權</h4>
-                                    <hr />
-                                    <label htmlFor="email">電子郵件信箱</label>
-                                    <input name="email" id="email" type="email" className="input_1 mb-3" defaultValue={this.state.data.email} readOnly={this.state.editData[1]} onChange={this.typeData} />
-                                    <button className="btn btn-outline-primary w-100 radius20 my-3 p-2 font_20" onClick={(e) => this.changeBtn(1, e)}>{this.state.editData[0] === true ? '變更' : '儲存'}</button> */}
                                 </div>
-                                {/* <div className=" mt-20 bg-white">
-                                    <table className="w-100 dash_table">
-                                        <tbody>
-                                            <tr className="d-table-row bg-light">
-                                                <td className="d-table-cell pl-3">
-                                                    <span>變更密碼</span>
-                                                </td>
-                                                <td className="d-table-cell text-right pr-3" colSpan="3">
-                                                    <button className="btn btn-secondary radius20">更變</button>
-                                                </td>
-                                            </tr>
-                                            <tr className="d-table-row">
-                                                <td className="d-table-cell pl-3">
-                                                    <p>密碼</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3">
-                                                    <p>••••••••••••</p>
-                                                </td>
-                                            </tr>
-                                            <tr className="d-table-row bg-light">
-                                                <td className="d-table-cell pl-3">
-                                                    <span>邀請帳戶存取權</span>
-                                                </td>
-                                                <td className="d-table-cell text-right pr-3" colSpan="3">
-                                                    <button className="btn btn-secondary radius20">更變</button>
-                                                </td>
-                                            </tr>
-                                            <tr className="d-table-row">
-                                                <td className="d-table-cell pl-3 dash">
-                                                    <p>暱稱</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3 dash">
-                                                    <p>使用者</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3 dash">
-                                                    <p>存取層級</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3 dash">
-                                                    <p>上次登入日期</p>
-                                                </td>
-                                            </tr>
-                                            <tr className="d-table-row">
-                                                <td className="d-table-cell pl-3 dash">
-                                                    <p>小丸子(您)</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3 dash">
-                                                    <p>yumi@gmail.com</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3 dash">
-                                                    <p>管理員</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3 dash">
-                                                    <p>2019年03月24日</p>
-                                                </td>
-                                            </tr>
-                                            <tr className="d-table-row">
-                                                <td className="d-table-cell pl-3">
-                                                    <p>美環</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3">
-                                                    <p>beautiful@gmail.com</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3">
-                                                    <p>分析員</p>
-                                                </td>
-                                                <td className="d-table-cell pr-3">
-                                                    <p>2019年03月24日</p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div> */}
                             </div>
-
                         </Row>
                     </Container>
                 </div>
