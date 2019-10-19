@@ -4,9 +4,9 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 class TableElementEdit extends Component {
     constructor(props){
         super(props);
-        this.siteName = null;
-        this.type = null;
-        this.domainName = null;
+        this.siteName = '';
+        this.type = '';
+        this.domainName = '';
     }
     submit = () =>{
         if(this.siteName.value === '' || this.type.value === '' || this.domainName.value === ''){

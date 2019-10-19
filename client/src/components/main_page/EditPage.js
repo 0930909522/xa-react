@@ -29,19 +29,27 @@ class EditPage extends Component {
         }
     }
     componentDidMount() {
-        // let postData = {};
-        // postData.token = localStorage.getItem('token');
         trackingList()
             .then(response => {
-                let getData = response || [];
-                if (getData.length === 0) {
-                    this.changeStatus(1);
+                let getData = response;
+                if (typeof getData === 'string') {
+                    this.popMsg(getData);
                 }
+                if (getData.length === 0) {
+                    this.popMsg('目前無專案，進入新增專案頁面');
+                    setTimeout(() => {
+                        this.changeStatus(1);
+                    }, 5500);
+                }
+
                 getData.forEach(function (val, index, array) {
                     array[index].edit = false;
                     // array[index].choose = false;
                 })
                 this.setState({ data: getData });
+            })
+            .catch(() => {
+                this.popMsg('載入發生錯誤，請稍後再試');
             })
     }
 
@@ -70,17 +78,17 @@ class EditPage extends Component {
     //         showBtn: booleanBtn
     //     });
     // }
-    changeStatus = num => {
+    changeStatus = num => { //切換頁面
         this.setState({ status: num })
         console.log(num)
     }
-    editData = index => {
+    editData = index => {   //切換編輯狀態
         const newData = this.state.data;
         newData[index].edit = !newData[index].edit;
         this.setState({ data: newData })
     }
     sendToCheckPage = (index) => {
-        // 傳至驗證頁
+        // 傳資料進驗證頁
         let project = this.state.data[index];
         let sendData = { url: project.domainName, name: project.siteName };
         this.setState({
@@ -90,7 +98,7 @@ class EditPage extends Component {
 
     }
     newDataToCheckPage = (data) => {
-        //新增的追蹤碼要傳至驗證頁
+        //新增的追蹤碼儲存進此頁
         let { siteName, domainName } = data;
         let sendData = { url: domainName, name: siteName };
         this.setState({
@@ -117,27 +125,48 @@ class EditPage extends Component {
         } else {
             postData.domainName = data[2];
         }
-        // postData.token = localStorage.getItem('token');
-        console.log(postData)
+
         modifyTracking(postData)
             .then(response => {
                 if (response.status === 4) {
                     this.popMsg('此專案已不存在');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 5500);
                     return;
                 }
-                if(typeof response === 'string'){
+                if (typeof response === 'string') {
                     // 如果有錯誤訊息
                     this.popMsg(response);
-                    return ;
+                    return;
                 }
                 this.editData(index);
+                
+                // 更新專案列表
+                let updateProjectList = JSON.parse(localStorage.getItem('website'));
+                for(let i of updateProjectList){
+                    if(i.websiteId === postData.websiteId){
+                        i.siteName = postData.siteName;
+                    }
+                }
+                localStorage.setItem('website', JSON.stringify(updateProjectList));
             })
+            .catch(err => {
+                this.popMsg('發生錯誤，請稍後再試');
+            })
+
+            // response.forEach((val, index) => {
+            //     storeWebsite.push({
+            //         siteName: val.siteName,
+            //         websiteId: val.websiteId
+            //     });
+            // })
+            // 
     }
     popMsg = (value) => {
         this.setState({ showAlertMsg: true, alertText: value });
         setTimeout(() => {
             this.setState({ showAlertMsg: false });
-            window.location.reload();
         }, 5000);
     }
 
@@ -218,7 +247,7 @@ class EditPage extends Component {
                                     {
                                         this.state.status === 1 &&
                                         <SetTrackingCode
-                                            changeStatus={() => this.changeStatus(2)}
+                                            changeStatus={this.changeStatus}
                                             toCheckPage={this.newDataToCheckPage}
                                         />
                                     }

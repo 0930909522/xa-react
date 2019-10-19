@@ -106,7 +106,8 @@ class Register extends Component {
             this.popMsg('請同意使用條款');
             return;
         }
-        register(this.state.data).then(res=>{
+        register(this.state.data)
+        .then(res=>{
             if(typeof res === 'string'){
                 // 如果有錯誤訊息
                 this.popMsg(res);

@@ -1,10 +1,12 @@
 const urlNode = "https://node.aiday.org/sbir/";
 // const urlNode = "http://192.168.50.103/sbir/";
+const error1 = '登入逾期，請重新登入';  // 401，key 過期
+const error2 = '發生錯誤，請稍後再試';  //500，伺服器錯誤
 
 // 註冊
 export const register = async (postData) => {
     let data;
-    await fetch( urlNode + 'signup', {
+    await fetch(urlNode + 'signup', {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -29,7 +31,7 @@ export const register = async (postData) => {
         })
         .catch(err => {
             console.log(err);
-            data = '錯誤，請稍後再試';
+            data = error2;
         })
     return data;
 }
@@ -37,7 +39,7 @@ export const register = async (postData) => {
 // Website - 查詢追蹤網站
 export const trackingList = async () => {
     let data;
-    await fetch( urlNode + 'website', {
+    await fetch(urlNode + 'website', {
         // await fetch('http://192.168.50.103/sbir/website', {
         method: 'GET',
         mode: 'cors',
@@ -47,13 +49,20 @@ export const trackingList = async () => {
             'Accept': 'application/json',
         }
     })
-        .then(response => response.json())
+        .then(response => {
+            detectStatusCode(response);
+            return response.json();
+        })
         .then(response => {
             data = response || [];
         })
         .catch(err => {
             console.log(err);
-            data = [];
+            if (err.message === '401') {
+                data = error1;
+            } else {
+                data = error2;
+            }
         })
     return data;
 }
@@ -61,7 +70,7 @@ export const trackingList = async () => {
 // 登入
 export const login = async postData => {
     let data;
-    await fetch( urlNode + 'signin', {
+    await fetch(urlNode + 'signin', {
         // fetch('http://192.168.50.103/sbir/signin', {
         method: 'POST',
         mode: 'cors',
@@ -93,12 +102,13 @@ export const login = async postData => {
             }
         })
         .catch(err => {
+            data = error2;
             console.log(err);
         })
     await trackingList()
-    // 載入追蹤列表
+        // 載入追蹤列表
         .then(response => {
-            
+
             let storeWebsite = [];
             response.forEach((val, index) => {
                 storeWebsite.push({
@@ -108,6 +118,9 @@ export const login = async postData => {
             })
             localStorage.setItem('view', storeWebsite[0].websiteId);
             localStorage.setItem('website', JSON.stringify(storeWebsite));
+        })
+        .catch(err => {
+            console.log(err);
         })
     return data;
 }
@@ -153,13 +166,11 @@ export const updatePsd = async (postData) => {
 }
 
 
-
-
 // Website - 新增追蹤網站
 export const addTracking = async (postData) => {
     let data;
     await fetch(urlNode + 'website', {
-    // await fetch('http://xa.aiday.org/sbir/website', {
+        // await fetch('http://xa.aiday.org/sbir/website', {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -169,12 +180,21 @@ export const addTracking = async (postData) => {
         },
         body: JSON.stringify(postData)
     })
-        .then(response => response.json())
+        .then(response => {
+            detectStatusCode(response);
+            return response.json();
+        })
         .then(response => {
             data = forAjax(response);
+            console.log(response, data)
         })
         .catch(err => {
             console.log(err);
+            if (err.message === '401') {
+                data = error1;
+            } else {
+                data = error2;
+            }
         })
     return data;
 }
@@ -183,7 +203,7 @@ export const addTracking = async (postData) => {
 export const modifyTracking = async (postData) => {
     let data;
     await fetch(urlNode + 'website', {
-    // await fetch('http://192.168.50.103/sbir/website', {
+        // await fetch('http://192.168.50.103/sbir/website', {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -192,12 +212,20 @@ export const modifyTracking = async (postData) => {
         },
         body: JSON.stringify(postData)
     })
-        .then(response => response.json())
+        .then(response => {
+            detectStatusCode(response);
+            return response.json();
+        })
         .then(response => {
             data = forAjax(response);
         })
         .catch(err => {
             console.log(err);
+            if (err.message === '401') {
+                data = error1;
+            } else {
+                data = error2;
+            }
         })
     return data;
 }
@@ -234,8 +262,12 @@ export const pushpage = async postData => {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-    }).then(response => response.json()
-    ).then(response => {
+    })
+    .then(response => {
+        detectStatusCode(response);
+        return response.json();
+    })
+    .then(response => {
         data = response || [];
     }).catch(err => {
         console.log(err);
@@ -256,8 +288,12 @@ export const setblacklist = async postData => {
             'Accept': 'application/json'
         },
         body: JSON.stringify(postData)
-    }).then(response => response.json()
-    ).then(response => {
+    })
+    .then(response => {
+        detectStatusCode(response);
+        return response.json();
+    })
+    .then(response => {
         data = response.boardId;
     }).catch(err => {
         console.log(err);
@@ -397,7 +433,7 @@ export const getPush = async postData => {
 export const sendPush = async postData => {
     let data;
     await fetch('http://node.aiday.org/sbir/ad', {
-    // await fetch('http://192.168.50.103/sbir/ad', {
+        // await fetch('http://192.168.50.103/sbir/ad', {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -419,7 +455,7 @@ export const sendPush = async postData => {
 export const modifyPush = async postData => {
     let data;
     await fetch('http://node.aiday.org/sbir/ad', {
-    // await fetch('http://192.168.50.103/sbir/ad', {
+        // await fetch('http://192.168.50.103/sbir/ad', {
         method: 'PUT',
         mode: 'cors',
         credentials: 'include',
@@ -441,7 +477,7 @@ export const modifyPush = async postData => {
 export const deletePush = async postData => {
     let data;
     await fetch('http://node.aiday.org/sbir/ad', {
-    // await fetch('http://192.168.50.103/sbir/ad', {
+        // await fetch('http://192.168.50.103/sbir/ad', {
         method: 'DELETE',
         mode: 'cors',
         credentials: 'include',
@@ -465,7 +501,7 @@ export const getPushPt = async postData => {
     let defaultImg = 'https://cdn.pixabay.com/photo/2017/08/01/08/40/black-and-white-2563584_1280.jpg';
     let view = localStorage.getItem('view');
     await fetch('http://node.aiday.org/sbir/page/' + view + '?u=' + postData, {
-    // await fetch('http://192.168.50.103/sbir/page/' + view + '?u=' + postData, {
+        // await fetch('http://192.168.50.103/sbir/page/' + view + '?u=' + postData, {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
@@ -488,8 +524,8 @@ export const getPushPt = async postData => {
 export const pushStatus = async () => {
     let data;
     let view = localStorage.getItem('view');
-    await fetch('http://node.aiday.org/sbir/ad/status?view='+view, {
-    // await fetch('http://192.168.50.103/sbir/ad/status?view=' + view, {
+    await fetch('http://node.aiday.org/sbir/ad/status?view=' + view, {
+        // await fetch('http://192.168.50.103/sbir/ad/status?view=' + view, {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
@@ -507,7 +543,7 @@ export const pushStatus = async () => {
 export const modifyPushStatus = async postData => {
     let data;
     await fetch('http://node.aiday.org/sbir/ad/status', {
-    // await fetch('http://192.168.50.103/sbir/ad/status', {
+        // await fetch('http://192.168.50.103/sbir/ad/status', {
         method: 'PUT',
         mode: 'cors',
         credentials: 'include',
@@ -589,7 +625,7 @@ export const addValuePush = async postData => {
 //收益明細
 export const myPull = async (postData) => {
     let data;
-    await fetch(urlNode + 'user/paymentFlow/pull?yyyymm='+postData, {
+    await fetch(urlNode + 'user/paymentFlow/pull?yyyymm=' + postData, {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
@@ -606,7 +642,7 @@ export const myPull = async (postData) => {
 //推播明細
 export const myPush = async (postData) => {
     let data;
-    await fetch(urlNode + 'user/paymentFlow/push?yyyymm='+postData, {
+    await fetch(urlNode + 'user/paymentFlow/push?yyyymm=' + postData, {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
@@ -627,11 +663,19 @@ function forAjax(response) {
         case 2:
         case 3:
             newData = '此筆資料已註冊';
-            // 
             break;
         default:
             newData = response;
             break;
     }
     return newData;
+}
+
+function detectStatusCode(response) {
+    if (response.status === 401) {
+        throw new Error('401');
+    }
+    if (response.status === 500 || !response.ok) {
+        throw new Error('500');
+    }
 }
