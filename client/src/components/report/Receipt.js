@@ -32,7 +32,8 @@ class Receipt extends Component {
             date: [],   //日期列表
             weblist: [], //追蹤頁面列表
             data: [],    //列表資料
-            page: [1, 1]    //目前總頁數，目前在第幾頁
+            page: [1, 1],    //目前總頁數，目前在第幾頁
+            showLoadingBar: true   //讀取圖示
         }
     }
     componentDidMount = async () => {
@@ -104,7 +105,8 @@ class Receipt extends Component {
         this.setState({
             ...this.state,
             data: newData,
-            page: newPage
+            page: newPage,
+            showLoadingBar: false
         })
     }
     componentDidUpdate(preProp) {
@@ -250,8 +252,7 @@ class Receipt extends Component {
                                                     className={(this.state.status[1] === '0' ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}
                                                     onClick={() => this.setState({ status: [this.state.status[0], '0'] })}
                                                 >推播明細
-                                    </span>
-                                                <span>&nbsp;｜&nbsp;</span>
+                                                </span>
                                                 {/* <span
                                                     className={(this.state.status[1] === '1' ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}
                                                     onClick={() => this.setState({ status: [this.state.status[0], '1'] })}
@@ -340,6 +341,12 @@ class Receipt extends Component {
                                                         })}
                                                     </tbody>
                                                 </table>
+                                                {
+                                                    this.state.showLoadingBar &&
+                                                    <div className="loading-bar">
+                                                        <div className="lds-dual-ring"></div>
+                                                    </div>
+                                                }
                                                 <div className="mt-4 mb-2 text-center">
                                                     {/* <span className="mx-2 btn_like text-primary">1</span>
                                                     <span className="mx-2 btn_like">2</span>

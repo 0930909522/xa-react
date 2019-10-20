@@ -155,38 +155,7 @@ class Push extends Component {
                     <>
                       <PushTitle one />
                       <div className={this.state.openList1 || this.state.openList2 ? 'd-none' : ''}>
-                        {/* <div className="box radius10">
-                    <div className="mb-3">
-                      <span className="vertical_middle d-inline-block font_20 weight600">全自動推播</span>
-                      <span className="vertical_middle d-inline-block ml-3"><Switch /></span>
-                    </div>
-                    <p>您可以選擇全自動推播，系統將自動串連您的推播工具，追蹤用戶閱讀習慣，自動推播於點擊率最高的渠道。</p>
-                  </div> */}
-
                         <div className="box radius10">
-                          {/* <h4 className="my-3">選擇推播類別</h4>
-                    <div className="my-2">
-                      <button className="btn_outline w-45 m-2">
-                        <FaRegCalendar />&nbsp;主題活動
-                    </button>
-                      <Switch changeStatus={() => this.recommendChange('pushingTheme')} value={this.state.data.pushingTheme} />
-                    </div>
-                    <div className="my-2">
-                      <button className="btn_outline w-45 m-2">
-                        <FaRegNewspaper />&nbsp;專題報導
-                      </button>
-                      <Switch changeStatus={() => this.recommendChange('pushingReport')} value={this.state.data.pushingReport} />
-                    </div>
-                    <button className="btn_outline w-45 m-2" onClick={() => this.chooseType('推薦商品')}><FaRegThumbsUp />&nbsp;推薦商品</button>
-                    <div className="my-2">
-                      <Switch changeStatus={() => this.recommendChange('pushingEcommerce')} value={this.state.data.pushingEcommerce} />
-                      &nbsp;推薦商品
-                    </div>
-                    <div className="my-2">
-                      <Switch changeStatus={() => this.recommendChange('pushingMedia')} value={this.state.data.pushingMedia} />
-                      &nbsp;推薦文章
-                    </div>
-                    <button className="btn_outline w-45 m-2" onClick={() => this.chooseType('推薦文章')}><FaRegThumbsUp />&nbsp;推薦文章</button> */}
                           <table className="pushTable_r w-100  text-center" cellPadding="15">
                             <thead>
                               <tr>

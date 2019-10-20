@@ -115,12 +115,6 @@ class PushPage extends Component {
                     <button className="btn btn-secondary mx-1" disabled={!this.state.showBtn} onClick={() => this.submit()}>&nbsp;&nbsp;&nbsp;確認&nbsp;&nbsp;&nbsp;</button>
                     <button className="btn btn-secondary mx-1" onClick={() => this.props.changeStatus(0)}>&nbsp;&nbsp;&nbsp;取消&nbsp;&nbsp;&nbsp;</button>
                 </div>
-                {/* </div>
-
-                        </Row>
-                    </Container>
-                </div>
-                <Footer /> */}
             </>
         )
     }

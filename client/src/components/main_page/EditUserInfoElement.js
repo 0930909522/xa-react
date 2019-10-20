@@ -11,6 +11,7 @@ const EditUserInfoElement = (props) => {
                     className="input_1 mb-3"
                     onChange={(e) => props.inputWord(e)}
                     readOnly={props.readOnly}
+                    disabled={props.disabled}
                 />
                 :
                 <h6 className="mb-4">{props.name}</h6>

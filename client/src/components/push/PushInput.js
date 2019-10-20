@@ -7,28 +7,6 @@ import AlertMsg from '../share/AlertMsg';
 import PopMsg from '../share/PopMsg';
 import { FaTrashAlt } from 'react-icons/fa';
 
-// const advtiseTypes = [
-//     {
-//         index: 1,
-//         title: '廣告一：網頁側欄',
-//         srcs: Pt
-//     },
-//     {
-//         index: 3,
-//         title: '廣告三：網頁側欄(最少2則)',
-//         srcs: Pt
-//     },
-//     {
-//         index: 2,
-//         title: '廣告二：網頁側欄',
-//         srcs: Pt
-//     },
-//     {
-//         index: 4,
-//         title: '廣告四：網頁下方(最少3則)',
-//         srcs: Pt
-//     }
-// ]
 const initialData = {
     "adId": "",
     "title": "",
@@ -52,6 +30,7 @@ class PushInput extends Component {
         super(props);
         this.state = {
             today: null,
+            laterThan: null, //晚於開始日期
             data: Object.assign({}, initialData),
             editIndex: 0,
             showAlertMsg: false,
@@ -63,16 +42,17 @@ class PushInput extends Component {
     componentDidMount() {
         // 設定日期
         const Today = new Date();
-        const newToday = { year: null, month: null, date: null };
+        let newToday = { year: null, month: null, date: null };
         newToday.year = Today.getFullYear();
         newToday.month = ('0' + (Today.getMonth() + 1).toString()).slice(-2);
         newToday.date = ('0' + Today.getDate().toString()).slice(-2);
+        newToday = newToday.year + '-' + newToday.month + '-' + newToday.date;
         this.setState({
-            today: newToday.year + '-' + newToday.month + '-' + newToday.date
+            today: newToday,
+            laterThan: newToday
         })
 
         // 初始化資料，端看是新增或修改
-        // let newData = Object.assign({}, initialData);
         let newData = this.forInitial(this.props.data);
         let newEditIndex = 0;
         if (this.props.data === undefined) {
@@ -90,7 +70,7 @@ class PushInput extends Component {
         this.setState({ editIndex: newEditIndex, data: newData })
     }
 
-    //初始化資料函式，避免多餘method
+    //初始化資料函式，避免多餘資料
     forInitial = (data = {}) => {
         let {
             adId = "",
@@ -106,11 +86,11 @@ class PushInput extends Component {
     }
 
     //彈出視窗
-    alertMsg = (text) => {
+    popMsg = (text) => {
         this.setState({ showAlertMsg: true, alertText: text });
         setTimeout(() => {
             this.setState({ showAlertMsg: false });
-        }, 4000);
+        }, 5000);
     }
 
     //輸入資料（選）
@@ -118,6 +98,9 @@ class PushInput extends Component {
         let content = e.target.value;
         if (type === 'tags') {
             content = content.split(',');
+        }
+        if (type === 'start') {
+            this.endTimeLinit(content);
         }
         const newData = this.state.data;
         newData[type] = content;
@@ -152,6 +135,14 @@ class PushInput extends Component {
         return tags.length;
     }
 
+    // 取得結束時間限制
+    endTimeLinit = (val) => {
+        let start = new Date(val);
+        let end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 1)
+        end = end.getFullYear() + '-' + (end.getMonth() + 1) + '-' + end.getDate();
+        this.setState({ laterThan: end });
+    }
+
     // 在此主題下新增一筆
     addOne = () => {
         const index = this.state.data.ads.length;
@@ -184,14 +175,16 @@ class PushInput extends Component {
         // 確認皆為必填
         for (let i in postData) {
             if (!String(postData[i]).trim()) {
-                this.alertMsg('內容皆為必填');
+                // console.log(i, postData[i])
+                this.popMsg('內容皆為必填');
                 return;
             }
         }
         postData.ads.forEach(val => {
             for (let i in val) {
-                if (!String(val[i]).trim()) {
-                    this.alertMsg('內容皆為必填');
+                if (!String(val[i]).trim() && i !== 'img') {
+                    // console.log(i, val[i])
+                    this.popMsg('內容皆為必填');
                     return;
                 }
             }
@@ -199,7 +192,7 @@ class PushInput extends Component {
 
         // 判斷時間邏輯
         if (postData.start >= postData.end) {
-            this.alertMsg('開始時間不可等於或晚於結束時間');
+            this.popMsg('開始時間不可等於或晚於結束時間');
             return;
         }
 
@@ -218,51 +211,75 @@ class PushInput extends Component {
         if (postData.action === 'add') {
             // 新增
             delete postData.action;
-            sendPush(postData).then(res => {
-                if (res === 1) {
-                    //成功
-                    this.alertMsg('資料傳送成功');
-                    setTimeout(() => {
-                        let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
-                        this.props.goback(param);
-                    }, 4500);
-                } else {
-                    this.alertMsg('資料傳送失敗');
-                }
-            })
+            sendPush(postData)
+                .then(res => {
+                    if (typeof res === 'string') {
+                        this.popMsg(res);
+                    }
+                    if (res === 1) {
+                        //成功
+                        this.popMsg('資料傳送成功');
+                        setTimeout(() => {
+                            let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
+                            this.props.goback(param);
+                        }, 4500);
+                    } else {
+                        this.popMsg('資料傳送失敗');
+                    }
+                })
+                .catch(err => {
+                    this.popMsg('發生錯誤，請稍後再試');
+                    console.log(err);
+                })
         } else {
             //修改
             delete postData.action;
-            modifyPush(postData).then(res => {
-                if (res === 1) {
-                    //成功
-                    this.alertMsg('資料修改成功');
-                    setTimeout(() => {
-                        let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
-                        this.props.goback(param);
-                    }, 4500);
-                } else {
-                    this.alertMsg('資料修改失敗');
-                }
-            })
+            modifyPush(postData)
+                .then(res => {
+                    if (typeof res === 'string') {
+                        this.popMsg(res);
+                    }
+                    if (res === 1) {
+                        //成功
+                        this.popMsg('資料修改成功');
+                        setTimeout(() => {
+                            let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
+                            this.props.goback(param);
+                        }, 4500);
+                    } else {
+                        this.popMsg('資料修改失敗');
+                    }
+                })
+                .catch(err => {
+                    this.popMsg('發生錯誤，請稍後再試');
+                    console.log(err);
+                })
         }
     }
 
     delete = () => {
-        deletePush({ adId: this.state.data.adId }).then(res => {
-            this.setState({ showDeleteMsg: false }, () => {
-                if (res === 1) {
-                    //成功
-                    this.alertMsg('資料刪除成功');
-                    setTimeout(() => {
-                        let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
-                        this.props.goback(param);
-                    }, 4500);
-                } else {
-                    this.alertMsg('資料刪除失敗');
-                }
+        deletePush({ adId: this.state.data.adId })
+            .then(res => {
+                this.setState({ showDeleteMsg: false }, () => {
+                    if (typeof res === 'string') {
+                        this.popMsg(res);
+                    }
+                    if (res === 1) {
+                        //成功
+                        this.popMsg('資料刪除成功');
+                        setTimeout(() => {
+                            let param = this.props.type === 'theme' ? '主題活動' : '專題報導';
+                            this.props.goback(param);
+                        }, 4500);
+                    } else {
+                        throw new Error();
+                    }
+                })
             })
-        })
+            .catch(err => {
+                this.popMsg('發生錯誤，請稍後再試');
+                console.log(err);
+            })
     }
 
     render() {
@@ -334,6 +351,7 @@ class PushInput extends Component {
                                 type="date"
                                 className="input_r"
                                 id="end-time"
+                                min={this.state.laterThan}
                                 value={this.state.data.end}
                                 onChange={(e) => this.addingTopic(e, 'end')}
                             />

@@ -51,7 +51,8 @@ class Billing extends Component {
             this.setState({ bill: res });
         });
         // 初始化個資
-        getUserInfo().then(res => {
+        getUserInfo()
+        .then(res => {
             this.setState({
                 accountInfo: {
                     taxId: res.taxId,
@@ -61,6 +62,9 @@ class Billing extends Component {
                     // 會員資格
                 }
             })
+        })
+        .catch(err=>{
+            console.log(err)
         })
 
         //頁面控管和儲值狀態

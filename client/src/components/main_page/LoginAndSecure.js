@@ -38,15 +38,18 @@ const LoginAndSecure = (props) => {
                     if (typeof res === 'string') {
                         // 如果有錯誤訊息
                         showMsgFun(res);
-                        return;
                     }
                     if (res.status === 1) {
                         showMsgFun('修改成功');
+                        changeState(!editing);
                     } else {
                         showMsgFun('舊密碼輸入錯誤');
-                        return;
                     }
                 })
+                .catch(()=>{
+                    showMsgFun('發生錯誤，請稍後再試');
+                })
+            return ;
         }
         changeState(!editing);
     }

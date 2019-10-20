@@ -340,7 +340,7 @@ button.font_20 {
 }
 
 .table_simple {
-    tr:hover {
+    tr:not(.nohover):hover {
         td {
             background: #EDEDED;
             cursor: pointer;
@@ -696,6 +696,16 @@ button.font_20 {
                     opacity: 0.8;
                 }
             }
+             ::-webkit-scrollbar {
+                width: 3px;
+            }
+             ::-webkit-scrollbar-thumb {
+                background: $gray2;
+            }
+            .project_list {
+                max-height: 210px;
+                overflow-y: auto;
+            }
         }
     }
     .person_sign {
@@ -829,7 +839,8 @@ button.font_20 {
     text-align: center;
     line-height: 70px;
 }
-.icon_name{
+
+.icon_name {
     @extend .font_20;
     @extend .weight600;
     display: inline-block;
@@ -839,4 +850,35 @@ button.font_20 {
     vertical-align: bottom;
     width: 80px;
     white-space: nowrap;
+}
+
+.loading-bar {
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+    .lds-dual-ring {
+        display: inline-block;
+        width: 64px;
+        height: 64px;
+        &::after {
+            content: " ";
+            display: block;
+            width: 46px;
+            height: 46px;
+            margin: 1px;
+            border-radius: 50%;
+            border: 5px solid $gray2;
+            border-color: $gray2 transparent $gray2 transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+    }
+}
+
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
