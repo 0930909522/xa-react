@@ -32,7 +32,7 @@ class Push extends Component {
 
   componentDidMount = async () => {
     let newHasData = [...this.state.hasData];
-    let newData = {...this.state.data};
+    let newData = { ...this.state.data };
     // pushingReport、pushingTheme是否可改
     let postData1 = {
       view: localStorage.getItem('view'),
@@ -44,36 +44,41 @@ class Push extends Component {
     }
 
     //初始化狀態
-    await pushStatus().then(res => {
-      for(let i in res){
-        newData[i] = res[i];
-      }
-      this.setState({ data: newData });
-    })
+    await pushStatus()
+      .then(res => {
+        for (let i in res) {
+          newData[i] = res[i];
+        }
+        this.setState({ data: newData });
+      })
 
     //初始化是否可更改狀態
-    await getPush(postData1).then(res => {
-      if (res == 0) {
-        newHasData[0] = false;
-        if (newData.pushingReport) {
-          // 改為關閉
-          this.change('pushingReport');
+    await getPush(postData1)
+      .then(res => {
+        if (res == 0) {
+          newHasData[0] = false;
+          if (newData.pushingReport) {
+            // 改為關閉
+            this.change('pushingReport');
+          }
+        } else {
+          newHasData[0] = true;
         }
-      } else {
-        newHasData[0] = true;
-      }
-    })
-    await getPush(postData2).then(res => {
-      if (res == 0) {
-        newHasData[1] = false;
-        if (newData.pushingTheme) {
-          // 改為關閉
-          this.change('pushingTheme');
+      })
+      .catch(()=>{})
+    await getPush(postData2)
+      .then(res => {
+        if (res == 0) {
+          newHasData[1] = false;
+          if (newData.pushingTheme) {
+            // 改為關閉
+            this.change('pushingTheme');
+          }
+        } else {
+          newHasData[1] = true;
         }
-      } else {
-        newHasData[1] = true;
-      }
-    })
+      })
+      .catch(()=>{})
     this.setState({ hasData: newHasData });
   }
 
