@@ -54,12 +54,16 @@ class Receipt extends Component {
         }
 
         // 初始化收益
-        await bill().then((res => {
+        await bill()
+        .then((res => {
             if (res[0].group === 'pull') {
                 price.pull = res[0].balance;
                 price.push = res[1].balance;
             }
         }))
+        .catch((err)=>{
+            console.log(err);
+        })
 
         // 初始化日期
         for (let i = -1; i < 11; i++) {
@@ -79,7 +83,8 @@ class Receipt extends Component {
         //初始化資料
         for (let i = 0; i < dateList.length; i++) {
             if (id[0] === '收益') {
-                await myPull(dateList[i].replace('/', '-')).then(res => {
+                await myPull(dateList[i].replace('/', '-'))
+                .then(res => {
                     for (let j of res) {
                         let element = j;
                         element.date = dateList[i];
@@ -87,13 +92,20 @@ class Receipt extends Component {
                     }
 
                 })
+                .catch(err=>{
+                    console.log(err);
+                })
             } else {
-                await myPush(dateList[i].replace('/', '-')).then(res => {
+                await myPush(dateList[i].replace('/', '-'))
+                .then(res => {
                     for (let j of res) {
                         let element = j;
                         element.date = dateList[i];
                         newData.push(element)
                     }
+                })
+                .catch(err=>{
+                    console.log(err);
                 })
             }
             //初始化頁數

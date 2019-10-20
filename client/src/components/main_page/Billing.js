@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import Header from "../Header";
 import Footer from '../Footer';
 import MemberCentreTitle from '../share/MemberCentreTitle';
@@ -52,20 +52,20 @@ class Billing extends Component {
         });
         // 初始化個資
         getUserInfo()
-        .then(res => {
-            this.setState({
-                accountInfo: {
-                    taxId: res.taxId,
-                    companyName: res.companyName,
-                    level: levelName,
-                    maxAge: this.props.permissionData.maxAge
-                    // 會員資格
-                }
+            .then(res => {
+                this.setState({
+                    accountInfo: {
+                        taxId: res.taxId,
+                        companyName: res.companyName,
+                        level: levelName,
+                        maxAge: this.props.permissionData.maxAge
+                        // 會員資格
+                    }
+                })
             })
-        })
-        .catch(err=>{
-            console.log(err)
-        })
+            .catch(err => {
+                console.log(err)
+            })
 
         //頁面控管和儲值狀態
         if (this.props.match.params.type === 'welcome') {
@@ -173,7 +173,7 @@ class Billing extends Component {
             default:
                 break;
         }
-        price = price[0].replace('萬', '')*10000;
+        price = price[0].replace('萬', '') * 10000;
         postData.level = this.props.permissionData.level;   // 添加level
         postData.price = price; //金錢
         postData.interval = interval;   // 繳款週期
@@ -191,25 +191,38 @@ class Billing extends Component {
         }
         if (this.state.status === "10") {
             // 推播
-            addValuePush(postData).then(res => {
-                if (res === 1) {
-                    //成功
-                    this.setState({ sent: true });
-                } else {
+            addValuePush(postData)
+                .then(res => {
+                    if (res === 1) {
+                        //成功
+                        this.setState({ sent: true });
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
                     this.setState({ alertText: '*傳送失敗，請稍後再試' });
-                }
-            })
+                })
         } else if (this.state.status === "11") {
             //數據
             postData = this.modifyPostData(postData);   //修改postData
-            addValueMem(postData).then(res => {
-                if (res === 1) {
-                    //成功
-                    this.setState({ sent: true });
-                } else {
+            addValueMem(postData)
+                .then(res => {
+                    if (typeof res === 'string') {
+                        this.setState({ alertText: res });
+                    }
+                    if (res === 1) {
+                        //成功
+                        this.setState({ sent: true });
+                    } else {
+                        throw new Error();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
                     this.setState({ alertText: '*傳送失敗，請稍後再試' });
-                }
-            })
+                })
         }
     }
 

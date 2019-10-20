@@ -644,8 +644,12 @@ export const bill = async () => {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
-    }).then(response => response.json()
-    ).then(response => {
+    })
+    .then(response => {
+        detectStatusCode(response);
+        return response.json();
+    })
+    .then(response => {
         data = response || [];
     }).catch(err => {
         console.log(err);
@@ -654,7 +658,7 @@ export const bill = async () => {
     return data;
 }
 
-//會員儲值
+//數據儲值
 export const addValueMem = async postData => {
     let data;
     await fetch(urlNode + 'user/deposit/member', {
@@ -666,12 +670,21 @@ export const addValueMem = async postData => {
             'Accept': 'application/json'
         },
         body: JSON.stringify(postData)
-    }).then(response => response.json()
-    ).then(response => {
+    })
+    .then(response => {
+        detectStatusCode(response);
+        return response.json();
+    })
+    .then(response => {
         console.log(response);
         data = response.status;
     }).catch(err => {
         console.log(err);
+        if (err.message === '401') {
+            data = error1;
+        } else {
+            data = error2;
+        }
     })
     return data;
 }
@@ -688,11 +701,20 @@ export const addValuePush = async postData => {
             'Accept': 'application/json'
         },
         body: JSON.stringify(postData)
-    }).then(response => response.json()
-    ).then(response => {
+    })
+    .then(response => {
+        detectStatusCode(response);
+        return response.json();
+    })
+    .then(response => {
         data = response.status;
     }).catch(err => {
         console.log(err);
+        if (err.message === '401') {
+            data = error1;
+        } else {
+            data = error2;
+        }
     })
     return data;
 }
@@ -704,8 +726,12 @@ export const myPull = async (postData) => {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
-    }).then(response => response.json()
-    ).then(response => {
+    })
+    .then(response => {
+        detectStatusCode(response);
+        return response.json();
+    })
+    .then(response => {
         data = response || [];
     }).catch(err => {
         console.log(err);
@@ -721,8 +747,12 @@ export const myPush = async (postData) => {
         method: 'GET',
         mode: 'cors',
         credentials: 'include',
-    }).then(response => response.json()
-    ).then(response => {
+    })
+    .then(response => {
+        detectStatusCode(response);
+        return response.json();
+    })
+    .then(response => {
         data = response || [];
     }).catch(err => {
         console.log(err);
