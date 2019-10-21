@@ -136,7 +136,6 @@ class AnalyticAsset extends Component {
       }
     })
     .then(response => {
-      console.log("ttt",response);
       switch(apiIndex) {
         case 0 :
           this.apiOverview(response);
@@ -250,10 +249,8 @@ class AnalyticAsset extends Component {
 
   addLineData = () => {
     let result = [];
-    console.log("item", this.state.basic);
+    //console.log("item", this.state.basic);
     this.state.basic ? this.state.basic.data.map((item, index) => {
-      
-
       let subResult = [];
       item.lineChart ? item.lineChart.map((subItem)=>{
         let _y = subItem.date.split("-")[0],

@@ -50,6 +50,7 @@ class AnalyticPortrait extends Component {
             isLoadingSummary: false,
             isLoadingHot: false,
             isLoadingInterest: false,
+            isInterestBox: true,
         }
     }
     componentDidMount() {
@@ -129,6 +130,7 @@ class AnalyticPortrait extends Component {
             console.log(error);
         });
     };
+
     getHotFromDb = (id) => {
         this.setState({isLoadingHot: true});
         axios.get( "https://node.aiday.org/sbir/visitor/hot", {
@@ -144,6 +146,7 @@ class AnalyticPortrait extends Component {
             console.log(error);
         });
     }
+
     getInterestFromDb = (id) => {
         this.setState({isLoadingInterest: true});
         axios.get( "https://node.aiday.org/sbir/visitor/cateInterest", {
@@ -152,7 +155,11 @@ class AnalyticPortrait extends Component {
                 type: this.state.fish.find( item => item.id === id ).name,
             }
         }).then( res => {
+            console.log("res", res);
             let data =  res.data.data;
+            if(res.data.status === 0){
+                this.setState({isInterestBox: false})
+            }
             let option = {
                 tooltip: {
                   trigger: 'item',
@@ -197,7 +204,7 @@ class AnalyticPortrait extends Component {
     }
 
     render() {
-        const { fish, fishType, summary, hot, interest, topInterest, isLoadingSummary, isLoadingInterest, isLoadingHot } = this.state;
+        const { isInterestBox, fish, fishType, summary, hot, interest, topInterest, isLoadingSummary, isLoadingInterest, isLoadingHot } = this.state;
         const { articles, proportion, detail, barInfo } = this.state.basic;
         
         const popover = (
@@ -271,7 +278,7 @@ class AnalyticPortrait extends Component {
                                                         <div className="cont">
                                                             {isLoadingInterest ?
                                                                 <>---</> :
-                                                                <>{topInterest}</> }
+                                                                <>{topInterest?topInterest:"---"}</> }
                                                                 
                                                         </div>
                                                     </li>
@@ -372,9 +379,9 @@ class AnalyticPortrait extends Component {
 
                                     </div>
                                     <div className="row">
-                                    <div className="col-md-6">
+                                    <div className={ isInterestBox ? "col-md-6" : "col-md-12" }>
                                         <div className="box">
-                                            <h3 className="no_border">觀看文章排行</h3>
+                                            <h3 className="no_border">觀看排行</h3>
                                             { isLoadingHot ?  
                                                 <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
                                                 <ul className="article_list">
@@ -383,7 +390,7 @@ class AnalyticPortrait extends Component {
                                                         觀看次數
                                                         </div>
                                                         <div className="right">
-                                                        文章名稱
+                                                        頁面標題
                                                         </div>
                                                     </li>
                                                     {hot ? hot.map((item, i) =>
@@ -396,7 +403,7 @@ class AnalyticPortrait extends Component {
                                             }
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-md-6" style={{ display: isInterestBox ? "block" : "none" }}>
                                         <div className="box">
                                             <h3 className="no_border">閱讀偏好</h3>
                                             { isLoadingInterest ?  
