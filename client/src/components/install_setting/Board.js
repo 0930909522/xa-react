@@ -3,7 +3,7 @@ import { Container, Row } from "react-bootstrap";
 import Header from "../Header";
 import Footer from '../Footer';
 import NavLeftPush from "../share/NavLeftPush";
-import { FaEdit, FaTrashAlt, FaPlusCircle, FaSearch } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaSearch } from "react-icons/fa";
 import PushPage from '../push_install/PushPage';
 import SetBlackList from '../push_install/SetBlackList';
 import InstallationGuide from '../push_install/InstallationGuide';
@@ -12,6 +12,7 @@ import { getBoard, deleteBoard } from '../share/ajax';
 import { FaArrowRight } from 'react-icons/fa';
 import { htmlInstallTrack } from '../share/checkPermission';
 import { Redirect } from 'react-router';
+import AlertMsg from '../share/AlertMsg';
 
 const thisLevel = 1; //設定本頁權限 1-4
 
@@ -28,7 +29,10 @@ class Board extends Component {
         this.state = {
             status: 0,
             data: [],
-            userAddingData: Object.assign({}, initialUserAddingData)
+            userAddingData: Object.assign({}, initialUserAddingData),
+            showLoadingBar: true,   //讀取圖示
+            alertText: '',
+            showAlertMsg: false
         }
     }
     componentDidMount() {
@@ -37,7 +41,12 @@ class Board extends Component {
         postData.view = localStorage.getItem('view');
         getBoard(postData)
             .then(response => {
-                let getData = response || [];
+                this.setState({ showLoadingBar: false });
+                let getData = response;
+                if(typeof response === 'string'){
+                    this.popMsg(response);
+                    return ;
+                }
                 if (getData.length === 0) {
                     // 如果沒有widget
                     this.changeStatus(1);
@@ -48,10 +57,11 @@ class Board extends Component {
                     array[index].choose = false;
                 })
                 this.setState({ data: getData });
-                // console.log(getData)
             })
-        // this.setState({ userAddingData: Object.assign({}, initialUserAddingData) }); //初始化
-
+            .catch(err => {
+                console.log(err);
+                this.popMsg('讀取資料發生錯誤，請稍後再試');
+            })
     }
     //全選
     toggleClickAll = e => {
@@ -101,6 +111,12 @@ class Board extends Component {
         newData[text] = data;
         this.setState({ userAddingData: newData });
     }
+    // 直接進到安裝教學
+    toPageThree = (index) => {
+        let id = this.state.data[index].boardId;
+        this.saveData('boardId', id);
+        this.changeStatus(3);
+    }
     //修改
     editData = (index) => {
         const newData = this.state.userAddingData;
@@ -140,6 +156,12 @@ class Board extends Component {
         }
         return value;
     }
+    popMsg = (value) => {
+        this.setState({ showAlertMsg: true, alertText: value });
+        setTimeout(() => {
+            this.setState({ showAlertMsg: false });
+        }, 5000);
+    }
 
     render() {
         return (
@@ -155,6 +177,11 @@ class Board extends Component {
                                     <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">放進來</span></h2>
                                     {this.props.permissionData.level < thisLevel ? htmlInstallTrack(this.props.permissionData.level, thisLevel) :
                                         <>
+                                            <AlertMsg
+                                                text={this.state.alertText}
+                                                attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                                                close={() => this.setState({ showAlertMsg: false })}
+                                            />
                                             <div className={this.state.status === 0 ? 'd-none' : ''}>
                                                 <span className={this.state.status > 0 ? 'text-primary' : ''}>
                                                     選取黑名單項目
@@ -167,12 +194,25 @@ class Board extends Component {
                                                 <span className={this.state.status > 2 ? 'text-primary' : this.state.userAddingData.boardId === '' ? '' : 'text-secondary'}>安裝教學</span>
                                             </div>
                                             <div className={this.state.status === 0 ? 'box' : 'd-none'}>
-                                                <table className="pushTable_r w-100" cellPadding="15">
+                                                <table className="table_simple w-100" cellPadding="15">
                                                     <thead>
                                                         <tr>
+                                                            <th className="d-flex justify-content-center">
+                                                                <h4>清單</h4>
+                                                            </th>
+                                                        </tr>
+                                                        <tr>
                                                             <th className="d-flex justify-content-between align-items-center">
-                                                                <input type="checkbox" onClick={this.toggleClickAll} />&nbsp;&nbsp;清單
-                                                    <button className="btn_noborder text-primary" onClick={() => this.changeStatus(1)}><FaPlusCircle /></button>
+                                                                <div className="d-flex justify-content-between align-items-center">
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        onClick={this.toggleClickAll}
+                                                                    />
+                                                                    <span>&nbsp;全選</span>
+                                                                </div>
+                                                                <div>
+                                                                    <span>詳情&nbsp;編輯</span>
+                                                                </div>
                                                             </th>
                                                         </tr>
                                                     </thead>
@@ -193,7 +233,7 @@ class Board extends Component {
                                                                         </td>
                                                                     </tr>
                                                                     {
-                                                                        (val.content !== null && val.show) && <tr>
+                                                                        (val.content !== null && val.show) && <tr className="nohover">
                                                                             <td colSpan="2">
                                                                                 <strong>類別</strong>
                                                                                 {
@@ -212,6 +252,10 @@ class Board extends Component {
                                                                                             <h6 key={index}>{val}</h6>
                                                                                         ))
                                                                                 }
+                                                                                <span
+                                                                                    className="btn_like text-primary"
+                                                                                    onClick={() => this.toPageThree(index)}
+                                                                                >進入安裝教學</span>
                                                                             </td>
                                                                         </tr>
                                                                     }
@@ -220,6 +264,18 @@ class Board extends Component {
                                                         {(this.state.showBtn) && <tr><td className="text-right btn_like" onClick={this.deleteList}><FaTrashAlt /></td></tr>}
                                                     </tbody>
                                                 </table>
+                                                {
+                                                    this.state.showLoadingBar &&
+                                                    <div className="loading-bar">
+                                                        <div className="lds-dual-ring"></div>
+                                                    </div>
+                                                }
+                                                <div className="text-center">
+                                                    <button
+                                                        className="btn btn-primary text-white px-4 mt-2 weight600 font_20"
+                                                        onClick={() => this.changeStatus(1)}
+                                                    >+</button>
+                                                </div>
                                             </div>
                                             {(this.state.status === 1) &&
                                                 <PushPage

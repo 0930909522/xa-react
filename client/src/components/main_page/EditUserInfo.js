@@ -14,9 +14,9 @@ class EditUserInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            editData: false,
             alertText: '',
             showAlertMsg: false,
+            editData: false,
             data: {
                 "name": "",
                 "email": "",
@@ -35,13 +35,15 @@ class EditUserInfo extends Component {
         }
     }
     componentDidMount() {
-        // let postData = { token: localStorage.getItem('token') };
-        getUserInfo().then(response => {
-            let newData = response;
-            if (newData === undefined) return;
-            delete newData.status;
-            this.setState({ data: newData })
-        })
+        getUserInfo()
+            .then(response => {
+                let newData = response;
+                delete newData.status;
+                this.setState({ data: newData })
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
     popMsg = (value) => {
         this.setState({ showAlertMsg: true, alertText: value });
@@ -70,23 +72,25 @@ class EditUserInfo extends Component {
                 };
                 updateUserInfo(postData)
                     .then(response => {
-                        if (response.status === 1) {
+                        if (typeof response === 'string') {
+                            this.popMsg(response);
+                        } else if (response.status === 1) {
                             this.popMsg('修改成功，將重新整理頁面');
                             localStorage.setItem('name', this.state.data.name);
-                        }else{
-                            this.popMsg('修改失敗');
+                            this.setState({ editData: !this.state.editData });
+                        } else {
+                            throw new Error();
                         }
                     })
-                    .catch(err=>{
+                    .catch(err => {
                         this.popMsg('修改失敗');
                     })
 
             }
         } else {
             // 檢視模式
-            this.setState({ temporaryData: this.state.data });
+            this.setState({ temporaryData: this.state.data, editData: !this.state.editData });
         }
-        this.setState({ editData: !this.state.editData });
     }
     typeData = e => {
         let newData = this.state.data;
@@ -115,13 +119,14 @@ class EditUserInfo extends Component {
                                         <hr />
                                         {Object.keys(this.state.data).map((key, index) =>
                                             <React.Fragment key={index}>
-                                                <label>{this.title[key]}</label>
+                                                <label className="dash_line pr-3 weight600">{this.title[key]}</label>
                                                 <EditUserInfoElement
                                                     name={this.state.data[key]}
                                                     keyElement={key}
                                                     editData={this.state.editData}
                                                     inputWord={this.typeData}
                                                     readOnly={(this.title[key] === '暱稱' || this.title[key] === '服務類型') ? false : true}
+                                                    disabled={(this.title[key] === '暱稱' || this.title[key] === '服務類型') ? false : true}
                                                 />
                                             </React.Fragment>
                                         )}

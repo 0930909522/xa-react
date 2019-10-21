@@ -62,7 +62,7 @@ class Header extends Component {
               <Link to="/" className={cIndex === 1 ? "nav-link active" : "nav-link"}>數據分析</Link>
               <Link to="/push" className={cIndex === 2 ? "nav-link active" : "nav-link"}>推播管理</Link>
               <Link to="/report/push" className={cIndex === 3 ? "nav-link active" : "nav-link"}>帳務報表</Link>
-              <Link to="/memberCentre/billing/:type" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
+              <Link to="/memberCentre/billing/two" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
             </Nav>
 
             <div className="person_btn">

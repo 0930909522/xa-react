@@ -32,7 +32,8 @@ class Receipt extends Component {
             date: [],   //日期列表
             weblist: [], //追蹤頁面列表
             data: [],    //列表資料
-            page: [1, 1]    //目前總頁數，目前在第幾頁
+            page: [1, 1],    //目前總頁數，目前在第幾頁
+            showLoadingBar: true   //讀取圖示
         }
     }
     componentDidMount = async () => {
@@ -53,12 +54,16 @@ class Receipt extends Component {
         }
 
         // 初始化收益
-        await bill().then((res => {
+        await bill()
+        .then((res => {
             if (res[0].group === 'pull') {
                 price.pull = res[0].balance;
                 price.push = res[1].balance;
             }
         }))
+        .catch((err)=>{
+            console.log(err);
+        })
 
         // 初始化日期
         for (let i = -1; i < 11; i++) {
@@ -78,7 +83,8 @@ class Receipt extends Component {
         //初始化資料
         for (let i = 0; i < dateList.length; i++) {
             if (id[0] === '收益') {
-                await myPull(dateList[i].replace('/', '-')).then(res => {
+                await myPull(dateList[i].replace('/', '-'))
+                .then(res => {
                     for (let j of res) {
                         let element = j;
                         element.date = dateList[i];
@@ -86,13 +92,20 @@ class Receipt extends Component {
                     }
 
                 })
+                .catch(err=>{
+                    console.log(err);
+                })
             } else {
-                await myPush(dateList[i].replace('/', '-')).then(res => {
+                await myPush(dateList[i].replace('/', '-'))
+                .then(res => {
                     for (let j of res) {
                         let element = j;
                         element.date = dateList[i];
                         newData.push(element)
                     }
+                })
+                .catch(err=>{
+                    console.log(err);
                 })
             }
             //初始化頁數
@@ -104,7 +117,8 @@ class Receipt extends Component {
         this.setState({
             ...this.state,
             data: newData,
-            page: newPage
+            page: newPage,
+            showLoadingBar: false
         })
     }
     componentDidUpdate(preProp) {
@@ -250,8 +264,7 @@ class Receipt extends Component {
                                                     className={(this.state.status[1] === '0' ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}
                                                     onClick={() => this.setState({ status: [this.state.status[0], '0'] })}
                                                 >推播明細
-                                    </span>
-                                                <span>&nbsp;｜&nbsp;</span>
+                                                </span>
                                                 {/* <span
                                                     className={(this.state.status[1] === '1' ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}
                                                     onClick={() => this.setState({ status: [this.state.status[0], '1'] })}
@@ -340,6 +353,12 @@ class Receipt extends Component {
                                                         })}
                                                     </tbody>
                                                 </table>
+                                                {
+                                                    this.state.showLoadingBar &&
+                                                    <div className="loading-bar">
+                                                        <div className="lds-dual-ring"></div>
+                                                    </div>
+                                                }
                                                 <div className="mt-4 mb-2 text-center">
                                                     {/* <span className="mx-2 btn_like text-primary">1</span>
                                                     <span className="mx-2 btn_like">2</span>

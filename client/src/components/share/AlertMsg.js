@@ -20,3 +20,9 @@ export default class AlertMsg extends Component {
         )
     }
 }
+// popMsg = (value) => {
+//     this.setState({ showAlertMsg: true, alertText: value });
+//     setTimeout(() => {
+//         this.setState({ showAlertMsg: false });
+//     }, 5000);
+// }

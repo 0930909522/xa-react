@@ -4,13 +4,16 @@ import { setblacklist, modifyBoard } from '../share/ajax';
 // import Header from "../Header";
 // import NavLeftPush from "../share/NavLeftPush";
 // import PushTitle from '../share/PushTitle';
+import AlertMsg from '../share/AlertMsg';
 
 class SetBlackList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: [],
-            modified: false
+            modified: false,
+            alertText: '',
+            showAlertMsg: false
         }
         // this.clickAllBtn = null;
     }
@@ -44,9 +47,14 @@ class SetBlackList extends Component {
         newData[num].choose = !newData[num].choose;
         this.setState({ data: newData });
     }
+    popMsg = (value) => {
+        this.setState({ showAlertMsg: true, alertText: value });
+        setTimeout(() => {
+            this.setState({ showAlertMsg: false });
+        }, 5000);
+    }
     submit = () => {
         let postData = {
-            // token: null,
             view: '',
             blacklist: [],
             acceptType: ""
@@ -62,14 +70,35 @@ class SetBlackList extends Component {
         if (this.state.modified) {
             // 是更新放進來
             postData.boardId = this.props.sendData.boardId;
-            modifyBoard(postData);
-            window.location.reload();
+            modifyBoard(postData)
+                .then(response => {
+                    if (response.status === 1) {
+                        this.popMsg('新增成功，即將回到列表')
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 5500);
+                        return;
+                    }
+                    throw new Error();
+                })
+                .catch(() => {
+                    this.popMsg('發生錯誤，請稍後再試')
+                })
         } else {
             // 是新增放進來
             setblacklist(postData)
                 .then((res) => {
-                    this.props.getResponseData('boardId', res);
-                    this.props.changeStatus(3);
+                    if (typeof res === 'string') {
+                        throw new Error();
+                    }
+                    this.popMsg('新增成功，即將跳轉至教學頁面')
+                    setTimeout(() => {
+                        this.props.getResponseData('boardId', res.boardId);
+                        this.props.changeStatus(3);
+                    }, 5500);
+                })
+                .catch(() => {
+                    this.popMsg('發生錯誤，請稍後再試')
                 })
         }
     }
@@ -84,7 +113,7 @@ class SetBlackList extends Component {
             }
         }, 0);
         (countBtn === arr.length) ? countBtn = true : countBtn = false;
-        
+
         return (
             <>
                 {/* <Header />
@@ -96,6 +125,11 @@ class SetBlackList extends Component {
                                 <h2>推播安裝</h2>
                                 <PushTitle two />
                                 <h5 className="my-3">目前已投放在您網站上的客戶網站</h5> */}
+                <AlertMsg
+                    text={this.state.alertText}
+                    attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
+                    close={() => this.setState({ showAlertMsg: false })}
+                />
                 <div className="box">
                     <table className="pushTable_r w-100 text-center" cellPadding="15">
                         <thead>

@@ -33,22 +33,29 @@ class SignIn extends Component {
     }
     submit = () => {
         let postData = this.state.data;
-        login(postData).then((res) => {
-            if (typeof res === 'string') {// 驗證錯誤
-                this.setState({ alertText: res, showAlertMsg: true });
+        login(postData)
+            .then((res) => {
+                if (typeof res === 'string') {// 驗證錯誤
+                    this.setState({ alertText: res, showAlertMsg: true });
+                    setTimeout(() => {
+                        this.setState({ alertText: '', showAlertMsg: false });
+                    }, 4000)
+                    return;
+                }
+                this.props.getPermission(res);
+                localStorage.setItem('permission', JSON.stringify(res));
+                if (res.level < 1) {
+                    this.props.history.push('/memberCentre/billing/two');
+                } else {
+                    this.props.history.push('/basis');
+                }
+            })
+            .catch(() => {
+                this.setState({ alertText: '發生錯誤，請稍後再試', showAlertMsg: true });
                 setTimeout(() => {
                     this.setState({ alertText: '', showAlertMsg: false });
                 }, 4000)
-                return;
-            }
-            this.props.getPermission(res);
-            localStorage.setItem('permission', JSON.stringify(res));
-            if (res.level < 1) {
-                this.props.history.push('/memberCentre/billing/two');
-            } else {
-                this.props.history.push('/basis');
-            }
-        })
+            })
     }
     render() {
         return (

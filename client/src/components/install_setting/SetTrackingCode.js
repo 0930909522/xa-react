@@ -43,25 +43,31 @@ class SetTrackingCode extends Component {
             }
         }
 
-        addTracking(postData).then(response => {
-            if (response !== undefined) {
+        addTracking(postData)
+            .then(response => {
+                if (typeof response === 'string') {
+                    this.popMsg(response);
+                    return ;
+                }
                 localStorage.setItem('view', response.view);
                 this.setState({ showAlertMsg: true, alertText: '資料傳送成功' });
                 this.props.toCheckPage(postData);
                 setTimeout(() => {
                     this.setState({ showAlertMsg: false });
-                    this.props.changeStatus();
-                }, 3000);
-            }
-        })
+                    this.props.changeStatus(2);
+                }, 4000);
+            })
+            .catch(err => {
+                this.popMsg('資料傳送失敗，請稍後再試');
+            })
     }
-    cancel = () => {
-        const newData = this.state.data;
-        newData.domainName = '';
-        newData.siteName = '';
-        newData.type = 'newmedia';
-        this.setState({ data: newData });
-    }
+    popMsg = (value) => {
+    this.setState({ showAlertMsg: true, alertText: value });
+    setTimeout(() => {
+        this.setState({ showAlertMsg: false });
+    }, 4000);
+}
+
     render() {
         return (
             <>
@@ -143,7 +149,7 @@ class SetTrackingCode extends Component {
                     </Row>
                     <div className="d-flex justify-content-center">
                         <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={this.submit}>新增</button>
-                        <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={() => window.location.reload()}>取消</button>
+                        <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={() => this.props.changeStatus(0)}>取消</button>
                     </div>
                 </div>
                 {/* </div>

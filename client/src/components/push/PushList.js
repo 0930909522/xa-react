@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PushInput from './PushInput';
 // import {FaTrashAlt} from 'react-icons/fa';
 import Switch from './share/Switch';
-import { FaPlusCircle, FaPencilAlt } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
 // import { type } from 'os';
 import { getPush, modifyPush } from '../share/ajax';
 
@@ -10,24 +10,27 @@ class PushList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: '',
-            open: false,
-            editIndex: null,
-            ajaxSleep: false,
-            data: [{
-                "adId": "",
-                "title": "",
-                "start": "",
-                "end": "",
-                "usable": true,
-                "tag": [],
-                "ads": [{
-                    "description": "",
-                    "img": "",
-                    "title": "",
-                    "url": ""
-                }]
-            }
+            showLoadingBar: true,   //讀取圖示
+            type: '',   //在哪一類
+            open: false,    //開啟編寫
+            editIndex: null,    // 編寫哪一項
+            ajaxSleep: false,   // 休息三秒
+            data: [
+                // {
+                //     "adId": "",
+                //     "title": "",
+                //     "start": "",
+                //     "end": "",
+                //     "usable": true,
+                //     "tag": [],
+                //     "ads": [{
+                //         "description": "",
+                //         "img": "",
+                //         "title": "",
+                //         "url": ""
+                //     }
+                //     ]
+                // }
             ]
         }
         this.currentTIme = new Date();
@@ -50,12 +53,13 @@ class PushList extends Component {
 
         let postData = {
             view: localStorage.getItem('view'),
-            // view: 'culturelaunch',
             type: newType
         }
-        getPush(postData).then(res => {
-            this.setState({ data: res });
+        getPush(postData)
+        .then(res => {
+            this.setState({ data: res, showLoadingBar: false });
         })
+        .catch(()=>{})
     }
     openEdit = index => {
         this.setState({ open: !this.state.open, editIndex: index })
@@ -88,8 +92,6 @@ class PushList extends Component {
             <>
                 <div className={(this.state.open ? 'd-none ' : ' ') + 'box radius10'}>
                     <div className="text-right">
-                        {/* <button className="btn_outline">移除</button> */}
-                        <button className="btn_noborder text-primary" onClick={() => this.openEdit(null)}><FaPlusCircle /></button>
                         <hr />
                     </div>
                     <table className="pushTable w-100 text-center radius20" cellPadding="15">
@@ -103,19 +105,33 @@ class PushList extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.data.map((val, index) => {
-                                return (
-                                    <tr key={index}>
-                                        <td><Switch value={val.usable} changeStatus={() => this.changeStatus(index)} /></td>
-                                        <td>{val.title}</td>
-                                        <td>{val.end}</td>
-                                        <td>{val.usable ? '刊登中' : Date.parse(val.start) > new Date() ? '未刊登' : '已結束'}</td>
-                                        <td><button className='btn_noborder_r' onClick={() => this.openEdit(index)}>編輯 <FaPencilAlt /></button></td>
-                                    </tr>
-                                )
-                            })}
+                            {
+                                Boolean(this.state.data) &&
+                                this.state.data.map((val, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td><Switch value={val.usable} changeStatus={() => this.changeStatus(index)} /></td>
+                                            <td>{val.title}</td>
+                                            <td>{val.end}</td>
+                                            <td>{val.usable ? '刊登中' : Date.parse(val.start) > new Date() ? '未刊登' : '已結束'}</td>
+                                            <td><button className='btn_noborder_r' onClick={() => this.openEdit(index)}>編輯 <FaPencilAlt /></button></td>
+                                        </tr>
+                                    )
+                                })}
                         </tbody>
                     </table>
+                    {
+                        this.state.showLoadingBar &&
+                        <div className="loading-bar">
+                            <div className="lds-dual-ring"></div>
+                        </div>
+                    }
+                    <div className="text-center">
+                        <button
+                            className="btn btn-primary text-white px-4 mt-2 weight600 font_20"
+                            onClick={() => this.openEdit(null)}
+                        >+</button>
+                    </div>
                 </div>
                 {this.state.open &&
                     <PushInput

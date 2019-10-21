@@ -32,7 +32,7 @@ class Push extends Component {
 
   componentDidMount = async () => {
     let newHasData = [...this.state.hasData];
-    let newData = {...this.state.data};
+    let newData = { ...this.state.data };
     // pushingReport、pushingTheme是否可改
     let postData1 = {
       view: localStorage.getItem('view'),
@@ -44,36 +44,41 @@ class Push extends Component {
     }
 
     //初始化狀態
-    await pushStatus().then(res => {
-      for(let i in res){
-        newData[i] = res[i];
-      }
-      this.setState({ data: newData });
-    })
+    await pushStatus()
+      .then(res => {
+        for (let i in res) {
+          newData[i] = res[i];
+        }
+        this.setState({ data: newData });
+      })
 
     //初始化是否可更改狀態
-    await getPush(postData1).then(res => {
-      if (res == 0) {
-        newHasData[0] = false;
-        if (newData.pushingReport) {
-          // 改為關閉
-          this.change('pushingReport');
+    await getPush(postData1)
+      .then(res => {
+        if (res == 0) {
+          newHasData[0] = false;
+          if (newData.pushingReport) {
+            // 改為關閉
+            this.change('pushingReport');
+          }
+        } else {
+          newHasData[0] = true;
         }
-      } else {
-        newHasData[0] = true;
-      }
-    })
-    await getPush(postData2).then(res => {
-      if (res == 0) {
-        newHasData[1] = false;
-        if (newData.pushingTheme) {
-          // 改為關閉
-          this.change('pushingTheme');
+      })
+      .catch(()=>{})
+    await getPush(postData2)
+      .then(res => {
+        if (res == 0) {
+          newHasData[1] = false;
+          if (newData.pushingTheme) {
+            // 改為關閉
+            this.change('pushingTheme');
+          }
+        } else {
+          newHasData[1] = true;
         }
-      } else {
-        newHasData[1] = true;
-      }
-    })
+      })
+      .catch(()=>{})
     this.setState({ hasData: newHasData });
   }
 
@@ -155,38 +160,7 @@ class Push extends Component {
                     <>
                       <PushTitle one />
                       <div className={this.state.openList1 || this.state.openList2 ? 'd-none' : ''}>
-                        {/* <div className="box radius10">
-                    <div className="mb-3">
-                      <span className="vertical_middle d-inline-block font_20 weight600">全自動推播</span>
-                      <span className="vertical_middle d-inline-block ml-3"><Switch /></span>
-                    </div>
-                    <p>您可以選擇全自動推播，系統將自動串連您的推播工具，追蹤用戶閱讀習慣，自動推播於點擊率最高的渠道。</p>
-                  </div> */}
-
                         <div className="box radius10">
-                          {/* <h4 className="my-3">選擇推播類別</h4>
-                    <div className="my-2">
-                      <button className="btn_outline w-45 m-2">
-                        <FaRegCalendar />&nbsp;主題活動
-                    </button>
-                      <Switch changeStatus={() => this.recommendChange('pushingTheme')} value={this.state.data.pushingTheme} />
-                    </div>
-                    <div className="my-2">
-                      <button className="btn_outline w-45 m-2">
-                        <FaRegNewspaper />&nbsp;專題報導
-                      </button>
-                      <Switch changeStatus={() => this.recommendChange('pushingReport')} value={this.state.data.pushingReport} />
-                    </div>
-                    <button className="btn_outline w-45 m-2" onClick={() => this.chooseType('推薦商品')}><FaRegThumbsUp />&nbsp;推薦商品</button>
-                    <div className="my-2">
-                      <Switch changeStatus={() => this.recommendChange('pushingEcommerce')} value={this.state.data.pushingEcommerce} />
-                      &nbsp;推薦商品
-                    </div>
-                    <div className="my-2">
-                      <Switch changeStatus={() => this.recommendChange('pushingMedia')} value={this.state.data.pushingMedia} />
-                      &nbsp;推薦文章
-                    </div>
-                    <button className="btn_outline w-45 m-2" onClick={() => this.chooseType('推薦文章')}><FaRegThumbsUp />&nbsp;推薦文章</button> */}
                           <table className="pushTable_r w-100  text-center" cellPadding="15">
                             <thead>
                               <tr>
