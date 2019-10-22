@@ -37,6 +37,7 @@ class AnalyticGroup extends Component {
         // axios.get('/datas/analyticHot.json')
         this.setState({ isLoadingWordCloud: true });
         axios.get("https://node.aiday.org/sbir/asset/wordCloud", {
+            withCredentials: true,
             params: {
                 view: this.state.view,
                 interval: this.state.wordCloudInterval,
@@ -66,6 +67,7 @@ class AnalyticGroup extends Component {
         // axios.get('/datas/analyticHot.json')
         this.setState({isLoadingList: true})
         axios.get("https://node.aiday.org/sbir/asset/hot", {
+            withCredentials: true,
             params: {
                 view: this.state.view,
                 interval: this.state.hotInterval,

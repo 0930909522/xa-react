@@ -127,6 +127,7 @@ class AnalyticAsset extends Component {
   }
   getApiFromDb = (apiIndex) => {
     axios.get(this.state.getApi[apiIndex], {
+      withCredentials: true,
       params: {
         type: this.state.listIndex + 1,
         interval: this.state.listInterval,
@@ -223,13 +224,14 @@ class AnalyticAsset extends Component {
   addPieData = () => {
     let result = [];
     let sum = 0;
+    console.log(this.state.basic.data)
     this.state.basic ? this.state.basic.data.map( item => {
       sum += item.pv
     }): console.log();
     if(sum !== 0){
       let now = this;
       this.state.basic.data.map( item => {
-        if( item.name !== "平均" ){
+        if( item.name !== "平均" && item.lineChart ){
           let y = item.pv;
           let p = Math.round((item.pv / sum) * 10000) / 100;
           let label = item.name;
@@ -249,7 +251,7 @@ class AnalyticAsset extends Component {
 
   addLineData = () => {
     let result = [];
-    //console.log("item", this.state.basic);
+    //console.log("item", this.state.basic.data);
     this.state.basic ? this.state.basic.data.map((item, index) => {
       let subResult = [];
       item.lineChart ? item.lineChart.map((subItem)=>{
@@ -277,6 +279,7 @@ class AnalyticAsset extends Component {
 
   addLineDetailData = () => {
     let result = [];
+    
     this.state.articles ? this.state.articles.data.map( (item, index) => {
       let subResult = [];
       item.lineChart ? item.lineChart.map((subItem)=>{
@@ -345,7 +348,7 @@ class AnalyticAsset extends Component {
       // },
       // width: 700,
       axisX:{      
-        // valueFormatString: "DD-MMM" ,
+        valueFormatString: "DD-MMM 2019" ,
         // labelAngle: -50
       },
 			axisY: {

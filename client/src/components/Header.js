@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { FaUser } from 'react-icons/fa';
 import { IoMdSwap } from 'react-icons/io';
-import AlertMsg from './share/AlertMsg';
+import AlertCheckMsg from './share/AlertCheckMsg';
 import { logout } from './share/ajax';
 import { Link } from 'react-router-dom';
 
@@ -26,14 +26,17 @@ class Header extends Component {
     });
 
   }
-  logout = () => {
+  showLogout = () => {
     this.setState({ showAlertMsg: true });
-    logout();
+  }
+  logout = () => {
+    //this.setState({ showAlertMsg: true });
+    //logout();
     localStorage.clear();
-    setTimeout(() => {
+    //setTimeout(() => {
       this.setState({ showAlertMsg: false });
       window.location.href = '/signup/signin';
-    }, 4000);
+    //}, 4000);
   }
 
   switchWebsite = (index) => {
@@ -47,11 +50,13 @@ class Header extends Component {
     const cIndex = this.props.cateIndex;
     return (
       <>
-        <AlertMsg
-          text="登出成功..."
+        <AlertCheckMsg
+          text="是否確定要登出?"
           attr={this.state.showAlertMsg ? 'opacity1' : 'opacity0'}
           close={() => this.setState({ showAlertMsg: false })}
+          action={() => this.logout()}
         />
+          
         <Navbar variant="dark" className="main_header">
           <Container>
             <Navbar.Brand href="#home">
@@ -91,7 +96,7 @@ class Header extends Component {
                   <li id="name">{`${localStorage.getItem('name') || '訪客'}，您好`}</li>
                   <li><Link to="/memberCentre/billing/two" className="nav-link">進入會員中心</Link></li>
                   {/* <li onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li> */}
-                  <li onClick={this.logout} className="nav-link"> {localStorage.getItem('name') ? '登出' : '登入'} </li>
+                  <li onClick={this.showLogout} className="nav-link"> {localStorage.getItem('name') ? '登出' : '登入'} </li>
                 </ul>
               </div>
             </div>

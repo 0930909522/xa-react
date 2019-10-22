@@ -284,7 +284,7 @@ class Billing extends Component {
                                             handleClick={() => this.props.history.push('/memberCentre/billing/four')}
                                         >
                                             <p>儲值後開始推廣您的網站</p>
-                                            <h1>${bill[1] ? bill[1].balance : ""}</h1>
+                                            <h1>${bill[0] ? bill[0].balance : 0}</h1>
                                             {/* push */}
                                         </MemberCard>
                                         <MemberCard
@@ -293,7 +293,7 @@ class Billing extends Component {
                                             handleClick={this.pullBenefitHref}
                                         >
                                             <p>在您的網站安裝推推立即可開始收錢</p>
-                                            <h1>${bill[0] ? bill[0].balance : ""}</h1>
+                                            <h1>${bill[1] ? bill[1].balance : 0}</h1>
                                             {/* pull */}
                                         </MemberCard>
 

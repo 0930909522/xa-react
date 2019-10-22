@@ -27,6 +27,7 @@ class AnalyticBasis extends Component {
 
     getData = () => {
         axios.get('https://node.aiday.org/sbir/basic/ga', {
+            withCredentials: true,
             params: {
                 view: this.state.view,
             }

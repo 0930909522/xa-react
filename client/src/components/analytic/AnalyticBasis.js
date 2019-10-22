@@ -44,6 +44,7 @@ class AnalyticBasis extends Component {
     this.getData('realtime');
     this.getData('ga');
   }
+
   openPopup = () => {
     this.setState(prev => ({ isDetail: !prev.isDetail }));
   }
@@ -98,6 +99,7 @@ class AnalyticBasis extends Component {
 
   getData = (type) => {
       axios.get('https://node.aiday.org/sbir/basic/' + type, {
+        withCredentials: true,
         params: {
           view: this.state.view,
         }

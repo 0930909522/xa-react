@@ -25,14 +25,14 @@ class AnalyticPortrait extends Component {
             fishType: "",
             topId: 0,
             fish: [
-                { "id": "g1", "name": "海豚", "info": "友善、可馴化", "percent": "0", "count": 0, "bgColor": "#f19ec2" },
-                { "id": "g2", "name": "烏龜", "info": "很少來不消費", "percent": "0", "count": 0, "bgColor": "#f6b37f" },
-                { "id": "g3", "name": "蝦子", "info": "經濟價值高", "percent": "0", "count": 0, "bgColor": "#f6e206" },
-                { "id": "g4", "name": "鮟鱇魚", "info": "潛在鐵粉", "percent": "0", "count": 0, "bgColor": "#8f82bc" },
+                { "id": "g1", "name": "海豚", "info": "潛在鐵粉", "percent": "0", "count": 0, "bgColor": "#f19ec2" },
+                { "id": "g2", "name": "烏龜", "info": "有機會成為常客", "percent": "0", "count": 0, "bgColor": "#f6b37f" },
+                { "id": "g3", "name": "蝦子", "info": "較少來，一來就消費", "percent": "0", "count": 0, "bgColor": "#f6e206" },
+                { "id": "g4", "name": "鮟鱇魚", "info": "經濟價值普通", "percent": "0", "count": 0, "bgColor": "#8f82bc" },
                 { "id": "g5", "name": "鮪魚", "info": "經濟價值高", "percent": "0", "count": 0, "bgColor": "#b3d465" },
                 { "id": "g6", "name": "鯊魚", "info": "常使用但不消費", "percent": "0", "count": 0, "bgColor": "#a09f9f" },
                 { "id": "g7", "name": "鯨魚", "info": "忠誠且大量消費", "percent": "0", "count": 0, "bgColor": "#3e95de" },
-                { "id": "g8", "name": "魟魚", "info": "忠誠度高的好客戶", "percent": "0", "count": 0, "bgColor": "#3e95de" },
+                { "id": "g8", "name": "魟魚", "info": "具有一定的忠誠度，有消費潛力", "percent": "0", "count": 0, "bgColor": "#3e95de" },
                 { "id": "g9", "name": "秋刀魚", "info": "經濟價值較低", "percent": "0", "count": 0, "bgColor": "#3e95de" }
             ],
             basic: "", //舊搭
@@ -61,11 +61,13 @@ class AnalyticPortrait extends Component {
         //const url = "http://r.xnet.world/demo/analyticFish.json";
         const url = "https://node.aiday.org/sbir/visitor/overview";
         axios.get( url, {
+            withCredentials: true,
             params: {
                 view: this.state.view,
             }
         })
             .then(response => {
+                console.log("res", response);
                 let data = response.data.data;
                 let fishs = this.state.fish;
                 let newFishs =[];
@@ -116,6 +118,7 @@ class AnalyticPortrait extends Component {
     getSummaryFromDb = (id) => {
         this.setState({isLoadingSummary: true});
         axios.get( "https://node.aiday.org/sbir/visitor/summary", {
+            withCredentials: true,
             params: {
                 view: this.state.view,
                 type: this.state.fish.find( item => item.id === id ).name,
@@ -134,6 +137,7 @@ class AnalyticPortrait extends Component {
     getHotFromDb = (id) => {
         this.setState({isLoadingHot: true});
         axios.get( "https://node.aiday.org/sbir/visitor/hot", {
+            withCredentials: true,
             params: {
                 view: this.state.view,
                 type: this.state.fish.find( item => item.id === id ).name,
@@ -150,12 +154,13 @@ class AnalyticPortrait extends Component {
     getInterestFromDb = (id) => {
         this.setState({isLoadingInterest: true});
         axios.get( "https://node.aiday.org/sbir/visitor/cateInterest", {
+            withCredentials: true,
             params: {
                 view: this.state.view,
                 type: this.state.fish.find( item => item.id === id ).name,
             }
         }).then( res => {
-            console.log("res", res);
+            //console.log("res", res);
             let data =  res.data.data;
             if(res.data.status === 0){
                 this.setState({isInterestBox: false})
