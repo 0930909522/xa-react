@@ -55,15 +55,15 @@ class Receipt extends Component {
 
         // 初始化收益
         await bill()
-        .then((res => {
-            if (res[0].group === 'pull') {
-                price.pull = res[0].balance;
-                price.push = res[1].balance;
-            }
-        }))
-        .catch((err)=>{
-            console.log(err);
-        })
+            .then((res => {
+                if (res[0].group === 'pull') {
+                    price.pull = res[0].balance;
+                    price.push = res[1].balance;
+                }
+            }))
+            .catch((err) => {
+                console.log(err);
+            })
 
         // 初始化日期
         for (let i = -1; i < 11; i++) {
@@ -84,29 +84,29 @@ class Receipt extends Component {
         for (let i = 0; i < dateList.length; i++) {
             if (id[0] === '收益') {
                 await myPull(dateList[i].replace('/', '-'))
-                .then(res => {
-                    for (let j of res) {
-                        let element = j;
-                        element.date = dateList[i];
-                        newData.push(element)
-                    }
+                    .then(res => {
+                        for (let j of res) {
+                            let element = j;
+                            element.date = dateList[i];
+                            newData.push(element)
+                        }
 
-                })
-                .catch(err=>{
-                    console.log(err);
-                })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             } else {
                 await myPush(dateList[i].replace('/', '-'))
-                .then(res => {
-                    for (let j of res) {
-                        let element = j;
-                        element.date = dateList[i];
-                        newData.push(element)
-                    }
-                })
-                .catch(err=>{
-                    console.log(err);
-                })
+                    .then(res => {
+                        for (let j of res) {
+                            let element = j;
+                            element.date = dateList[i];
+                            newData.push(element)
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             }
             //初始化頁數
             if (i === 0) {
@@ -260,11 +260,24 @@ class Receipt extends Component {
                                     {this.props.permissionData.level < thisLevel ? htmlInstallTrack(this.props.permissionData.level, thisLevel) :
                                         <>
                                             <div className="box radius10">
-                                                <span
-                                                    className={(this.state.status[1] === '0' ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}
-                                                    onClick={() => this.setState({ status: [this.state.status[0], '0'] })}
-                                                >推播明細
-                                                </span>
+                                                {
+                                                    document.querySelector('body').clientWidth > 768 ?
+                                                        <span
+                                                            className={(this.state.status[1] === '0' ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}
+                                                            onClick={() => this.setState({ status: [this.state.status[0], '0'] })}
+                                                        >推播明細</span>
+                                                        :
+                                                        <>
+                                                            <span>
+                                                                <Link to="/report/push" className={(this.state.status[0] === '推播'?'selected_text':'text-dark')+' dec_none btn_like'}>我的推播</Link>
+                                                            </span>
+                                                            <span>&nbsp;｜&nbsp;</span>
+                                                            <span>
+                                                                <Link to="/report/income" className={(this.state.status[0] === '推播'?'text-dark':'selected_text')+' dec_none btn_like'}>我的收益</Link>
+                                                            </span>
+                                                        </>
+                                                }
+
                                                 {/* <span
                                                     className={(this.state.status[1] === '1' ? 'selected_text' : 'text-dark') + ' dec_none btn_like'}
                                                     onClick={() => this.setState({ status: [this.state.status[0], '1'] })}
@@ -284,7 +297,7 @@ class Receipt extends Component {
                                                             {this.state.status[0] === '推播' && <Link to="/memberCentre/billing/four"><button className="btn btn-info ml-5" >推播儲值</button></Link>}
                                                         </Col>
                                                         <Col sm="3">
-                                                            <button className="btn btn-outline-dark w-100" onClick={this.toCSV}><FaDownload />&nbsp;&nbsp;匯出明細</button>
+                                                            <button className="btn btn-outline-dark w-100 download_btn" onClick={this.toCSV}><FaDownload />&nbsp;&nbsp;匯出明細</button>
                                                         </Col>
                                                     </Row>
                                                 </Container>
