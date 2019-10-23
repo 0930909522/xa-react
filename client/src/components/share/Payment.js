@@ -6,7 +6,7 @@ class Payment extends Component {
         super(props);
         this.state = {
             today: null,
-            payState: 0, // 哪個方案已打開
+            payState: 1, // 哪個方案已打開
         }
     }
     componentDidMount() {
@@ -95,11 +95,11 @@ class Payment extends Component {
                         >通知已付款
                         </button>
                     </div>
-                    <h4 className="my-5 p-4 btn_like bg-light radius10" onClick={() => this.choosePayState(2)}>
-                        {/* <span className="text-primary">開立即期支票</span> */}
+                    {/* <h4 className="my-5 p-4 btn_like bg-light radius10" onClick={() => this.choosePayState(2)}>
+                        <span className="text-primary">開立即期支票</span>
                         <span className="text-primary">來電通知</span>
                         {this.state.payState === 2 ? <FaAngleUp className="float-right" /> : <FaAngleDown className="float-right" />}
-                    </h4>
+                    </h4> */}
                     <div className={this.state.payState === 2 ? 'd-block' : 'd-none'}>
                         <hr />
                         {/* <p>

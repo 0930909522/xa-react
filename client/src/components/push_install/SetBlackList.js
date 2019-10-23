@@ -47,11 +47,11 @@ class SetBlackList extends Component {
         newData[num].choose = !newData[num].choose;
         this.setState({ data: newData });
     }
-    popMsg = (value) => {
+    popMsg = (value, time = 5000) => {
         this.setState({ showAlertMsg: true, alertText: value });
         setTimeout(() => {
             this.setState({ showAlertMsg: false });
-        }, 5000);
+        }, time);
     }
     submit = () => {
         let postData = {
@@ -73,10 +73,10 @@ class SetBlackList extends Component {
             modifyBoard(postData)
                 .then(response => {
                     if (response.status === 1) {
-                        this.popMsg('新增成功，即將回到列表')
+                        this.popMsg('新增成功，即將回到列表', 1500)
                         setTimeout(() => {
                             window.location.reload();
-                        }, 5500);
+                        }, 1800);
                         return;
                     }
                     throw new Error();
@@ -91,11 +91,11 @@ class SetBlackList extends Component {
                     if (typeof res === 'string') {
                         throw new Error();
                     }
-                    this.popMsg('新增成功，即將跳轉至教學頁面')
+                    this.popMsg('新增成功，即將跳轉至教學頁面', 1500)
                     setTimeout(() => {
                         this.props.getResponseData('boardId', res.boardId);
                         this.props.changeStatus(3);
-                    }, 5500);
+                    }, 1800);
                 })
                 .catch(() => {
                     this.popMsg('發生錯誤，請稍後再試')
