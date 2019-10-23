@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { FaUser } from 'react-icons/fa';
-import { IoMdSwap } from 'react-icons/io';
+import { IoMdSwap, IoIosMenu } from 'react-icons/io';
 import AlertCheckMsg from './share/AlertCheckMsg';
 import { logout } from './share/ajax';
 import { Link } from 'react-router-dom';
@@ -57,22 +57,24 @@ class Header extends Component {
           action={() => this.logout()}
         />
           
-        <Navbar variant="dark" className="main_header">
+        <Navbar variant="dark" expand="lg" className="main_header">
           <Container>
             <Navbar.Brand href="#home">
               <img src="/logo.jpg" alt="pt" /> Xnet Analytics <span>     </span>
             </Navbar.Brand>
-            <Nav className="mr-auto">
-              <Link to="/" className="nav-link">回首頁</Link>
-              <Link to="/" className={cIndex === 1 ? "nav-link active" : "nav-link"}>數據分析</Link>
-              <Link to="/push" className={cIndex === 2 ? "nav-link active" : "nav-link"}>推播管理</Link>
-              <Link to="/report/push" className={cIndex === 3 ? "nav-link active" : "nav-link"}>帳務報表</Link>
-              <Link to="/memberCentre/billing/two" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
-            </Nav>
-
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Link to="/" className="nav-link">回首頁</Link>
+                <Link to="/" className={cIndex === 1 ? "nav-link active" : "nav-link"}>數據分析</Link>
+                <Link to="/push" className={cIndex === 2 ? "nav-link active" : "nav-link"}>推播管理</Link>
+                <Link to="/report/push" className={cIndex === 3 ? "nav-link active" : "nav-link"}>帳務報表</Link>
+                <Link to="/memberCentre/billing/two" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
+              </Nav>
+            </Navbar.Collapse>
+            {/* <IoIosMenu className="header_svg" /> */}
             <div className="person_btn">
-              <div className="btn_like"><IoMdSwap title="切換平台" className="header_svg" />
-              </div>
+              <div className="btn_like"><IoMdSwap title="切換平台" className="header_svg" /></div>
               <div className="person_sign">
                 <small>選擇分析平台</small>
                 <ul className="project_list">
@@ -100,7 +102,12 @@ class Header extends Component {
                 </ul>
               </div>
             </div>
+
+            
           </Container>
+          {/* <div className="rwd_phone">
+                <hr/>
+            </div> */}
         </Navbar>
       </>
     );
