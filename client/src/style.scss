@@ -843,13 +843,13 @@ button.font_20 {
 .icon_name {
     @extend .font_20;
     @extend .weight600;
-    display: inline-block;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: bottom;
-    width: 80px;
-    white-space: nowrap;
+    // display: inline-block;
+    // margin: 0;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
+    // vertical-align: bottom;
+    // width: 80px;
+    // white-space: nowrap;
 }
 
 .loading-bar {
