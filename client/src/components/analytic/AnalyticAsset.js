@@ -398,6 +398,7 @@ class AnalyticAsset extends Component {
                   </div>
                   <div className="box">
                     <h3>分類占比
+                      <hr className="mobile-show"/>
                       <div className="select inlne">
                         <label>
                           主分類：

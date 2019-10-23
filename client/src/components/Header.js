@@ -24,7 +24,6 @@ class Header extends Component {
         localStorage.setItem('viewName', val.siteName);
       }
     });
-
   }
   showLogout = () => {
     this.setState({ showAlertMsg: true });
@@ -60,24 +59,29 @@ class Header extends Component {
         <Navbar variant="dark" expand="lg" className="main_header">
           <Container>
             <Navbar.Brand href="#home">
-              <img src="/logo.jpg" alt="pt" /> Xnet Analytics <span>     </span>
+              <img src="/logo.jpg" className="top_logo" alt="pt" /> Xnet Analytics <span>     </span>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-             
               <hr className="mobile-show" />
               <Dropdown className="mobile-show">
                 <Dropdown.Toggle variant="secondary" id="dropdown-basic">
                   選擇分析網站
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                  {
+                    this.state.websites.map((val, index) => (
+                      <Dropdown.Item
+                        key={index}
+                        onClick={() => this.switchWebsite(index)}
+                        id={this.state.viewIndex === index ? 'focus' : ''}
+                      >{val.siteName}</Dropdown.Item>
+                    ))
+                  }
                 </Dropdown.Menu>
               </Dropdown>            
               <hr className="mobile-show" />
-              
+
               <Nav className="mr-auto">
                 <Link className="nav-link mobile-show" to="/basis">基礎分析</Link>
                 <Link className="nav-link mobile-show" to="/reports">流量報表</Link>

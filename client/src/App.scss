@@ -32,11 +32,25 @@ $media_md: 768px;
     }
 }
 .mobile-show {
-    display: none;
+    display: none !important;
     @include width_md {
-        display: block;
+        display: block !important;
     }
 }
+.table_box {
+    max-width: 100%;
+    overflow: auto;
+    table {
+        min-width: 600px;
+        
+    }
+}
+.top_logo {
+    @include width_md {
+       width: 50px;
+    }
+}
+
 .loading_box {
     line-height: 300px;
     text-align: center;
@@ -154,6 +168,10 @@ li {list-style: none;}
         .select {
             &.inlne {
                 float: right;
+                @include width_md {
+                    margin-top: 15px;
+                    float: none;
+                }
             }
             text-align: center;
             font-size: 14px;
@@ -588,6 +606,9 @@ li {list-style: none;}
                 font-size: 18px;
                 border-right: 2px solid #ccc;
                 cursor: pointer;
+                @include width_md {
+                    margin-bottom: 5px;
+                }
                 &.act {
                     font-weight: bold;
                 }
@@ -773,6 +794,7 @@ li {list-style: none;}
     }
     
 }
+
 
 
 .layout_left {

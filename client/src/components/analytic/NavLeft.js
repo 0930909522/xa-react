@@ -33,17 +33,14 @@ class NavLeft extends Component {
     const { isData, websiteName } = this.state;
     return (
       <div className="layout_left">
-        {isData ? 
-          <span>
+        { isData ? <span>
             <div className="box_logo">
               <div className="logo" style={{backgroundColor: "#333", fontSize:"45px", lineHeight:"75px", textAlign: "center", color: "#fff", fontWeight: "normal"}}>
               {websiteName.substr(0, 1)}
               </div>
             </div>
             <h2><span style={{fontSize:"20px", paddingBottom: "5px"}}>{websiteName}</span> 分析 </h2>
-          </span> : <></>
-        }
-        
+          </span> : <></> }
         <ul className="nav_left">
           {/* <li> <FaFileAlt /> <Link to="/general">訪客總覽</Link></li> */}
           <li> <IoMdPie /> <Link to="/basis">基礎分析</Link></li>

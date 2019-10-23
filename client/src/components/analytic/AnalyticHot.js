@@ -11,7 +11,6 @@ import { Table, Container, Row, Nav, Navbar, Form, FormControl, Button } from 'r
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 
 const thisLevel = 2; //設定本頁權限 1-4
-
 class AnalyticGroup extends Component {
     constructor(props) {
         super(props);
@@ -20,8 +19,10 @@ class AnalyticGroup extends Component {
             keywords: "",
             hot: "",
             now: "",
+            chartWidth: 650,
+            chartHeight: 660,
             isDetail: false,
-            wordCloudCount: 45,
+            wordCloudCount: 15,
             wordCloudInterval: 7,
             hotCount: 10,
             hotInterval: 7,
@@ -32,6 +33,7 @@ class AnalyticGroup extends Component {
     componentDidMount() {
         this.getWordCloudData();
         this.getHotData();
+        this.checkSize();
     }
     getWordCloudData = () => {
         // axios.get('/datas/analyticHot.json')
@@ -113,8 +115,17 @@ class AnalyticGroup extends Component {
             this.getHotData();
         });
     }
+    checkSize = () => {
+        if(window.innerWidth < 768){
+            this.setState({ 
+                chartWidth: window.innerWidth - 40, 
+                chartHeight: window.innerWidth - 30, 
+            })
+
+        }
+    }
     render() {
-        const { hot, isLoadingWordCloud, isLoadingList } = this.state
+        const { hot, isLoadingWordCloud, isLoadingList, chartWidth, chartHeight } = this.state
         const { name, level, verified } = this.props.permissionData;
         return (
         verified !== true ?
@@ -163,8 +174,8 @@ class AnalyticGroup extends Component {
                                                                 offsetX: 0,
                                                                 offsetY: 0,
                                                             }}
-                                                            width={650}
-                                                            height={660}
+                                                            width={chartHeight}
+                                                            height={chartHeight}
                                                             overflow={false}
                                                             padding={0} // optional value, number that set the padding between bubbles
                                                             showLegend={false} // optional value, pass false to disable the legend.
@@ -221,32 +232,33 @@ class AnalyticGroup extends Component {
 
                                         { isLoadingList ?
                                         <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
-                                        <Table striped bordered hover>
-                                            <thead>
-                                                <tr>
-                                                    <th width="8%">排名</th>
-                                                    <th>文章名稱</th>
-                                                    <th width="8%">人數</th>
-                                                    <th width="10%">瀏覽量</th>
-                                                    <th width="10%">新客戶</th>
-                                                    <th width="10%">舊客戶</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {hot ? hot.map((item, index) =>
-                                                    <tr key={index}>
-                                                        <td>{index + 1}</td>
-                                                        <td> <a href={item._id}>{item.title}</a> </td>
-                                                        <td>{item.uv}</td>
-                                                        <td>{item.pv}</td>
-                                                        <td>{item.newVisitor}</td>
-                                                        <td>{item.oldVisitor}</td>
-
+                                        <div className="table_box">
+                                            <Table striped bordered hover>
+                                                <thead>
+                                                    <tr>
+                                                        <th width="8%">排名</th>
+                                                        <th>文章名稱</th>
+                                                        <th width="8%">人數</th>
+                                                        <th width="10%">瀏覽量</th>
+                                                        <th width="10%">新客戶</th>
+                                                        <th width="10%">舊客戶</th>
                                                     </tr>
-                                                ) : console.log()}
+                                                </thead>
+                                                <tbody>
+                                                    {hot ? hot.map((item, index) =>
+                                                        <tr key={index}>
+                                                            <td>{index + 1}</td>
+                                                            <td> <a href={item._id}>{item.title}</a> </td>
+                                                            <td>{item.uv}</td>
+                                                            <td>{item.pv}</td>
+                                                            <td>{item.newVisitor}</td>
+                                                            <td>{item.oldVisitor}</td>
+                                                        </tr>
+                                                    ) : console.log()}
 
-                                            </tbody>
-                                        </Table> }
+                                                </tbody>
+                                            </Table>
+                                        </div> }
 
 
                                        

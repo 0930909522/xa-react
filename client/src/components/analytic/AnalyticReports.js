@@ -83,25 +83,28 @@ class AnalyticBasis extends Component {
                                             </span>
                                         </h3>
                                         <p>一周內的頁面瀏覽總數</p>
-                                        {isOpenItem01 ?
-                                            <Table striped bordered hover>
-                                                <thead>
-                                                    <tr>
-                                                        <th width="70%">標題</th>
-                                                        <th width="15%">瀏覽量</th>
-                                                        <th width="15%">彈跳率(%)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {pageviewHot ? pageviewHot.map((item, index) => {
-                                                        return <tr key={index}>
-                                                            <td>{item.pageTitle}</td>
-                                                            <td>{item.pageviews}</td>
-                                                            <td>{item.bounceRate}</td>
+                                        <div className="table_box">
+                                            {isOpenItem01 ?
+                                                <Table striped bordered hover>
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="70%">標題</th>
+                                                            <th width="15%">瀏覽量</th>
+                                                            <th width="15%">彈跳率(%)</th>
                                                         </tr>
-                                                    }) : console.log()}
-                                                </tbody>
-                                            </Table> : <></>}
+                                                    </thead>
+                                                    <tbody>
+                                                        {pageviewHot ? pageviewHot.map((item, index) => {
+                                                            return <tr key={index}>
+                                                                <td>{item.pageTitle}</td>
+                                                                <td>{item.pageviews}</td>
+                                                                <td>{item.bounceRate}</td>
+                                                            </tr>
+                                                        }) : console.log()}
+                                                    </tbody>
+                                                </Table> : <></>}
+                                        </div>
+                                        
                                     </div>
                                     <div className="box">
                                         <h3> 分類流量
