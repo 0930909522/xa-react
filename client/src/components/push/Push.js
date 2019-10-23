@@ -157,6 +157,7 @@ class Push extends Component {
                 <div className="main_right">
                   <h2><span className="btn_like" onClick={this.closeList}>推出去</span><span dangerouslySetInnerHTML={{ __html: this.state.title }}></span></h2>
                   {this.props.permissionData.level < thisLevel ? htmlInstallTrack(this.props.permissionData.level, thisLevel) :
+                    document.querySelector('body').clientWidth < 768 ? <h2>請使用電腦瀏覽</h2> :
                     <>
                       <PushTitle one />
                       <div className={this.state.openList1 || this.state.openList2 ? 'd-none' : ''}>
