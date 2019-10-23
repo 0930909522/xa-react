@@ -5,6 +5,7 @@ import { Row, Col } from "react-bootstrap";
 import { getPushPt, sendPush, modifyPush, deletePush } from '../share/ajax';
 import AlertMsg from '../share/AlertMsg';
 import PopMsg from '../share/PopMsg';
+import PushPreview from './PushPreview';
 import { FaTrashAlt } from 'react-icons/fa';
 
 const initialData = {
@@ -423,7 +424,7 @@ class PushInput extends Component {
                     <p className="ml-2 mt-2">目前有 {this.tagsAmount()} 個標籤</p>
                     <div className="box_border text-left radius10">
                         <h3>預覽</h3>
-                        <h4 className="text-center mt-4">{this.state.data.ads.length > 0 && this.state.data.title}</h4>
+                        {/* <h4 className="text-center mt-4">{this.state.data.ads.length > 0 && this.state.data.title}</h4>
                         <div className="cards">
                             {
                                 this.state.data.ads.length > 0 && this.state.data.ads.map((val, index) => (
@@ -433,7 +434,11 @@ class PushInput extends Component {
                                     </div>
                                 ))
                             }
-                        </div>
+                        </div> */}
+                        <PushPreview 
+                            title={this.state.data.title}
+                            ads = {this.state.data.ads}
+                         />
                     </div>
                     {this.props.data &&
                         <div className="pl-1 mt-3">
