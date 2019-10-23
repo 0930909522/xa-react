@@ -10,13 +10,46 @@ class InstallationGuide extends Component {
         super(props);
         this.state = {
             showAlert: false,
-            size: [200, 300]
+            size: [300, 550]
         }
     }
+    componentDidMount() {
+        // iframe JS
+        let _ary = document.getElementsByClassName("xnet_widget");
+        if (_ary && _ary.length > 0) {
+            for (var i = 0; i < _ary.length; i++) {
+                let id = _ary[i].getAttribute("id"),
+                    _w = document.getElementById(id).getAttribute("w"),
+                    _h = document.getElementById(id).getAttribute("h");
+                _w = _w || 0;
+                _h = _h || 0;
+                let iframe = document.createElement('iframe');
+                iframe.src = 'https://node.aiday.org/widget.html?1';
+                iframe.width = _w;
+                iframe.height = _h;
+                iframe.frameBorder = 0;
+                document.getElementById(id).appendChild(iframe);
+
+                iframe.addEventListener("load", function (event) {
+                    iframe.contentWindow.postMessage({
+                        type: "xnet",
+                        id: id,
+                        w: _w,
+                        h: _h,
+                    }, "*");
+                });
+            }
+        }
+    }
+
     changeSize = (index, num) => {
         let newSize = this.state.size;
         newSize[index] = num;
-        this.setState({ size: newSize });
+        this.setState({ size: newSize }, () => {
+            let iframe = document.querySelector('.xnet_widget iframe');
+            iframe.width = newSize[0];
+            iframe.height = newSize[1];
+        });
     }
     copyId = () => {
         document.getElementById('copiedText').select();
@@ -46,10 +79,11 @@ class InstallationGuide extends Component {
                     <h2>3個步驟就能在網站上安裝廣告模組</h2>
                     <br />
                     <div className="text-center">
-                        <label className="mx-2">寬度：<input defaultValue="200" type="text" onChange={(e) => this.changeSize(0, e.target.value)} /></label>
-                        <label className="mx-2">高度：<input defaultValue="300" type="text" onChange={(e) => this.changeSize(1, e.target.value)} /></label>
+                        <label className="mx-2">寬度：<input defaultValue={this.state.size[0]} type="text" onChange={(e) => this.changeSize(0, e.target.value)} /></label>
+                        <label className="mx-2">高度：<input defaultValue={this.state.size[1]} type="text" onChange={(e) => this.changeSize(1, e.target.value)} /></label>
                         <div className="iframe_border">
-                            <iframe title="example" width={this.state.size[0]} height={this.state.size[1]} src="http://www.writephponline.com/" />
+                            {/* <iframe title="example" width={this.state.size[0]} height={this.state.size[1]} src="http://www.writephponline.com/" /> */}
+                            <div id="sw3PK70KzUrKDuWnIdut" w={this.state.size[0]} h={this.state.size[1]} className="xnet_widget"></div>
                         </div>
                         <div className="my-5">
                             {/* <h5 className="w-75 mx-auto bg-primary p-3 radius10 text-light"><small>我的 ID</small><p className="mt-2"><strong>{}</strong></p></h5> */}

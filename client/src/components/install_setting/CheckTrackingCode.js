@@ -65,9 +65,9 @@ class CheckTrackingCode extends Component {
                         <h5>網站名稱：{this.state.data.name}</h5>
                         <h5>網站網址：{this.state.data.url}</h5>
                     </div>
-                    <div className="d-flex justify-content-center">
+                    {/* <div className="d-flex justify-content-center">
                         <button className="btn btn-primary btn-lg activity_btn radius20 w-50" onClick={this.check}>確認是否安裝成功</button>
-                    </div>
+                    </div> */}
                     <div className="d-flex justify-content-center">
                         <button className="btn btn-outline-primary activity_btn radius20 w-100" onClick={()=>window.location.reload()}>返回列表</button>
                     </div>
