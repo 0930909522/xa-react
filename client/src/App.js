@@ -43,7 +43,7 @@ import Push from './components/push/Push';
 // import CheckSuccess from './components/install_setting/CheckSuccess';
 import Register from './components/main_page/Register';
 import checkEmailPermission from './components/main_page/checkEmailPermission';
-// import Verification from './components/main_page/Verification';
+import Verification from './components/main_page/Verification';
 import VerifySuccess from './components/main_page/VerifySuccess';
 import SignIn from './components/main_page/SignIn';
 import EditUserInfo from './components/main_page/EditUserInfo';
@@ -148,7 +148,7 @@ class App extends Component {
           {/* sign up(建立帳號) */}
           <Route path="/signup/register" component={Register} />
           {/* sign up(驗證) */}
-          {/* <Route path="/signup/verification" component={Verification} /> */}
+          <Route path="/signup/verification" component={Verification} />
           {/* sign up(驗證信程式) */}
           <Route path="/checkEmailPermission" component={checkEmailPermission} />
           {/* sign up(驗證成功) */}

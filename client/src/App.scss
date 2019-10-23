@@ -1,14 +1,13 @@
 
-$blue1:#112e50;
-$blue2:#3472ff;
-$red: #dc3545;
-$yel: #eba31e;
-$glay: #f3f3f3;
-$dark: #263238;
+$blue1: #112e50;
+$blue2: #3472ff;
+  $red: #dc3545;
+  $yel: #eba31e;
+ $glay: #f3f3f3;
+ $dark: #263238;
 $dark1: #999;
 $dark2: #ccc;
 $dark3: #efefef;
-
 $chartBlue1: #3299bb;
 $chartBlue2: #15e5f8;
 
@@ -17,6 +16,15 @@ $chartBlue2: #15e5f8;
 .align_left {text-align: left}
 .align_right {text-align: right}
 .f_z20 {font-size: 20px}
+
+//RWD
+$media_lg: 1170px;
+$media_md: 768px;
+@mixin width_md() {
+    @media all and (max-width: $media_md) {
+        @content;
+    }
+}
 
 .loading_box {
     line-height: 300px;
@@ -45,6 +53,14 @@ $chartBlue2: #15e5f8;
 ul {padding: 0;}
 li {list-style: none;}
 
+.rwd_phone {
+    //暫未
+    width: 100%;
+    min-height: 200px ;
+    background-color: $blue1;
+    border-radius: 5px;
+    z-index: 1;
+}
 
 .tableDetail {
     margin: 15px;
@@ -728,9 +744,13 @@ li {list-style: none;}
     
 }
 
+
 .layout_left {
     width: 185px;
     background-color: #fff;
+    @include width_md {
+        display: none;
+    }
     h2 {
         font-size: 16px;
         font-weight: normal;
@@ -767,14 +787,7 @@ li {list-style: none;}
     }
 }
 
-//RWD
-$media_lg: 1170px;
-$media_md: 768px;
-@mixin width_md() {
-    @media all and (max-width: $media_md) {
-        @content;
-    }
-}
+
 .layout_main {
     padding-bottom: 80px;
 }
