@@ -26,11 +26,21 @@ $media_md: 768px;
     }
 }
 
+.mobile-hide {
+    @include width_md {
+        display: none !important
+    }
+}
+.mobile-show {
+    display: none;
+    @include width_md {
+        display: block;
+    }
+}
 .loading_box {
     line-height: 300px;
     text-align: center;
 }
-
 .btn.blue {
     background-color: $blue2;
     border: 0;
@@ -111,6 +121,10 @@ li {list-style: none;}
     .main_right {
         width: calc( 100% - 215px );
         margin-left: 30px;
+        @include width_md {
+            width: calc( 100% - 10px );
+            margin: 0 5px;
+        }
     }
     h2 {
         font-size: 24px;
@@ -133,6 +147,7 @@ li {list-style: none;}
         padding: 15px;
         background-color: #fff;
         overflow: auto;
+        
         .center {
             text-align: center;
         }
@@ -672,6 +687,10 @@ li {list-style: none;}
         width: calc( 50% - 15px );
         float: left;
         margin-right: 15px;
+        @include width_md {
+            width: 100%;
+            margin: 15px 0;
+        }
         .info {
             font-family: "微軟正黑體";
             margin-top: 10px;
@@ -689,12 +708,23 @@ li {list-style: none;}
         }
         h3 {
             span {
-                font-size: 20px;                
+                font-size: 20px;   
+                .right {
+                    float: right;
+                    margin-top: 10px;
+                    @include width_md {
+                        margin-top: 30px;
+                    }
+                }             
             }
         }
         &.right{
             margin-left: 15px;
             margin-right: 0;
+            @include width_md {
+                width: 100%;
+                margin: 15px 0;
+            }
         }
     }
     

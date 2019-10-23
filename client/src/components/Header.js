@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar, Dropdown } from 'react-bootstrap';
 import { FaUser } from 'react-icons/fa';
 import { IoMdSwap, IoIosMenu } from 'react-icons/io';
 import AlertCheckMsg from './share/AlertCheckMsg';
@@ -64,16 +64,37 @@ class Header extends Component {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
+             
+              <hr className="mobile-show" />
+              <Dropdown className="mobile-show">
+                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                  選擇分析網站
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                  <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>            
+              <hr className="mobile-show" />
+              
               <Nav className="mr-auto">
-                <Link to="/" className="nav-link">回首頁</Link>
-                <Link to="/" className={cIndex === 1 ? "nav-link active" : "nav-link"}>數據分析</Link>
+                <Link className="nav-link mobile-show" to="/basis">基礎分析</Link>
+                <Link className="nav-link mobile-show" to="/reports">流量報表</Link>
+                <Link className="nav-link mobile-show" to="/check">網站健檢</Link>
+                <Link className="nav-link mobile-show" to="/hot">熱門頁面</Link>
+                <Link className="nav-link mobile-show" to="/asset_rise">資產價值</Link>
+                <Link className="nav-link mobile-show" to="/portrait">用戶畫像</Link>
+
+                <Link to="/" className="nav-link mobile-hide">回首頁</Link>
+                <Link to="/" className={cIndex === 1 ? "nav-link active mobile-hide" : "nav-link mobile-hide"}>數據分析</Link>
                 <Link to="/push" className={cIndex === 2 ? "nav-link active" : "nav-link"}>推播管理</Link>
                 <Link to="/report/push" className={cIndex === 3 ? "nav-link active" : "nav-link"}>帳務報表</Link>
                 <Link to="/memberCentre/billing/two" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
               </Nav>
             </Navbar.Collapse>
             {/* <IoIosMenu className="header_svg" /> */}
-            <div className="person_btn">
+            <div className="person_btn mobile-hide">
               <div className="btn_like"><IoMdSwap title="切換平台" className="header_svg" /></div>
               <div className="person_sign">
                 <small>選擇分析平台</small>
@@ -90,7 +111,7 @@ class Header extends Component {
                 </ul>
               </div>
             </div>
-            <div className="person_btn">
+            <div className="person_btn mobile-hide">
               <div className="btn_like"><FaUser className="header_svg" />
               </div>
               <div className="person_sign">

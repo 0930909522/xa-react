@@ -134,7 +134,7 @@ class AnalyticBasis extends Component {
                   <div className="box">無資料</div> :
                   <>
                     <div className="box">
-                      <h3> 即時資訊 <span style={{ float: "right", marginTop: "10px" }}>即時數據最後更新時間：{realtime.timestamp} (十分鐘更新一次)</span></h3>
+                      <h3> 即時資訊 <span className="right">即時數據最後更新時間：{realtime.timestamp} (十分鐘更新一次)</span></h3>
                       <Row>
                         
                         <div className="col-md-4 realtime">
