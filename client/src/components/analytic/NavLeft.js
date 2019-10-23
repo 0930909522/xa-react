@@ -47,7 +47,7 @@ class NavLeft extends Component {
           <li> <GoBookmark /> <Link to="/hot">熱門頁面</Link></li>
           <li> <GoRuby /> <Link to="/asset_rise">資產價值</Link></li>
           <li> <IoMdContact /> <Link to="/portrait">用戶畫像</Link></li>
-          <li> <IoIosCode /> <Link to="/trackingCode/modify">安裝追蹤碼</Link></li>
+          <li> <IoIosCode /> <Link to="/memberCentre/website">安裝追蹤碼</Link></li>
           {/* <li> <IoIosHappy /> <Link to="/interest">興趣分群</Link></li>
           <li> <IoIosOptions /> <Link to="/group">功能分群</Link></li>
           <li style={{color: "#aaa"}}> <FaHandshake /> <Link to="/interaction" style={{color: "#aaa"}}>互動分群</Link></li> */}

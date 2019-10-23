@@ -9,6 +9,7 @@ export const register = async (postData) => {
     await fetch(urlNode + 'signup', {
         method: 'POST',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -149,6 +150,7 @@ export const updatePsd = async (postData) => {
         // await fetch('http://192.168.50.103/sbir/password', {
         method: 'PUT',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -206,6 +208,7 @@ export const modifyTracking = async (postData) => {
         // await fetch('http://192.168.50.103/sbir/website', {
         method: 'PUT',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -258,6 +261,7 @@ export const pushpage = async postData => {
     await fetch(urlNode + 'brand/' + postData, {
         method: 'GET',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -283,6 +287,7 @@ export const setblacklist = async postData => {
     await fetch(urlNode + 'board', {
         method: 'POST',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -314,10 +319,10 @@ export const getBoard = async postData => {
     await fetch(urlNode + 'board?' + query, {
         method: 'GET',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'credentials': 'include'
+            'Accept': 'application/json'
         },
     })
         .then(response => {
@@ -344,6 +349,7 @@ export const modifyBoard = async postData => {
     await fetch(urlNode + 'board', {
         method: 'PUT',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
@@ -373,6 +379,7 @@ export const deleteBoard = async postData => {
     await fetch(urlNode + 'board', {
         method: 'DELETE',
         mode: 'cors',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
