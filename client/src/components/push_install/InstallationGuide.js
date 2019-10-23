@@ -83,7 +83,7 @@ class InstallationGuide extends Component {
                         <label className="mx-2">高度：<input defaultValue={this.state.size[1]} type="text" onChange={(e) => this.changeSize(1, e.target.value)} /></label>
                         <div className="iframe_border">
                             {/* <iframe title="example" width={this.state.size[0]} height={this.state.size[1]} src="http://www.writephponline.com/" /> */}
-                            <div id="sw3PK70KzUrKDuWnIdut" w={this.state.size[0]} h={this.state.size[1]} className="xnet_widget"></div>
+                            <div id={this.props.sendData} w={this.state.size[0]} h={this.state.size[1]} className="xnet_widget"></div>
                         </div>
                         <div className="my-5">
                             {/* <h5 className="w-75 mx-auto bg-primary p-3 radius10 text-light"><small>我的 ID</small><p className="mt-2"><strong>{}</strong></p></h5> */}
