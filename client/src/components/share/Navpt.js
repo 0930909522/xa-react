@@ -7,7 +7,7 @@ export default class Navpt extends Component {
             <Navbar variant="dark" className="main_header">
                 <Container>
                     <Navbar.Brand>
-                        <img src="/logo.jpg" alt="pt" /> Xnet Analytics
+                        <img src="/logo.jpg" className="top_logo" alt="pt" /> Xnet Analytics
                         </Navbar.Brand>
                 </Container>
             </Navbar>

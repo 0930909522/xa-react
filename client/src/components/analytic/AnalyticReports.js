@@ -7,6 +7,7 @@ import Footer from '../Footer';
 import { Redirect } from 'react-router'
 import { IoMdDesktop, IoMdToday, IoIosCalculator, IoIosPhonePortrait, IoMdSearch, IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { htmlInstallTrack } from '../share/checkPermission';
+import {clearLogin} from "../share/clearLogin";
 const thisLevel = 1; //設定本頁權限 1-4
 
 class AnalyticBasis extends Component {
@@ -42,7 +43,8 @@ class AnalyticBasis extends Component {
 
             })
             .catch((err) => {
-                console.log(err);
+                clearLogin(err.response);
+                //console.log(err);
             });
     }
 
@@ -73,7 +75,10 @@ class AnalyticBasis extends Component {
                         <Row>
                             <NavLeft view={this.state.view}/>
                             <div className="main_right">
-                                <h2>流量報表</h2>
+                                
+                                {localStorage.getItem('viewName') ?
+                                    <h2 className="mobile-show">{localStorage.getItem('viewName')} <span style={{fontSize: "18px"}}>流量報表</span></h2> : <></>}
+                                    <h2 className="mobile-hide">流量報表</h2>
                                 { level < thisLevel ? htmlInstallTrack(level, thisLevel) : 
                                 <>
                                     <div className="box">
@@ -109,7 +114,7 @@ class AnalyticBasis extends Component {
                                     <div className="box">
                                         <h3> 分類流量
                                             <span onClick={() => { this.openItem02() }} className="Collapse">
-                                                {isOpenItem01 ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
+                                                {isOpenItem02 ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
                                             </span>
                                         </h3>
                                         <p>一周內的分類瀏覽總數</p>
@@ -135,7 +140,7 @@ class AnalyticBasis extends Component {
                                     <div className="box">
                                         <h3> 客戶來源
                                             <span onClick={() => { this.openItem03() }} className="Collapse">
-                                                {isOpenItem01 ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
+                                                {isOpenItem03 ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
                                             </span>
                                         </h3>
                                         <p>一周內的頁面成功轉載總數</p>
@@ -161,7 +166,7 @@ class AnalyticBasis extends Component {
                                     <div className="box">
                                         <h3> 喜好分布
                                             <span onClick={() => { this.openItem04() }} className="Collapse">
-                                                {isOpenItem01 ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
+                                                {isOpenItem04 ? <span><IoIosArrowUp />收合</span> : <span><IoIosArrowDown />開啟</span>}
                                             </span>
                                         </h3>
                                         <p>一周內的喜好訪客總數</p>

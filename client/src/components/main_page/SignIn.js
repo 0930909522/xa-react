@@ -68,7 +68,7 @@ class SignIn extends Component {
                 <Navpt />
                 <div className="layout_main">
                     <Container className="main_analytic">
-                        <div className="box p-5 w-75 mx-auto" style={{ 'position': 'relative' }}>
+                        <div className="box login mx-auto" style={{ 'position': 'relative' }}>
                             {/* <button className="btn_noborder_r btn_like dec_none cancel_btn m-2 bg-secondary round text-white">&#10006;</button> */}
                             <h3 className="mb-3">智媒數據顧問</h3>
                             <p>歡迎使用智媒數據顧問服務，請您先註冊或登入以使用本服務，謝謝您</p>

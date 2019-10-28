@@ -11,6 +11,7 @@ import { pieOption, barOption, lineOption, scatterOption, mapOption, radarOption
 import { IoMdPeople, IoMdEye, IoMdKey, IoMdDocument } from "react-icons/io";
 import { Redirect } from 'react-router'
 import { htmlInstallTrack } from '../share/checkPermission';
+import {clearLogin} from "../share/clearLogin";
 
 import Loading from '../../images/loading.svg';
 import icon01 from '../../images/icon01.png';
@@ -105,13 +106,13 @@ class AnalyticBasis extends Component {
         }
       })
       .then(response => {
-        //console.log(response);
+        console.log(response);
         type === "realtime" ?
           this.setState({ realtime: response.data }) :
           this.setGA(response.data);
       })
       .catch((err) => {
-        console.log(err);
+        clearLogin(err.response);
       });
   }
 
@@ -128,7 +129,9 @@ class AnalyticBasis extends Component {
             <Row>
             <NavLeft view={this.state.view}/>
               <div className="main_right">
-                <h2>基礎數據分析</h2>
+              {localStorage.getItem('viewName') ?
+                  <h2 className="mobile-show">{localStorage.getItem('viewName')} <span style={{fontSize: "18px"}}>基礎數據分析</span></h2> : <></>}
+                  <h2 className="mobile-hide">基礎數據分析</h2>
                 { level < thisLevel ? htmlInstallTrack(level, thisLevel) : 
                   !realtime ?
                   <div className="box">無資料</div> :

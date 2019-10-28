@@ -174,7 +174,7 @@ class Board extends Component {
                             <Row>
                                 <NavLeftPush three />
                                 <div className="main_right">
-                                    <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">放進來</span></h2>
+                                    <h2 onClick={() => this.changeStatus(0)}><span className="btn_like">推播管理 / 放進來</span></h2>
                                     {this.props.permissionData.level < thisLevel ? htmlInstallTrack(this.props.permissionData.level, thisLevel) :
                                         <>
                                             <AlertMsg

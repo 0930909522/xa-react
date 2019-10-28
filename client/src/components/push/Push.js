@@ -155,9 +155,9 @@ class Push extends Component {
               <Row>
                 <NavLeftPush two close={this.closeList} />
                 <div className="main_right">
-                  <h2><span className="btn_like" onClick={this.closeList}>推出去</span><span dangerouslySetInnerHTML={{ __html: this.state.title }}></span></h2>
+                  <h2><span className="btn_like" onClick={this.closeList}>推播管理 / 推出去</span><span dangerouslySetInnerHTML={{ __html: this.state.title }}></span></h2>
                   {this.props.permissionData.level < thisLevel ? htmlInstallTrack(this.props.permissionData.level, thisLevel) :
-                    document.querySelector('body').clientWidth < 768 ? <h2>請使用電腦瀏覽</h2> :
+                    document.querySelector('body').clientWidth < 768 ? <div className="box"> <p>本功能請使用電腦進行操作設定</p> </div>:
                     <>
                       <PushTitle one />
                       <div className={this.state.openList1 || this.state.openList2 ? 'd-none' : ''}>
@@ -179,7 +179,7 @@ class Push extends Component {
                                   >專題報導
                           </span>
                                 </td>
-                                <td>手動推播</td>
+                                <td>須先完成設定才可開啟</td>
                                 <td>
                                   <Switch
                                     changeStatus={() => this.recommendChange('pushingReport')}
@@ -195,7 +195,7 @@ class Push extends Component {
                                   >主題活動
                             </span>
                                 </td>
-                                <td>手動推播</td>
+                                <td>須先完成設定才可開啟</td>
                                 <td>
                                   <Switch
                                     changeStatus={() => this.recommendChange('pushingTheme')}

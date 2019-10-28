@@ -6,7 +6,7 @@ import Footer from '../Footer';
 import Loading from '../../images/loading.svg';
 import { Redirect } from 'react-router';
 import { htmlInstallTrack } from '../share/checkPermission';
-
+import {clearLogin} from "../share/clearLogin";
 import { Table, Container, Row, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 
@@ -61,8 +61,8 @@ class AnalyticGroup extends Component {
                 }, ()=> this.setState({isLoadingWordCloud: false}) );
 
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch( (err) => {
+                clearLogin(err.response);
             });
     };
     getHotData = () => {
@@ -83,8 +83,8 @@ class AnalyticGroup extends Component {
                     hot: response.data.data
                 }, ()=> this.setState({isLoadingList: false}));
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch((err) => {
+                clearLogin(err.response);
             });
     };
     setWordCloudInterval = (e) => {
@@ -137,7 +137,10 @@ class AnalyticGroup extends Component {
                     <Row>
                         <NavLeft view={this.state.view}/>
                         <div className="main_right">
-                            <h2>熱門頁面</h2>
+                            {localStorage.getItem('viewName') ?
+                            <h2 className="mobile-show">{localStorage.getItem('viewName')} <span style={{fontSize: "18px"}}>熱門頁面</span></h2> : <></>}
+                            <h2 className="mobile-hide">熱門頁面</h2>
+                            
                             { level < thisLevel ? htmlInstallTrack(level, thisLevel) : 
                             <>
                                 <div className="box hot">
@@ -158,7 +161,7 @@ class AnalyticGroup extends Component {
                                                     目前數量：{this.state.wordCloudCount}
                                                 </label>
                                                 <label>
-                                                    <input type="range" onMouseUp={this.setWordCloudCount} min={10} />
+                                                    <input type="range" onMouseUp={this.setWordCloudCount} onTouchend={this.setWordCloudCount} min={10} />
                                                 </label>
                                             </div>
                                         </div>

@@ -89,16 +89,18 @@ class Header extends Component {
                 <Link className="nav-link mobile-show" to="/hot">熱門頁面</Link>
                 <Link className="nav-link mobile-show" to="/asset_rise">資產價值</Link>
                 <Link className="nav-link mobile-show" to="/portrait">用戶畫像</Link>
-
                 <Link to="/" className="nav-link mobile-hide">回首頁</Link>
                 <Link to="/" className={cIndex === 1 ? "nav-link active mobile-hide" : "nav-link mobile-hide"}>數據分析</Link>
                 <Link to="/push" className={cIndex === 2 ? "nav-link active" : "nav-link"}>推播管理</Link>
                 <Link to="/report/push" className={cIndex === 3 ? "nav-link active" : "nav-link"}>帳務報表</Link>
                 <Link to="/memberCentre/billing/two" className={cIndex === 4 ? "nav-link active" : "nav-link"}>會員專區</Link>
               </Nav>
+              <hr className="mobile-show" />
+              <button className="btn btn-success mobile-show" onClick={this.showLogout}>{localStorage.getItem('name') ? '登出' : '登入'}</button>
+
             </Navbar.Collapse>
             {/* <IoIosMenu className="header_svg" /> */}
-            <div className="person_btn mobile-hide">
+            <div className="person_btn pad-hide">
               <div className="btn_like"><IoMdSwap title="切換平台" className="header_svg" /></div>
               <div className="person_sign">
                 <small>選擇分析平台</small>
@@ -115,14 +117,13 @@ class Header extends Component {
                 </ul>
               </div>
             </div>
-            <div className="person_btn mobile-hide">
+            <div className="person_btn pad-hide">
               <div className="btn_like"><FaUser className="header_svg" />
               </div>
               <div className="person_sign">
                 <ul className="project_list">
                   <li id="name">{`${localStorage.getItem('name') || '訪客'}，您好`}</li>
                   <li><Link to="/memberCentre/billing/two" className="nav-link">進入會員中心</Link></li>
-                  {/* <li onClick={this.logout}>{localStorage.getItem('name') ? '登出' : '登入'}</li> */}
                   <li onClick={this.showLogout} className="nav-link"> {localStorage.getItem('name') ? '登出' : '登入'} </li>
                 </ul>
               </div>

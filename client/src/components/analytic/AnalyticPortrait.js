@@ -11,7 +11,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import Loading from '../../images/loading.svg';
 import { Redirect } from 'react-router';
 import { htmlInstallTrack } from '../share/checkPermission';
-
+import {clearLogin} from "../share/clearLogin";
 const PieReact = asyncComponent(() => import('./EchartsDemo/PieReact'));
 
 const thisLevel = 4; //設定本頁權限 1-4
@@ -21,7 +21,7 @@ class AnalyticPortrait extends Component {
         super(props);
         this.state = {
             view: localStorage.getItem("view"),
-            openExample: false,
+            openExample: true,
             fishType: "",
             topId: 0,
             fish: [
@@ -96,8 +96,8 @@ class AnalyticPortrait extends Component {
                     fish: newFishs,
                 });
             })
-            .catch(error => {
-                console.log(error);
+            .catch(err => {
+                clearLogin(err.response);
             });
     };
 
@@ -129,8 +129,8 @@ class AnalyticPortrait extends Component {
                 summary: summary
             }, ()=> this.setState({isLoadingSummary: false}));
         })
-        .catch(error => {
-            console.log(error);
+        .catch(err => {
+            clearLogin(err.response);
         });
     };
 
@@ -146,8 +146,8 @@ class AnalyticPortrait extends Component {
             this.setState({
                 hot: res.data.data
             }, ()=> this.setState({isLoadingHot: false}));
-        }).catch(error => {
-            console.log(error);
+        }).catch(err => {
+            clearLogin(err.response);
         });
     }
 
@@ -190,8 +190,8 @@ class AnalyticPortrait extends Component {
                 interest: option,
                 topInterest: topInterest
             }, ()=> this.setState({isLoadingInterest: false}))
-        }).catch(error => {
-            console.log(error);
+        }).catch(err => {
+            clearLogin(err.response);
         });
     }
 
@@ -202,14 +202,16 @@ class AnalyticPortrait extends Component {
         this.getSummaryFromDb(id);
         this.getHotFromDb(id);
         this.getInterestFromDb(id);
-        
+    }
+    changeFishTarget = (e) => {
+        this.changeFish(e.target.value)
     }
     showExample = () => {
         this.setState(prev => ({ openExample: !prev.openExample }));
     }
 
     render() {
-        const { isInterestBox, fish, fishType, summary, hot, interest, topInterest, isLoadingSummary, isLoadingInterest, isLoadingHot } = this.state;
+        const { isInterestBox, fish, fishType, summary, hot, interest, topInterest, isLoadingSummary, isLoadingInterest, isLoadingHot, openExample } = this.state;
         const { articles, proportion, detail, barInfo } = this.state.basic;
         
         const popover = (
@@ -229,21 +231,51 @@ class AnalyticPortrait extends Component {
                         <Row>
                             <NavLeft view={this.state.view}/>
                             <div className="main_right">
-                                <h2>用戶畫像</h2>
+                                {localStorage.getItem('viewName') ?
+                                    <h2 className="mobile-show">{localStorage.getItem('viewName')} <span style={{fontSize: "18px"}}>用戶畫像</span></h2> : <></>}
+                                    <h2 className="mobile-hide">用戶畫像</h2>
                                 { level < thisLevel ? htmlInstallTrack(level, thisLevel) :
                                 <>
-                                    <div className="box">
-                                        <div className="icon_box">
+                                    <div className="box ">
+                                        <div className="mobile-show">
+                                            <Form.Group>
+                                                <Form.Label>選擇網站用戶魚群(該魚群占全體比重)</Form.Label>
+                                                <Form.Control as="select" onChange={ this.changeFishTarget}>
+                                                    {fish.map((item, i)=>
+                                                        <option value={item.id} key={i}>{item.name} ({item.percent}%)</option>
+                                                    )}
+
+                                                </Form.Control>
+                                            </Form.Group>
+                                            <div className="portrait">
+                                                <div className="icon_box">
+                                                    <div className={fishType + " icon"}></div>
+                                                </div>
+                                                <div className="info">
+                                                    <div className="small">
+                                                        網站用戶
+                                                    </div>
+                                                    {fishType ? <div className="title">
+                                                        { fish.find((item) => item.id === fishType).name}
+                                                        <span> { fish.find((item) => item.id === fishType).info}</span>
+                                                    </div> : <span />}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="icon_box mobile-hide">
                                             <div className={fishType + " icon"}></div>
                                         </div>
-                                        <div className="info">
-                                            <div className="small">
-                                                網站用戶
+                                        <div className="info portrait">
+                                            <div className="mobile-hide">
+                                                <div className="small">
+                                                    網站用戶
+                                                </div>
+                                                {fishType ? <div className="title">
+                                                    { fish.find((item) => item.id === fishType).name}
+                                                    <span> { fish.find((item) => item.id === fishType).info}</span>
+                                                </div> : <span />}
                                             </div>
-                                            {fishType ? <div className="title">
-                                                { fish.find((item) => item.id === fishType).name}
-                                                <span> { fish.find((item) => item.id === fishType).info}</span>
-                                            </div> : <span />}
+                                            
                                             <div className="detail">
                                                 <div className="small">
                                                     詳細指標
@@ -258,7 +290,6 @@ class AnalyticPortrait extends Component {
                                                                     {this.setLevel(summary.staytimeLevel)}
                                                                     <span> ({summary.staytime} 秒)</span>
                                                                 </>}
-                    
                                                         </div>
                                                     </li>
                                                     <li>
@@ -267,31 +298,30 @@ class AnalyticPortrait extends Component {
                                                             {isLoadingSummary ? 
                                                                 <>---</> :
                                                                 <>
-                                                                    {summary.visitFreqLevel}
-                                                                    <span> ({this.setLevel(summary.visitFreq)} 次/週)</span>
+                                                                    {this.setLevel(summary.visitFreq)}
+                                                                    <span> ({summary.visitFreqLevel} 次/週)</span>
                                                                 </>}
                                                         </div>
                                                     </li>
-                                                    <li>
+                                                    {/* <li>
                                                         <div className="head">轉換率</div>
                                                         <div className="cont">
                                                             無
                                                         </div>
-                                                    </li>
+                                                    </li> */}
                                                     <li>
                                                         <div className="head">瀏覽偏好</div>
                                                         <div className="cont">
                                                             {isLoadingInterest ?
                                                                 <>---</> :
                                                                 <>{topInterest?topInterest:"---"}</> }
-                                                                
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>
 
                                         </div>
-                                        <div className="progress_round">
+                                        <div className="progress_round portrait">
                                             
                                             <ul>
                                                 <li>
@@ -330,10 +360,11 @@ class AnalyticPortrait extends Component {
                                             </ul> 
                                         </div>
                                     </div>
+                                    
                                     <div className="box">
-                                        <div style={{ display: "flex", alignItem: "center", justifyContent: "center" }}>
+                                        <div className="mobile-hide" style={{ display: "flex", alignItem: "center", justifyContent: "center" }}>
                                             <h3 className="no_border inline">用戶分佈 <br /> 
-                                            <div style={{ fontSize: "15px", color: "#3472ff", cursor: "pointer" }} onClick={() => this.showExample()}>分布說明</div> </h3> <br />
+                                            <div style={{ fontSize: "15px", color: "#3472ff", cursor: "pointer" }} onClick={() => this.showExample()}> {openExample ? "關閉說明" : "分布說明"}</div> </h3> <br />
                                             <ul className="icons">
                                                 {fish.map((item, i) =>
                                                     <li onClick={() => this.changeFish(item.id)} key={i} className={"icon_box ss" + fishType ? item.id === fishType ? "icon_box ss now" : "icon_box ss" : null}>
@@ -355,9 +386,8 @@ class AnalyticPortrait extends Component {
 
                                         </div>
 
-                                        {this.state.openExample ?
+                                        {openExample ?
                                             <div>
-                                                {/* <hr /> */}
                                                 <h3>分布說明</h3>
                                                 <div className="fish_example">
                                                     <div className="fbg_box">
@@ -376,52 +406,55 @@ class AnalyticPortrait extends Component {
                                                         </div>
                                                         <div className="align_right f_z20">黏著度/忠誠度</div>
                                                     </div>
-
                                                 </div>
-                                                {/* <img src="./fish_example1.jpg" alt="" style={{maxWidth: "100%"}} /> */}
                                             </div> : <></>
                                         }
 
                                     </div>
-                                    <div className="row">
-                                    <div className={ isInterestBox ? "col-md-6" : "col-md-12" }>
-                                        <div className="box">
-                                            <h3 className="no_border">觀看排行</h3>
-                                            { isLoadingHot ?  
-                                                <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
-                                                <ul className="article_list">
-                                                    <li className="title">
-                                                        <div className="left">
-                                                        觀看次數
-                                                        </div>
-                                                        <div className="right">
-                                                        頁面標題
-                                                        </div>
-                                                    </li>
-                                                    {hot ? hot.map((item, i) =>
-                                                        <li key={i}>
-                                                            <div className="left">{item.value}</div>
-                                                            <div className="right">{item.name}</div>
-                                                        </li>
-                                                    ) : <li />}
-                                                </ul>
-                                            }
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6" style={{ display: isInterestBox ? "block" : "none" }}>
-                                        <div className="box">
-                                            <h3 className="no_border">閱讀偏好</h3>
-                                            { isLoadingInterest ?  
-                                                <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
-                                                <div className="chart_box" style={{ marginTop: "40px" }}>
-                                                    <div className="chart">
-                                                        {interest ? <PieReact option={interest} /> : <></> }
-                                                    </div>
+                                    <div className="">
+                                        <div className="row">
+                                            <div className={ isInterestBox ? "col-md-6" : "col-md-12" }>
+                                                <div className="box">
+                                                    <h3 className="no_border">觀看排行</h3>
+                                                    { isLoadingHot ?  
+                                                        <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
+                                                        <ul className="article_list">
+                                                            <li className="title">
+                                                                <div className="left">
+                                                                觀看次數
+                                                                </div>
+                                                                <div className="right">
+                                                                頁面標題
+                                                                </div>
+                                                            </li>
+                                                            {hot ? hot.map((item, i) =>
+                                                                <li key={i}>
+                                                                    <div className="left">{item.value}</div>
+                                                                    <div className="right">{item.name}</div>
+                                                                </li>
+                                                            ) : <li />}
+                                                        </ul>
+                                                    }
                                                 </div>
-                                            }
+                                            </div>
+                                            <div className="col-md-6" style={{ display: isInterestBox ? "block" : "none" }}>
+                                                <div className="box">
+                                                    <h3 className="no_border">閱讀偏好</h3>
+                                                    { isLoadingInterest ?  
+                                                        <div className="loading_box"><img src={Loading} alt="Loading" /></div> :
+                                                        <div className="chart_box" style={{ marginTop: "40px" }}>
+                                                            <div className="chart">
+                                                                {interest ? <PieReact option={interest} /> : <></> }
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
+
                                     </div>
-                                </div>
+                                    
+                                
                                 </>}
                             </div>
                         </Row>

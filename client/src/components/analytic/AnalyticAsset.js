@@ -8,6 +8,7 @@ import Footer from '../Footer';
 import Loading from '../../images/loading.svg';
 import { Redirect } from 'react-router';
 import { htmlInstallTrack } from '../share/checkPermission';
+import {clearLogin} from "../share/clearLogin";
 
 import CanvasJSReact from './assets/canvasjs.react';
 
@@ -149,8 +150,8 @@ class AnalyticAsset extends Component {
           break;
       }
     })
-    .catch(function (error) {
-      console.log(error);
+    .catch(function (err) {
+      clearLogin(err.response);
     });
 }
 
@@ -382,7 +383,9 @@ class AnalyticAsset extends Component {
               <NavLeft view={this.state.view}/>
               
               <div className="main_right">
-                <h2>資產價值</h2>
+              {localStorage.getItem('viewName') ?
+                  <h2 className="mobile-show">{localStorage.getItem('viewName')} <span style={{fontSize: "18px"}}>資產價值</span></h2> : <></>}
+                  <h2 className="mobile-hide">資產價值</h2>
                 { level < thisLevel ? htmlInstallTrack(level, thisLevel) :
                 <>
                   <div className="box">

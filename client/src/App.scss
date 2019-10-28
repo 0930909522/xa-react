@@ -18,16 +18,33 @@ $chartBlue2: #15e5f8;
 .f_z20 {font-size: 20px}
 
 //RWD
-$media_lg: 1170px;
+$media_xlg: 1199px;
+$media_lg: 991px;
 $media_md: 768px;
+@mixin width_xlg() {
+    @media all and (max-width: $media_xlg) {
+        @content;
+    }
+}
+@mixin width_lg() {
+    @media all and (max-width: $media_lg) {
+        @content;
+    }
+}
 @mixin width_md() {
     @media all and (max-width: $media_md) {
         @content;
     }
 }
 
+
 .mobile-hide {
     @include width_md {
+        display: none !important
+    }
+}
+.pad-hide {
+    @include width_lg {
         display: none !important
     }
 }
@@ -161,7 +178,23 @@ li {list-style: none;}
         padding: 15px;
         background-color: #fff;
         overflow: auto;
-        
+        &.login {
+            width: 75%;
+            padding: 3rem;
+            @include width_md{
+                width: 100%;
+                padding: 15px;
+            }
+        }
+        &.register {
+            width: 50%;
+            padding: 3rem;
+            margin: 0 auto;
+            @include width_md{
+                width: 100%;
+                padding: 15px;
+            }
+        }
         .center {
             text-align: center;
         }
@@ -186,10 +219,10 @@ li {list-style: none;}
             text-align: center;
             .fbg_box {
                 width: 600px;
-                height: 0;
+                // height: 0;
                 max-width: 100%; 
                 margin: 0 auto;
-                padding-bottom: 70%;
+                // padding-bottom: 70%;
                 .fbg {
                     width: 100%;
                     height: 0;
@@ -207,6 +240,9 @@ li {list-style: none;}
                         height: calc( ( 100% - 12% ) / 3 );
                         font-size: 24px;
                         color: #999;
+                        @include width_md{
+                            font-size: 18px;
+                        }
                         &.red {
                             color: $red;
                         }
@@ -390,6 +426,20 @@ li {list-style: none;}
             justify-content: center;
             align-items:center;
         }
+        .portrait {
+            @include width_md {
+                display: flex;
+                justify-content: center;
+                float: none !important;
+            }
+            
+            .icon_box{
+                width: 78px;
+                height: 78px;
+                margin: 0 15px 0 0;
+            }
+        }
+
         .icon_box{
             width: 125px;
             height: 125px;
@@ -468,15 +518,30 @@ li {list-style: none;}
             }
         }
         .progress_round {
-            width: 400px;
+            max-width: 100%;
+            width: 380px;
             float: right;
-            margin: 15px 0 15px;
+            margin: 15px 20px 15px 0;
+            @include width_xlg {
+                width: 250px;
+                margin: 30px 0 15px;
+            }
+            @include width_lg {
+                width: auto;
+            }
+            
             li {
                 text-align: center;
-                
                 float: right;
-                width: 96px;
+                width: 100px;
+                max-width: calc( 33% - 10px );
                 margin-right: 20px;
+                @include width_xlg {
+                    margin: 5px;
+                }
+                @include width_md {
+                    margin: 5px;
+                }
                 .title {
                     padding-top: 5px;
                 }
@@ -498,6 +563,9 @@ li {list-style: none;}
                 font-size: 30px;
                 >span {
                     font-size: 15px;
+                    @include width_md {
+                        display: block;
+                    }
                 }
             }
             .detail {
@@ -523,6 +591,10 @@ li {list-style: none;}
                         padding: 5px;
                         background-color: $dark3;
                         color: $dark;
+                        max-width: 110px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                         span {
                             font-size: 12px;
                         }

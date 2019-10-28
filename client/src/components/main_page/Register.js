@@ -124,21 +124,21 @@ class Register extends Component {
                 />
                 <Navpt />
                 <div className="layout_main bg-white d-inline-block text-center w-100">
-                    <Container className="main_analytic w-50">
+                    <Container className="main_analytic ">
                         <h4 className="text-center">建立新帳號</h4>
-                        <div className="box px-5">
-                            <input name="name" id="name" type="text" className="input_1 mb-4" placeholder="暱稱" onChange={(e) => this.addData(e, 'name')} />
-                            <input name="email" id="email" type="email" className="input_1 mb-4" placeholder="電子郵件信箱" onChange={(e) => this.addData(e, 'email')} />
-                            <input name="pwd" id="pwd" type="password" className="input_1 mb-4" placeholder="密碼：8個以上包含半形英文數字" onChange={(e) => this.addData(e, 'pwd')} />
+                        <div className="box register">
+                            <input name="name" id="name" type="text" className="input_1 mb-3" placeholder="暱稱" onChange={(e) => this.addData(e, 'name')} />
+                            <input name="email" id="email" type="email" className="input_1 mb-3" placeholder="電子郵件信箱" onChange={(e) => this.addData(e, 'email')} />
+                            <input name="pwd" id="pwd" type="password" className="input_1 mb-3" placeholder="密碼：8個以上包含半形英文數字" onChange={(e) => this.addData(e, 'pwd')} />
                             <div className="position-relative">
                                 <p className={(this.state.same || this.state.same === null ? 'd-none' : '') + ' text-danger text-left position-absolute translateY'}>*密碼不一致</p>
-                                <input name="pwd2" id="pwd2" type="password" className="input_1 mb-4" placeholder="再次輸入密碼" onKeyUp={(e) => this.doubleCheckPwd(e)} />
+                                <input name="pwd2" id="pwd2" type="password" className="input_1 mb-3" placeholder="再次輸入密碼" onKeyUp={(e) => this.doubleCheckPwd(e)} />
                             </div>
-                            <input name="company" id="company" type="text" className="input_1 mb-4" placeholder="輸入公司名稱" onChange={(e) => this.addData(e, 'companyName')} />
-                            <input name="serviceType" id="serviceType" type="text" className="input_1 mb-4" placeholder="統一編號" onChange={(e) => this.addData(e, 'taxId')} />
+                            <input name="company" id="company" type="text" className="input_1 mb-3" placeholder="輸入公司名稱" onChange={(e) => this.addData(e, 'companyName')} />
+                            <input name="serviceType" id="serviceType" type="text" className="input_1 mb-3" placeholder="統一編號" onChange={(e) => this.addData(e, 'taxId')} />
                             <input name="taxId" id="taxId" type="text" className="input_1" placeholder="服務類型（例：新媒體、電商）" onChange={(e) => this.addData(e, 'companyType')} />
                             <p className='text-danger text-left my-2'>*以上欄位皆為必填</p>
-                            <label><input type="checkbox" className="vertical_middle mr-2 my-4 " onClick={this.toggleRead} />同意智媒推推的<a href="XX">使用條款</a>和<a href="XX">隱私權政策</a>。</label>
+                            <label><input type="checkbox" className="vertical_middle mr-2 my-3" onClick={this.toggleRead} />同意本服務<a href="XX">使用條款</a>與<a href="XX">隱私權政策</a></label>
                             <button className="btn btn-outline-primary w-100 radius20 font_20" onClick={this.submit}>建立帳號</button>
                         </div>
                     </Container>

@@ -842,6 +842,14 @@ button.font_20 {
             color: #FFFFFF;
             background: #F45D5D;
             outline: none;
+            width: 25px;
+            height: 25px;
+            line-height: 24px;
+            text-align: center;
+            padding: 0;
+            svg {
+                font-size: 25px
+            }
         }
         p {
             display: inline-block;

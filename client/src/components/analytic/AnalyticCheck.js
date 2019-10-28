@@ -9,7 +9,7 @@ import asyncComponent from './AsyncComponent';
 import { IoMdDesktop, IoMdToday, IoIosCalculator, IoIosPhonePortrait, IoMdSearch, IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { Redirect } from 'react-router';
 import { htmlInstallTrack } from '../share/checkPermission';
-
+import {clearLogin} from "../share/clearLogin";
 const PieReact = asyncComponent(() => import('./EchartsDemo/PieReact'));
 const LineReact = asyncComponent(() => import('./EchartsDemo/LineReact'));
 const GaugeReact = asyncComponent(() => import('./EchartsDemo/GaugeReact'));
@@ -168,6 +168,7 @@ class AnalyticCheck extends Component {
 
   getData = (type) => {
     axios.get('https://node.aiday.org/sbir/basic/' + type, {
+      withCredentials: true,
       params: {
         view: this.state.view,
       }
@@ -176,7 +177,7 @@ class AnalyticCheck extends Component {
         type === "healthExam" ? this.setHealth(response.data) : console.log();
       })
       .catch((err) => {
-        console.log(err);
+        clearLogin(err.response);
       });
   }
 
@@ -316,7 +317,9 @@ class AnalyticCheck extends Component {
             <NavLeft view={this.state.view}/>
 
               <div className="main_right">
-                <h2>網站健檢</h2>
+                {localStorage.getItem('viewName') ?
+                  <h2 className="mobile-show">{localStorage.getItem('viewName')} <span style={{fontSize: "18px"}}>網站健檢</span></h2> : <></>}
+                  <h2 className="mobile-hide">網站健檢</h2>
                 { level < thisLevel ? htmlInstallTrack(level, thisLevel) : 
                 <>
                   <div className="box">
