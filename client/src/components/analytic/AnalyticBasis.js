@@ -106,10 +106,10 @@ class AnalyticBasis extends Component {
         }
       })
       .then(response => {
-        console.log(response);
         type === "realtime" ?
           this.setState({ realtime: response.data }) :
           this.setGA(response.data);
+          //throw new Error('dddd');
       })
       .catch((err) => {
         clearLogin(err.response);

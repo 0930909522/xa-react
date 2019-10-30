@@ -333,7 +333,7 @@ export const getBoard = async postData => {
             data = response || [];
         })
         .catch(err => {
-            console.log(err);
+            //console.log(err);
             if (err.message === '401') {
                 data = error1;
             } else {
@@ -785,7 +785,10 @@ function forAjax(response) {
 
 function detectStatusCode(response) {
     if (response.status === 401) {
-        throw new Error('401');
+        console.log(response.status);
+        localStorage.clear();
+        window.location.href = '/signup/signin';
+        //throw new Error('401');
     }
     if (response.status === 500 || !response.ok) {
         throw new Error('500');
